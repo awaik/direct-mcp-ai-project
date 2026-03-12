@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "yandex-direct": {
+      "type": "http",
+      "url": "https://direct-mcp.aatex.ru/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    },
+    "vk-ads": {
+      "type": "http",
+      "url": "https://direct-mcp.aatex.ru/mcp/vk",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
