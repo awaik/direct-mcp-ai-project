@@ -34,8 +34,9 @@ jobs:
         run: |
           REPO_NAME="${{ github.event.repository.name }}"
           VERSION="${{ steps.version.outputs.version }}"
-          tar -czf "${REPO_NAME}-${VERSION}.tar.gz" --exclude='.git' .
-          zip -r "${REPO_NAME}-${VERSION}.zip" . -x '.git/*'
+          mkdir -p /tmp/archives
+          tar -czf "/tmp/archives/${REPO_NAME}-${VERSION}.tar.gz" --exclude='.git' .
+          zip -r "/tmp/archives/${REPO_NAME}-${VERSION}.zip" . -x '.git/*'
 
       - name: Create release
         uses: softprops/action-gh-release@v2
@@ -46,5 +47,4 @@ jobs:
             **Commit:** `${{ github.sha }}`
             **Message:** ${{ github.event.head_commit.message }}
           files: |
-            *.tar.gz
-            *.zip
+            /tmp/archives/*
