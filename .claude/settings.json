@@ -1,0 +1,59 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__yandex-direct__get_campaigns",
+      "mcp__yandex-direct__get_keywords",
+      "mcp__yandex-direct__check_search_volume",
+      "mcp__yandex-direct__deduplicate_keywords",
+      "mcp__yandex-direct__add_ad_extension",
+      "mcp__yandex-direct__add_sitelinks",
+      "mcp__yandex-direct__add_campaign",
+      "mcp__yandex-direct__add_adgroup",
+      "mcp__yandex-direct__add_ad",
+      "mcp__yandex-direct__add_keywords",
+      "mcp__yandex-direct__get_autotargeting",
+      "mcp__yandex-direct__update_autotargeting",
+      "mcp__yandex-direct__moderate_ads",
+      "mcp__yandex-direct__get_adgroups",
+      "mcp__yandex-direct__get_campaign_stats",
+      "mcp__yandex-direct__get_ads",
+      "mcp__yandex-direct__get_keyword_bids",
+      "mcp__yandex-direct__get_search_queries",
+      "mcp__yandex-direct__update_ad",
+      "mcp__yandex-direct__update_adgroup",
+      "mcp__yandex-direct__resume_campaigns",
+      "mcp__yandex-direct__get_bid_modifiers",
+      "mcp__yandex-direct__get_custom_report",
+      "mcp__yandex-direct__get_criteria_stats",
+      "mcp__yandex-direct__get_adgroup_stats",
+      "mcp__yandex-direct__resume_ads"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "enableAllProjectMcpServers": true,
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay .claude/1.mp3 &"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay .claude/2.mp3 &"
+          }
+        ]
+      }
+    ]
+  }
+}

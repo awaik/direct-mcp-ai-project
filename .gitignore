@@ -1,0 +1,4 @@
+tokens.env
+.cache/
+data/serp-history/
+.DS_Store

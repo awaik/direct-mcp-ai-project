@@ -1,0 +1,12 @@
+{
+  "skills": {
+    "entries": {
+      "yandex-direct": {
+        "enabled": true,
+        "env": {
+          "YANDEX_DIRECT_TOKEN": "YOUR_API_KEY"
+        }
+      }
+    }
+  }
+}

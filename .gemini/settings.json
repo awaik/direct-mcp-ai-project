@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "yandex-direct": {
+      "url": "https://direct-mcp.aatex.ru/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "servers": {
+    "yandex-direct": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://direct-mcp.aatex.ru/mcp",
+        "--header",
+        "Authorization: Bearer YOUR_API_KEY"
+      ]
+    }
+  }
+}

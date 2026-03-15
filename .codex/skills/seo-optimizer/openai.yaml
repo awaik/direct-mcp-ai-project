@@ -1,0 +1,7 @@
+name: seo-optimizer
+description: SEO-аудит и SEO-оптимизация страниц под Яндекс и Google с приоритизированными рекомендациями.
+version: 1
+interface:
+  display_name: SEO Optimizer
+  short_description: Аудит и оптимизация SEO
+  default_prompt: Проведи SEO-аудит страницы, оцени по чеклисту и предложи приоритетные исправления.
