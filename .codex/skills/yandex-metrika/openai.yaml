@@ -1,0 +1,7 @@
+name: yandex-metrika
+description: "Аналитика кампаний через Яндекс Метрику: отчёты по UTM, CPA, конверсии, сравнение периодов."
+version: 1
+interface:
+  display_name: Yandex Metrika
+  short_description: Аналитика кампаний через Метрику
+  default_prompt: Покажи отчёт по кампаниям за последнюю неделю с CPA и конверсиями.

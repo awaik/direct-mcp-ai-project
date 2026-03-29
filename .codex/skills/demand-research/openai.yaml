@@ -1,0 +1,7 @@
+name: demand-research
+description: "Исследование спроса и семантики: упущенный спрос, сезонный прогноз бюджета, каннибализация ключевых, верификация интента."
+version: 1
+interface:
+  display_name: Demand Research
+  short_description: Исследование спроса и семантики
+  default_prompt: Проанализируй поисковые запросы за 30 дней и найди упущенный спрос.

@@ -1,0 +1,7 @@
+name: serp-monitor
+description: "Мониторинг позиций в Яндексе: проверка позиций по ключевым, анализ конкурентов, отслеживание динамики."
+version: 1
+interface:
+  display_name: SERP Monitor
+  short_description: Мониторинг позиций в выдаче Яндекса
+  default_prompt: Проверь позиции по основным ключевым запросам кампании.

@@ -13,6 +13,13 @@
       "headers": {
         "Authorization": "Bearer YOUR_API_KEY"
       }
+    },
+    "lidfly": {
+      "type": "http",
+      "url": "https://direct-mcp.aatex.ru/mcp/lidfly",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
     }
   }
 }

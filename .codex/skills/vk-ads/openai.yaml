@@ -1,0 +1,7 @@
+name: vk-ads
+description: "Управление рекламой VK Ads: создание кампаний, таргетинг, ретаргетинг, контекстные фразы, статистика, look-alike."
+version: 1
+interface:
+  display_name: VK Ads
+  short_description: Управление рекламой в VK Ads
+  default_prompt: Покажи активные кампании VK и их статистику.

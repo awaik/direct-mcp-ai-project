@@ -1,0 +1,32 @@
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+
+[mcp_servers.yandex-direct]
+command = "mcp-remote"
+args = [
+  "https://direct-mcp.aatex.ru/mcp",
+  "--header",
+  "Authorization: Bearer YOUR_API_KEY",
+]
+startup_timeout_sec = 45
+tool_timeout_sec = 120
+
+[mcp_servers.vk-ads]
+command = "mcp-remote"
+args = [
+  "https://direct-mcp.aatex.ru/mcp/vk",
+  "--header",
+  "Authorization: Bearer YOUR_API_KEY",
+]
+startup_timeout_sec = 45
+tool_timeout_sec = 120
+
+[mcp_servers.lidfly]
+command = "mcp-remote"
+args = [
+  "https://direct-mcp.aatex.ru/mcp/lidfly",
+  "--header",
+  "Authorization: Bearer YOUR_API_KEY",
+]
+startup_timeout_sec = 45
+tool_timeout_sec = 120
