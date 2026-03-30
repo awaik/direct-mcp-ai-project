@@ -80,12 +80,12 @@ Workflow-гайд для управления кампаниями через MC
      network_strategy: "SERVING_OFF",
      goal_id: <из PROJECTS.md>,
      counter_ids: [<из PROJECTS.md>],
-     daily_budget_amount: <бюджет в микроюнитах, НЕДЕЛЬНЫЙ>,
+     daily_budget_amount: <бюджет в РУБЛЯХ, НЕДЕЛЬНЫЙ>,
      daily_budget_mode: "STANDARD"
    )
    ```
    - Стратегия: всегда `WB_MAXIMUM_CONVERSION_RATE` на старте
-   - Бюджет: НЕДЕЛЬНЫЙ, 1₽ = 1 000 000 микроюнитов
+   - Бюджет: НЕДЕЛЬНЫЙ, указывать в РУБЛЯХ (число). НЕ умножать на 1 000 000!
    - Сеть: `SERVING_OFF` (только поиск)
    - GEO-кампании: добавить `settings: [{"option": "ENABLE_AREA_OF_INTEREST_TARGETING", "value": false}]`
 
@@ -243,7 +243,7 @@ Workflow-гайд для управления кампаниями через MC
 update_campaign(
   campaign_id: <id>,
   search_strategy: "AVERAGE_CPA",
-  average_cpa: <целевой CPA в микроюнитах>,
+  average_cpa: <целевой CPA в рублях>,
   goal_id: <тот же>,
   daily_budget_amount: <тот же>
 )
