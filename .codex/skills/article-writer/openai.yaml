@@ -1,0 +1,7 @@
+name: article-writer
+description: "Написание SEO-статей для публикации на Lidfly. Сбор семантики через Wordstat, генерация текста, картинки, удаление AI-маркеров, публикация."
+version: 1
+interface:
+  display_name: Article Writer
+  short_description: SEO-статья и публикация на Lidfly
+  default_prompt: Напиши SEO-статью — собери семантику через Wordstat, спроси ключевые и объём, сгенерируй текст и обложку, убери AI-маркеры и опубликуй на Lidfly.
