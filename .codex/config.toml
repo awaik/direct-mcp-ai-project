@@ -1,17 +1,17 @@
 [mcp_servers.yandex-direct]
 url = "https://direct-mcp.aatex.ru/mcp"
-http_headers = { Authorization = "Bearer YOUR_API_KEY" }
+http_headers = { Authorization = "Bearer b4631d9478ae75521b7ecd24a41b38d3eb815643c3055787d0b398d34ff83aa5" }
 startup_timeout_sec = 45
 tool_timeout_sec = 120
 
 [mcp_servers.vk-ads]
 url = "https://direct-mcp.aatex.ru/mcp/vk"
-http_headers = { Authorization = "Bearer YOUR_API_KEY" }
+http_headers = { Authorization = "Bearer b4631d9478ae75521b7ecd24a41b38d3eb815643c3055787d0b398d34ff83aa5" }
 startup_timeout_sec = 45
 tool_timeout_sec = 120
 
 [mcp_servers.lidfly]
 url = "https://direct-mcp.aatex.ru/mcp/lidfly"
-http_headers = { Authorization = "Bearer YOUR_API_KEY" }
+http_headers = { Authorization = "Bearer b4631d9478ae75521b7ecd24a41b38d3eb815643c3055787d0b398d34ff83aa5" }
 startup_timeout_sec = 45
 tool_timeout_sec = 120

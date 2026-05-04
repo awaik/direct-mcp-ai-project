@@ -1,0 +1,7 @@
+name: video-article-writer
+description: "Написание большой SEO-статьи для веба на основе видеофайла или расшифровки: аудио, LidFly-транскрипция, semantic-core, статья 8000+ символов, ai-markers-remove, редакторское ревью, SEO-поля и горизонтальная обложка через LidFly generate_ad_image."
+version: 1
+interface:
+  display_name: Video Article Writer
+  short_description: SEO-статья из видео для веба
+  default_prompt: Use $video-article-writer to turn this video file into a long SEO article with transcript, semantic core, editorial review, and LidFly cover.

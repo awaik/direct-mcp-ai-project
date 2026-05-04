@@ -1,0 +1,4 @@
+interface:
+  display_name: "Video Article Writer"
+  short_description: "SEO-статья из видео для веба"
+  default_prompt: "Use $video-article-writer to turn this video file into a long SEO article with transcript, semantic core, editorial review, and LidFly cover."
