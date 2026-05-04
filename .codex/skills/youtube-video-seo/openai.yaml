@@ -1,0 +1,7 @@
+name: "youtube-video-seo"
+description: "Расшифровка видео и подготовка YouTube-файла в RESULTS: 2-3 названия, одно SEO-описание, при необходимости теги."
+version: 1
+interface:
+  display_name: "YouTube Video SEO"
+  short_description: "Plain text для YouTube в RESULTS"
+  default_prompt: "Используй $youtube-video-seo, чтобы расшифровать видео и создать в RESULTS plain text файл для YouTube: 2-3 названия и одно описание с ключевиками."
