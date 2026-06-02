@@ -1,0 +1,4 @@
+interface:
+  display_name: "Кампании VK Ads"
+  short_description: "Создание и правка VK-рекламы"
+  default_prompt: "Используй $vk-ads-campaign-builder, чтобы подготовить управляемый запуск VK Ads: бриф, read-only проверка, структура, креативы, preflight и план записи через MCP."

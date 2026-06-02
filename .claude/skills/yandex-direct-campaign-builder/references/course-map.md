@@ -8,7 +8,7 @@
 - Уроки 7-12, аукционы/стратегии: `strategy-budget.md`.
 - Уроки 13-19, ключи и автотаргетинг: `semantics-autotargeting.md`.
 - Уроки 20-28, аудитории: gated-сценарии в `scenario-router.md`.
-- Уроки 29-32, креативы: `ad-copy-spec.md` (спецификация объявлений, анти-штампы, примеры до/после) + шаблоны в `semantics-autotargeting.md`.
+- Уроки 29-32, креативы: `ad-copy-spec.md` (спецификация объявлений, анти-штампы, ❌/✅) + шаблоны в `semantics-autotargeting.md`.
 - Уроки 33-38, фиды: `feeds-ecommerce-marketplaces.md`.
 - Уроки 39-52, отчёты и оптимизация: `analytics-optimization.md`.
 - Уроки 53-65, Метрика: `analytics-optimization.md`.
