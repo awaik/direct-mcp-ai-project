@@ -73,7 +73,7 @@ utm_source=yandex&utm_medium=cpc&utm_campaign={slug}&utm_content={ad_id}&utm_ter
 
 1. **get_campaigns** — начинай с получения кампаний (с правильным фильтром!)
 2. **get_adgroups** — группы объявлений внутри кампании (нужен campaign_id)
-3. **get_ads** — объявления (фильтр по campaign_ids или adgroup_ids)
+3. **get_ads** — объявления (фильтр по campaign_ids или adgroup_ids). Для комбинаторных объявлений запрашивай `responsive_ad_field_names` или используй `get_responsive_ads`.
 4. **get_keywords** — ключевые фразы (фильтр по campaign_ids или adgroup_ids)
 5. **get_campaign_stats** — статистика за период (нужен campaign_id, date_from, date_to)
 
@@ -94,7 +94,11 @@ utm_source=yandex&utm_medium=cpc&utm_campaign={slug}&utm_content={ad_id}&utm_ter
 
 ## Редактирование объявлений — ВАЖНО
 
-**Для изменения текста, заголовков, ссылок — ВСЕГДА используй `update_ad`.** Это partial update: отправляются только указанные поля, остальные остаются без изменений.
+**Перед изменением текста, заголовков или ссылок сначала узнай фактический тип объявления.** Вызови `get_ads` с `field_names: ["Id", "Type"]` по конкретным ID.
+
+- Если тип `TEXT_AD` — используй `update_ad` / `update_ads`. Это partial update: отправляются только указанные поля, остальные остаются без изменений.
+- Если тип `RESPONSIVE_AD` — используй `get_responsive_ads`, затем `update_responsive_ad`. **Не используй `update_ad` / `update_ads` для `RESPONSIVE_AD`**: старый TextAd update-путь может схлопнуть комбинаторное объявление и потерять варианты заголовков, текстов и ассеты.
+- Если тип не найден или API вернул ошибку — не угадывай формат, покажи пользователю ID и ошибку.
 
 **НИКОГДА не удаляй объявление и не создавай новое** вместо обновления — это уничтожает:
 - Быстрые ссылки (`sitelink_set_id`)
@@ -103,8 +107,19 @@ utm_source=yandex&utm_medium=cpc&utm_campaign={slug}&utm_content={ad_id}&utm_ter
 - Видеодополнения, цены и другие настройки, заполненные вручную
 
 **Если по какой-то причине нужно создать новое объявление:**
-1. Сначала `get_ads` с `text_ad_field_names` — получить текущие привязки
-2. Перенести `sitelink_set_id`, `ad_extension_ids`, `ad_image_hash` и другие поля в новое объявление
+1. Сначала `get_ads` с `field_names: ["Id", "Type"]` и нужными `text_ad_field_names` / `responsive_ad_field_names` — получить фактический тип и текущие привязки.
+2. Для `TEXT_AD` перенести `sitelink_set_id`, `ad_extension_ids`, `ad_image_hash` и другие поля в новое объявление.
+3. Для `RESPONSIVE_AD` перенести заголовки, тексты, URL, быстрые ссылки, уточнения, изображения и остальные элементы через responsive-инструменты.
+
+## Создание объявлений — современный и legacy-пути
+
+Для новых управляемых объявлений по умолчанию используй связку:
+
+```
+add_unified_campaign → add_adgroup(s) с adgroup_type: "UNIFIED_AD_GROUP" → add_responsive_ad
+```
+
+`add_campaign`, `add_ad` и `add_ads` для `TEXT_AD` — compatibility-путь для старых текстовых кампаний. После изменений Директа от 30.06.2026 даже старый TextAd creation-путь в современных сценариях может вернуть фактический `RESPONSIVE_AD`, поэтому после создания проверяй ID через `get_ads` с `field_names: ["Id", "Type"]` и при необходимости `responsive_ad_field_names`.
 
 ## Места показа — ВАЖНО
 

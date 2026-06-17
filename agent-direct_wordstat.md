@@ -47,7 +47,7 @@ MCP-сервер: `lidfly` (единый эндпоинт `https://lidfly.ru/mcp
 
 1. **get_campaigns** — начинай с кампаний (с правильным фильтром!)
 2. **get_adgroups** — группы объявлений (нужен campaign_id)
-3. **get_ads** — объявления (фильтр по campaign_ids или adgroup_ids)
+3. **get_ads** — объявления (фильтр по campaign_ids или adgroup_ids; для `RESPONSIVE_AD` запрашивай `responsive_ad_field_names` или используй `get_responsive_ads`)
 4. **get_keywords** — ключевые фразы (фильтр по campaign_ids или adgroup_ids)
 5. **get_campaign_stats** — статистика за период (campaign_id, date_from, date_to)
 6. **get_search_queries** — реальные запросы пользователей (campaign_id, date_from, date_to)
@@ -125,19 +125,22 @@ WB_MAXIMUM_CONVERSION_RATE и AVERAGE_CPA — **два режима** страт
 1. Проверь существующие кампании (каннибализация)
 2. Проверь поисковый трафик ключевых фраз
 3. Согласуй план с пользователем
-4. Создай уточнения → `add_ad_extension`
-5. Создай быстрые ссылки → `add_sitelinks`
-6. Создай кампанию → `add_campaign`
-7. Создай группы → `add_adgroup`
-8. Добавь объявления → `add_ad`
-9. Добавь ключевые фразы → `add_keywords`
-10. Отправь на модерацию → `moderate_ads`
+4. Создай уточнения → `ad_extensions action:add`
+5. Создай быстрые ссылки → `sitelinks action:add`
+6. Создай кампанию → `add_unified_campaign`
+7. Создай группы → `add_adgroup` / `add_adgroups` с `adgroup_type: "UNIFIED_AD_GROUP"`
+8. Добавь ключевые фразы → `add_keywords` / `add_keywords_batch`
+9. Добавь комбинаторные объявления → `add_responsive_ad`
+10. Отправь на модерацию → `manage_ads action:moderate`
+
+`add_campaign` → `add_adgroup` → `add_ad` / `add_ads` — только legacy/compatibility для старых текстовых кампаний. После 30.06.2026 даже TextAd creation-путь может вернуть фактический `RESPONSIVE_AD`; после создания проверяй ID через `get_ads` с `field_names: ["Id", "Type"]`.
 
 #### Чеклист перед созданием
 
 - Заголовки содержат ключевую фразу (лимиты: 56 / 30 / 81 символов)
 - Тексты содержат призыв к действию (CTA)
-- Минимум 2-3 объявления на группу (A/B)
+- Для `RESPONSIVE_AD`: несколько разных заголовков и текстов внутри одного объявления, не варианты одного смысла
+- Для legacy `TEXT_AD`: минимум 2-3 объявления на группу (A/B)
 - Минус-фразы отсекают нецелевой трафик
 - Нет каннибализации с существующими кампаниями
 - Быстрые ссылки ведут на разные страницы
@@ -149,7 +152,7 @@ WB_MAXIMUM_CONVERSION_RATE и AVERAGE_CPA — **два режима** страт
 
 **Анализ кампании:**
 1. `get_campaigns` с campaign_ids → настройки, стратегия, бюджет
-2. `get_adgroups` → `get_ads` + `get_keywords`
+2. `get_adgroups` → `get_ads` с фактическим `Type` + `get_keywords`; для `RESPONSIVE_AD` — `get_responsive_ads`
 3. `get_autotargeting` с adgroup_ids
 4. `get_campaign_stats` за 30 дней
 5. `get_search_queries` за 30 дней (если много — 14 или 7 дней)

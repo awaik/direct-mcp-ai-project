@@ -84,6 +84,10 @@
 - `field_names` → для обзора `["Id", "Name"]`, для анализа — все нужные поля.
 - Атрибуция отчётов → `attribution: "LYDC"` в `get_campaign_stats` и `get_search_queries`.
 - UTM-метки → через `tracking_params` на уровне группы.
+- Новые управляемые объявления → по умолчанию `add_unified_campaign` → `add_adgroup(s)` с `adgroup_type: "UNIFIED_AD_GROUP"` → `add_responsive_ad`.
+- `add_campaign` / `add_ad` / `add_ads` для `TEXT_AD` — legacy/compatibility. После 30.06.2026 Директ может фактически создать `RESPONSIVE_AD`, даже если путь выглядит текстовым.
+- Редактирование объявлений → сначала прочитай фактический тип через `get_ads` с `field_names: ["Id", "Type"]`; для `RESPONSIVE_AD` используй `get_responsive_ads` + `update_responsive_ad`, не `update_ad` / `update_ads`.
+- Просмотр комбинаторных объявлений → запрашивай `responsive_ad_field_names` или используй `get_responsive_ads`, иначе потеряешь заголовки/тексты/ассеты в анализе.
 - Места показа → только поиск, `network_strategy: "SERVING_OFF"`.
 - Автотаргетинг → только целевые и узкие категории, остальные выключены.
 - Стратегия → старт с `WB_MAXIMUM_CONVERSION_RATE`, переход на `AVERAGE_CPA` после 10+ конверсий в неделю.

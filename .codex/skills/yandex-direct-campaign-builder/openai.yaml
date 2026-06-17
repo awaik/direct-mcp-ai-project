@@ -1,5 +1,5 @@
 name: "yandex-direct-campaign-builder"
-description: "Создание, аудит и оптимизация кампаний Яндекс Директа через direct-mcp: Поиск, ЕПК, ecommerce, фиды, маркетплейсы, Метрика, Wordstat, бюджет, preflight-gate и безопасный запуск без РСЯ по умолчанию и без Мастера кампаний."
+description: "Создание, аудит и оптимизация кампаний Яндекс Директа через direct-mcp: Поиск, ЕПК, responsive-объявления, ecommerce, фиды, маркетплейсы, Метрика, Wordstat, бюджет, preflight-gate и безопасный запуск без РСЯ по умолчанию и без Мастера кампаний."
 version: 1
 interface:
   display_name: "Кампании Яндекс Директа"
