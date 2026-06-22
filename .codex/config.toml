@@ -3,6 +3,6 @@ approval_policy = "never"
 
 [mcp_servers.lidfly]
 url = "https://lidfly.ru/mcp/v3"
-http_headers = { Authorization = "Bearer YOUR_API_KEY" }
+bearer_token_env_var = "LIDFLY_TOKEN"
 startup_timeout_sec = 45
 tool_timeout_sec = 120

@@ -19,14 +19,19 @@
         "mcp-remote",
         "https://lidfly.ru/mcp/v3",
         "--header",
-        "Authorization: Bearer YOUR_API_KEY"
+        "Authorization: Bearer ${env:LIDFLY_TOKEN}"
       ]
     }
   }
 }
 ```
 
-Замените `YOUR_API_KEY` на ваш API-ключ из [личного кабинета direct-mcp](https://lidfly.ru).
+API-ключ из [личного кабинета direct-mcp](https://lidfly.ru) положите в `tokens.env`:
+
+```bash
+cp tokens.env.example tokens.env
+# заполните LIDFLY_TOKEN в tokens.env
+```
 
 > **Примечание:** VS Code использует stdio-транспорт через `mcp-remote` в качестве моста к HTTP MCP-серверу. Пакет `mcp-remote` устанавливается автоматически через `npx`.
 
@@ -43,7 +48,16 @@ npx --version
 
 1. Откройте VS Code
 2. File → Open Folder → выберите папку проекта
-3. VS Code прочитает `.vscode/mcp.json` и запустит MCP-сервер
+3. Перед запуском MCP убедитесь, что VS Code видит переменную `LIDFLY_TOKEN`. Если открываете VS Code из терминала:
+
+```bash
+set -a
+source tokens.env
+set +a
+code .
+```
+
+4. VS Code прочитает `.vscode/mcp.json` и запустит MCP-сервер
 
 ## 5. Проверка подключения
 
@@ -63,7 +77,7 @@ Copilot должен обнаружить 6 meta-инструментов v3 и 
 |----------|---------|
 | MCP-сервер не виден | Перезагрузите окно: Ctrl+Shift+P → "Reload Window" |
 | `npx` не найден | Установите Node.js и перезапустите VS Code |
-| Ошибка авторизации | Проверьте API-ключ в `.vscode/mcp.json` |
+| Ошибка авторизации | Проверьте, что `LIDFLY_TOKEN` заполнен и доступен VS Code |
 | Copilot не использует MCP | Убедитесь, что используете режим Agent, а не обычный чат |
 
 ## 7. Инструкции для агента

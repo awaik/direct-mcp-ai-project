@@ -7,7 +7,7 @@
         "mcp-remote",
         "https://lidfly.ru/mcp/v3",
         "--header",
-        "Authorization: Bearer YOUR_API_KEY"
+        "Authorization: Bearer ${env:LIDFLY_TOKEN}"
       ]
     }
   }

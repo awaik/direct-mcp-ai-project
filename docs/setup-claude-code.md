@@ -11,20 +11,28 @@
       "type": "http",
       "url": "https://lidfly.ru/mcp/v3",
       "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
+        "Authorization": "Bearer ${LIDFLY_TOKEN}"
       }
     }
   }
 }
 ```
 
-Замените `YOUR_API_KEY` на ваш API-ключ из [личного кабинета direct-mcp](https://lidfly.ru).
+API-ключ из [личного кабинета direct-mcp](https://lidfly.ru) положите в `tokens.env`:
+
+```bash
+cp tokens.env.example tokens.env
+# заполните LIDFLY_TOKEN в tokens.env
+```
 
 ## 2. Запуск
 
 Откройте терминал в папке проекта и запустите:
 
 ```bash
+set -a
+source tokens.env
+set +a
 claude
 ```
 

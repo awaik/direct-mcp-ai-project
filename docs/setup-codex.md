@@ -1,32 +1,32 @@
 # Подключение direct-mcp к OpenAI Codex
 
-## 1. Настройка MCP-сервера (проектный конфиг)
+## 1. Настройка MCP-сервера
 
-Создайте или проверьте файл `.codex/mcp.json` в корне проекта:
+В корне проекта уже есть файл `.codex/config.toml` с MCP-конфигурацией:
 
-```json
-{
-  "mcpServers": {
-    "lidfly": {
-      "url": "https://lidfly.ru/mcp/v3",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
+```toml
+[mcp_servers.lidfly]
+url = "https://lidfly.ru/mcp/v3"
+bearer_token_env_var = "LIDFLY_TOKEN"
+startup_timeout_sec = 45
+tool_timeout_sec = 120
 ```
 
-Замените `YOUR_API_KEY` на ваш API-ключ из [личного кабинета direct-mcp](https://lidfly.ru).
+API-ключ из [личного кабинета direct-mcp](https://lidfly.ru) положите в `tokens.env`:
+
+```bash
+cp tokens.env.example tokens.env
+# заполните LIDFLY_TOKEN в tokens.env
+```
 
 ## 2. Альтернатива — глобальный конфиг через CLI
 
-Если проектный `.codex/mcp.json` не подхватывается (известная проблема в ранних версиях `codex-cli`), добавьте сервер глобально:
+Если проектный `.codex/config.toml` не подхватывается, добавьте сервер глобально:
 
 ```bash
-codex mcp add lidfly -- \
-  npx -y mcp-remote https://lidfly.ru/mcp/v3 \
-  --header "Authorization: Bearer YOUR_API_KEY"
+codex mcp add lidfly \
+  --url https://lidfly.ru/mcp/v3 \
+  --bearer-token-env-var LIDFLY_TOKEN
 ```
 
 Проверка:
@@ -39,6 +39,9 @@ codex mcp get lidfly --json
 ## 3. Запуск
 
 ```bash
+set -a
+source tokens.env
+set +a
 codex -C /path/to/your/project
 ```
 

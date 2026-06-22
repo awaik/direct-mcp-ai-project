@@ -1,4 +1,5 @@
 tokens.env
+.claude/settings.local.json
 .cache/
 data/serp-history/
 .DS_Store
