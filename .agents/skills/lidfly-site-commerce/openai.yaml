@@ -1,0 +1,7 @@
+name: "lidfly-site-commerce"
+description: "Work with LidFly sites, pages, assets, leads, analytics, image generation, publishing, and Commerce through MCP v3 while respecting theme/template terminology, PostgreSQL store source of truth, and YooKassa secret safety."
+version: 1
+interface:
+  display_name: "Lidfly Site Commerce"
+  short_description: "Work with LidFly sites, pages, assets, leads, analytics, imag..."
+  default_prompt: "Используй $lidfly-site-commerce для безопасного workflow LidFly MCP v3."

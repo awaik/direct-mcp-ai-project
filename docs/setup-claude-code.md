@@ -1,79 +1,56 @@
-# Подключение direct-mcp к Claude Code (CLI)
+# Подключение LidFly MCP к Claude Code и Claude Desktop
 
-## 1. Настройка MCP-сервера
+## Claude Code
 
-В корне проекта уже есть файл `.mcp.json` с конфигурацией:
+Рекомендуемый вариант - добавить remote MCP без API-ключа:
+
+```bash
+claude mcp add \
+  --transport http \
+  lidfly https://lidfly.ru/mcp/v3
+```
+
+Или используйте `.mcp.json` в корне проекта:
 
 ```json
 {
   "mcpServers": {
     "lidfly": {
       "type": "http",
-      "url": "https://lidfly.ru/mcp/v3",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
+      "url": "https://lidfly.ru/mcp/v3"
     }
   }
 }
 ```
 
-Замените `YOUR_API_KEY` на ваш API-ключ из [личного кабинета direct-mcp](https://lidfly.ru).
+После добавления откройте `/mcp`, выберите сервер `lidfly` и нажмите `Authenticate`. Вход идёт через браузер: email -> код из письма. API-ключ вручную копировать не нужно.
 
-## 2. Запуск
+## Claude Desktop
 
-Откройте терминал в папке проекта и запустите:
+1. Откройте Claude Desktop -> Customize -> Connectors.
+2. Нажмите `Add custom connector`.
+3. Укажите:
 
-```bash
-claude
+```text
+Name: LidFly
+URL: https://lidfly.ru/mcp/v3
 ```
 
-Claude Code автоматически подхватит `.mcp.json` из корня проекта.
+4. Нажмите `Connect` и пройдите OAuth-вход.
+5. В новом чате включите connector через `+` -> Connectors, если Claude не включил его автоматически.
 
-## 3. Проверка подключения
+Не используйте `claude_desktop_config.json` для нового OAuth-подключения. Этот файл нужен для локальных MCP-серверов и legacy-схем.
 
-В сессии Claude Code напишите:
+## Проверка
 
-```
-покажи мои кампании
-```
-
-Если всё настроено правильно, Claude найдёт инструмент через v3 (`search_tools` → `call_tool`) и покажет список ваших кампаний.
-
-## 4. Дополнительные настройки
-
-### Автоматическое разрешение MCP-инструментов
-
-Файл `.claude/settings.local.json` содержит список разрешённых MCP-инструментов. Благодаря ему Claude не будет спрашивать подтверждение на каждый вызов API.
-
-### Команды (slash commands)
-
-В папке `.claude/commands/` лежат готовые команды:
-
-| Команда | Что делает |
-|---------|-----------|
-| `/create-campaign` | Создать кампанию из YAML-файла |
-| `/create-campaign-text` | Создать кампанию из текстового описания |
-| `/improve-campaign-id` | Анализ и план улучшения кампании по ID |
-| `/update-claude-md` | Обновить CLAUDE.md после изменений |
-
-Пример использования:
-
-```
-/create-campaign-text Рекламируем доставку пиццы в Москве, бюджет 500 руб/нед, лендинг https://pizza.example.com
+```text
+Покажи мои доступные Пространства и рекламные кабинеты.
 ```
 
-### SEO-скилл
+Для рекламного запроса Claude должен вызвать `get_provider_context`, затем `search_tools` и `get_tool_schema`, и только после этого `call_tool` или `call_write_tool`.
 
-Встроенный навык SEO-оптимизации. Активируется фразами вроде "оптимизируй SEO", "сделай SEO-аудит".
+## Permissions
 
-## 5. Файлы проекта
+`.claude/settings.json` в этом шаблоне не включает blanket bypass. Read-only calls могут выполняться шире, но write-действия должны идти через `call_write_tool` и подтверждаться текстом пользователя.
 
-| Файл | Назначение |
-|------|-----------|
-| `CLAUDE.md` | Главные инструкции для агента (правила работы с API) |
-| `PROJECTS.md` | Настройки вашего бизнеса (KPI, бюджеты, особенности) |
-| `.mcp.json` | Подключение к MCP-серверу |
-| `.claude/settings.local.json` | Разрешения на вызов инструментов |
-| `.claude/commands/` | Готовые slash-команды |
-| `.claude/skills/seo/` | SEO-навык |
+Основной source of truth для публичных snippets - `public/js/guides.js` в основном репозитории LidFly.

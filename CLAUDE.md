@@ -1,158 +1,172 @@
-# Direct Manage — Управление рекламой
+# LidFly MCP AI Project
 
-## Контекст проекта
+## Контекст
 
-- Яндекс Директ + Вордстат → `agent-direct_wordstat.md`
-- VK Реклама → `agent-vk.md`
-- Логика конверсий, счётчики, цели и позиционирование → `PROJECTS.md`
-- Юридическая проверка публичного контента → `LEGAL.md`
+Этот репозиторий - клиентский шаблон инструкций и skills для работы с LidFly MCP из внешних AI-клиентов: Codex, Claude Code, Claude Desktop, ChatGPT, Cursor, VS Code, Windsurf, Gemini, Cline и OpenClaw.
 
-## Вызов инструментов (v3)
+Публичные setup snippets в продукте поддерживаются в основном репозитории LidFly в `public/js/guides.js`. Если локальная инструкция клиента и `public/js/guides.js` расходятся, актуальным считается `public/js/guides.js`, а этот шаблон нужно синхронизировать.
 
-Все платформы подключены через единый эндпоинт `https://lidfly.ru/mcp/v3`. Клиент видит только **6 meta-инструментов**, а не каталог провайдеров:
+## Unified MCP v3
 
-`search_tools` · `get_tool_schema` · `call_tool` · `call_write_tool` · `get_methodology` · `subscription_status`
+Основной endpoint:
 
-Провайдерских инструментов (`get_campaigns`, `vk_get_campaigns`, `wordstat_top_requests`, `metrika_*`, `generate_ad_image`, `workspace_*` и т.д.) в списке нет — они достижимы только по строковому имени через meta-слой:
+```text
+https://lidfly.ru/mcp/v3
+```
 
-- **Найти** инструмент под задачу — `search_tools({ query })`; схему перед первым вызовом — `get_tool_schema({ tool_name })`.
-- **Чтение** (get/list/stats, Вордстат, аналитика, `workspace_get_context`) — `call_tool({ tool_name, arguments })`.
-- **Запись и действия** (create/update/suspend/add/moderate, публикация, генерация картинок, запись в Workspace) — `call_write_tool({ tool_name, arguments })`.
-- Методология провайдера — `get_methodology`; диагностика подписки по запросу — `subscription_status`.
+Транспорт: Streamable HTTP. Для новых клиентов выбирай `http`, `streamable-http` или native remote MCP OAuth, если клиент это поддерживает. Старый `mcp-remote` и API-key headers оставляй только как legacy/manual fallback для клиентов без OAuth.
 
-Поэтому все имена инструментов в этом файле, в `agent-*.md`, `METRIKA-ADS-RULES.md`, `VK-ADS-RULES.md` и в скиллах (`get_campaigns`, `add_campaign`, `wordstat_top_requests`, …) — это `tool_name` для `call_tool`/`call_write_tool`, а не прямые MCP-вызовы. Не вызывай `mcp__lidfly__get_campaigns` напрямую — такого имени в списке нет; используй `call_tool`/`call_write_tool`.
+`tools/list` в v3 показывает 8 meta-инструментов:
 
-## Вордстат через новый Search API
+```text
+search_tools
+get_tool_schema
+call_tool
+call_write_tool
+get_methodology
+get_provider_context
+resolve_campaign_scope
+subscription_status
+```
 
-Вордстат работает через общий серверный Yandex Search API ключ LidFly. Пользователю не нужен отдельный Вордстат-токен, OAuth-подключение Директа, `connection_id` или `client_login` для `wordstat_*`.
+Провайдерские инструменты (`get_campaigns`, `vk_get_campaigns`, `avito_ads_get_campaigns`, `webmaster_get_hosts`, `metrika_*`, `wordstat_*`, `lidfly_*`, `workspace_*`) не вызываются как прямые MCP tools. Их нужно искать и запускать через v3 meta-layer.
 
-Все `wordstat_*` инструменты — read-only и вызываются через `call_tool`. Перед первым вызовом смотри схему через `get_tool_schema`, но не добавляй в arguments служебные поля Директа: у Wordstat их нет.
+Обязательный порядок:
 
-Главная разница:
-- `wordstat_top_requests` — точная частотность за последние 30 дней, ассоциации и идеи фраз; это основной инструмент для спроса и семантики.
-- `check_search_volume` — только проверка наличия трафика в Директе, не замена Вордстату и не источник точной частотности.
+1. Найти подходящие инструменты: `search_tools({ query, provider? })`.
+2. Перед первым вызовом каждого инструмента получить схему: `get_tool_schema({ tool_name })`.
+3. Read-only действия вызвать через `call_tool({ tool_name, arguments })`.
+4. Любое создание, обновление, удаление, запуск, остановка, публикация, генерация платного изображения, запись памяти или управление доступами делать через `call_write_tool({ tool_name, arguments })`.
 
-Тариф и лимиты: первые 20 биллинговых единиц в месяц бесплатны. `wordstat_top_requests` списывает по числу фраз, `wordstat_dynamics` — 1 единицу, `wordstat_regions` — 2 единицы. Сверх пакета списание идёт с баланса; при нехватке баланса внешний запрос не выполняется, ошибки внешнего API возвращаются автоматически.
+`subscription_status` используй только для диагностики доступа, тарифа или auth-ошибок, а не в обычном workflow.
 
-## Память проекта и ответ пользователю
+## Provider Context
 
-Память клиентов, кампаний, решений и истории работ хранится в **Workspace MCP** (облако LidFly), а не в локальных файлах. Это единый источник правды, общий для всех ИИ-клиентов (Claude, Codex, ChatGPT, Cursor) и видимый в кабинете `/app`.
+Для рекламных и provider-задач при неизвестном кабинете, клиенте, подключении или Пространстве сначала вызывай:
 
-**В начале работы по клиенту или кампании** — подними контекст из Workspace, а не из файлов:
+```js
+get_provider_context({ provider: "yandex" | "vk" | "avito_ads" | "lidfly" | "workspace", query? })
+```
 
-- `workspace_get_context` — компактная сводка (бриф, настройки, решения, задачи, аналитика) по `workspace_client_id` или имени клиента.
-- `workspace_search` / `workspace_list_clients` — найти клиента и его `workspace_client_id`. Для агентства с многими кабинетами начинай отсюда.
+Если пользователь назвал кампанию или часть названия кампании, сначала вызывай:
 
-**После каждой проверки, анализа, исследования, оптимизации или изменения кампании** — фиксируй результат в Workspace:
+```js
+resolve_campaign_scope({ provider: "yandex" | "vk" | "avito_ads", query, workspace_project_id? })
+```
 
-| Что записать | Инструмент |
-|---|---|
-| Провайдерские факты кампаний (после `get_campaigns` / `vk_get_campaigns`) | `workspace_sync_campaigns` |
-| Контекст, стратегия и выводы по кампании | `workspace_upsert_campaign` (`context_summary_md`) |
-| Изменение + причина + ожидаемый эффект | `workspace_record_decision`; фактический эффект позже — `workspace_update_decision_effect` |
-| Цифры за период (расход, конверсии, CPA) | `workspace_save_analytics_snapshot` / `workspace_save_campaign_snapshot` |
-| Бриф, семантика, большие документы | `workspace_save_document` |
+Дальше переноси в следующий `call_tool` или `call_write_tool` только возвращённые `scope_arguments` или `next_call.arguments`. Не придумывай `client_login`, `client_id`, `account_id`, `counter_id` или `host_id` из имени проекта.
 
-Затем дай в чате короткий человеческий итог:
-   - что проверено и за какой период;
-   - ключевые цифры без сырых логов;
-   - вывод: всё нормально / есть риск / нужно действие;
-   - что сделано или что предлагается дальше;
-   - что записано в Workspace (клиент / кампания).
+Для campaign write в командных/агентских Пространствах всегда передавай точный `workspace_project_id`. Исключение допустимо только если `call_write_tool` preflight по campaign id нашёл ровно один Workspace/provider scope и явно вернул следующий безопасный вызов.
 
-Резолв клиента — по `workspace_client_id` (надёжнее имени). Если имя неоднозначно, Workspace вернёт кандидатов — уточни id и повтори. В чат всегда выноси вывод, риск и следующий шаг, а не технические логи.
+## Пространства И Workspace
 
-**Локальные файлы `campaigns/<utm>.md` больше не ведём.** Если скилл, команда или старая инструкция велит создать или обновить файл `campaigns/<utm>.md` — пропусти файловый шаг и запиши те же данные в Workspace по таблице выше. Старые файлы из прежних клонов переноси разово через `workspace_import_legacy_markdown`. Нужна локальная копия в git — выгружай по запросу через `workspace_export_context`; это бэкап, а не источник правды.
+Пользовательский термин: **Пространства**. Технический термин в API: `Workspace`.
 
-При изменении этих правил обновляй `AGENTS.md` и `CLAUDE.md` парой.
+Workspace project - бизнес, проект, направление или клиент агентства внутри Пространства. Канонический идентификатор:
 
----
+```text
+workspace_project_id
+```
 
-## Яндекс Директ API
+Внешние provider entities не являются Workspace-идентификаторами:
 
-При создании и управлении рекламой в Яндекс Директе сверяйся с `METRIKA-ADS-RULES.md`. Там правила получения кампаний, фильтры, бюджеты, стратегии, UTM-метки, атрибуция и нюансы API.
+- Yandex Direct `client_login`;
+- VK Ads `vk_client_id` или `client_id`;
+- Avito Ads `account_id`;
+- Metrika `counter_id`;
+- LidFly `subdomain`;
+- Yandex Webmaster `host_id`.
 
-Новые общие правила и нюансы Яндекс Директ API добавляй в `METRIKA-ADS-RULES.md` только после проверенного повторяемого кейса, ошибки API или подтверждённой документации.
+Перед записью решений, документов, аудитов, слепков кампаний, аналитики, настроек, provider links или задач используй один из способов резолва project scope:
 
-### Критичный финансовый guardrail
+- точный `workspace_project_id`;
+- `project_name`, если он однозначен;
+- provider + `external_entity_key`;
+- `workspace_prepare_project_scope`.
 
-- Бюджет в Директе — недельный и указывается в рублях обычным числом. Не умножать на 1 000 000 и не конвертировать в микроюниты.
+Если scope неоднозначен, покажи кандидатов и попроси точный `workspace_project_id`. Не создавай молча проект "Основной проект".
 
-### Краткий чеклист Директа
+Современные Workspace tools:
 
-- Получение кампаний → по умолчанию `states: ["ON"]`, без маленького `limit`.
-- `field_names` → для обзора `["Id", "Name"]`, для анализа — все нужные поля.
-- Атрибуция отчётов → `attribution: "LYDC"` в `get_campaign_stats` и `get_search_queries`.
-- UTM-метки → через `tracking_params` на уровне группы.
-- Новые управляемые объявления → по умолчанию `add_unified_campaign` → `add_adgroup(s)` с `adgroup_type: "UNIFIED_AD_GROUP"` → `add_responsive_ad`.
-- `add_campaign` / `add_ad` / `add_ads` для `TEXT_AD` — legacy/compatibility. После 30.06.2026 Директ может фактически создать `RESPONSIVE_AD`, даже если путь выглядит текстовым.
-- Редактирование объявлений → сначала прочитай фактический тип через `get_ads` с `field_names: ["Id", "Type"]`; для `RESPONSIVE_AD` используй `get_responsive_ads` + `update_responsive_ad`, не `update_ad` / `update_ads`.
-- Просмотр комбинаторных объявлений → запрашивай `responsive_ad_field_names` или используй `get_responsive_ads`, иначе потеряешь заголовки/тексты/ассеты в анализе.
-- Места показа → только поиск, `network_strategy: "SERVING_OFF"`.
-- Автотаргетинг → только целевые и узкие категории, остальные выключены.
-- Стратегия → старт с `WB_MAXIMUM_CONVERSION_RATE`, переход на `AVERAGE_CPA` после 10+ конверсий в неделю.
-- Изменения цели, стратегии или бюджета больше 30% — только с подтверждением пользователя; предпочтительно в четверг-пятницу.
-- GEO-кампании → отключать `ENABLE_AREA_OF_INTEREST_TARGETING`.
+- `workspace_list_projects`
+- `workspace_get_project`
+- `workspace_create_project`
+- `workspace_prepare_project_scope`
+- `workspace_upsert_provider_entity`
+- `workspace_link_campaign`
+- `workspace_get_settings`
+- `workspace_update_settings`
+- `workspace_schedule_ai_task`
+- `workspace_get_scheduled_ai_tasks`
 
-### Цели и счётчики
+Для AI-автозапусков `allowed_tools` содержит реальные доменные инструменты будущего запуска, например `get_campaign_stats`, `vk_get_campaigns`, `avito_ads_get_campaigns`, а не v3 meta-tools.
 
-При обсуждении кампаний, целей и счётчиков не используй голые ID. Формат: «цель Отправка заявки (123456789)» или «счётчик основной (987654321)».
+## Provider Rules
 
----
+### Yandex Direct And Metrika
 
-## VK Ads API
+- Для Директа `connection_id` выбирает OAuth-подключение, `client_login` выбирает клиентский кабинет внутри подключения.
+- Перед multi-account задачами вызывай `get_provider_context({ provider: "yandex" })`.
+- Для кампании по имени сначала `resolve_campaign_scope({ provider: "yandex", query })`.
+- Для Метрики не используй `client_login`; передавай `counter_id` и при необходимости `connection_id`.
+- Новые управляемые объявления по умолчанию: `add_unified_campaign` -> `add_adgroup`/`add_adgroups` с `UNIFIED_AD_GROUP` -> `add_responsive_ad`.
+- `add_campaign`, `add_ad`, `add_ads` - только legacy/compatibility для старых текстовых сценариев.
+- Бюджеты Директа передавай в рублях обычным числом; не конвертируй в микроюниты.
 
-При создании и управлении рекламой в VK Ads сверяйся с `VK-ADS-RULES.md`. Там правила создания кампаний, запрещённые символы, лимиты текстов, формат API и нюансы.
+### VK Ads
 
-Новые общие правила и нюансы VK Ads API добавляй в `VK-ADS-RULES.md` только после проверенного повторяемого кейса, ошибки API или подтверждённой документации.
+- При нескольких подключениях сначала `get_provider_context({ provider: "vk" })`.
+- Для агентских/менеджерских кабинетов передавай `connection_id` и `client_id` из `tool_args`.
+- Manual VK user-filter используй только если он вернулся в provider context; произвольный VK user id не подставляй.
+- Для кампании по имени сначала `resolve_campaign_scope({ provider: "vk", query })`.
+- Read -> preflight -> write -> reread обязателен для статусов, бюджетов, ставок, лид-форм и доступа.
 
----
+### Avito Ads
 
-## Юридическая проверка контента
+- Инструменты Авито доступны через unified `/mcp/v3`.
+- Используй `connection_id` и/или 9-значный `account_id` из provider context.
+- `account_id` - рекламный account id Авито, не телефон и не user id.
+- Деньги, доступы, юридические данные и destructive actions - только через `call_write_tool`.
+- Минимальный бюджет группы: 5000 руб. с НДС; бюджет не может быть ниже известного spent.
 
-При создании или редактировании публичного контента — тексты объявлений, статьи, лендинги, посты — проверяй формулировки по `LEGAL.md`.
+### Yandex Webmaster
 
-Перед публикацией контента сверься с `LEGAL.md`: там список запрещённых терминов, опасных формулировок и допустимых альтернатив.
+- `webmaster_*` используют отдельный OAuth Вебмастера, не `client_login`.
+- Начинай с `webmaster_get_hosts`; дальше используй точный `host_id`.
+- Если выбран `workspace_project_id`, читай только привязанные host entities; при отсутствии привязки fail-closed.
+- Sitemap, переобход, подтверждение прав, feeds и Pro export - только через `call_write_tool` после объяснения квот и риска.
 
----
+### LidFly Sites And Commerce
 
-## Скиллы
+- "Тема оформления" - визуальные tokens: цвета, шрифты, радиусы.
+- "Шаблон сайта" - persistent site-level design system: header, footer, карточки, checkout, page blueprints.
+- Commerce source of truth - PostgreSQL/store tools; опубликованный HTML в `/sites` только publish artifact.
+- YooKassa seller secrets никогда не показывай пользователю.
+- `generate_ad_image` или аналогичные платные генерации запускай только после показа prompt, format/crop и явного подтверждения.
 
-Система уже загружает описания и триггеры скиллов. Здесь только проектная навигация.
+## Wordstat
 
-| Скилл | За что отвечает | Где детали |
-|---|---|---|
-| `yandex-direct-campaign-builder` | Создание, аудит, запуск, оптимизация кампаний Директа | `agent-direct_wordstat.md`, `METRIKA-ADS-RULES.md` |
-| `vk-ads` | Кампании VK Ads, таргетинг, ретаргетинг, look-alike | `agent-vk.md`, `VK-ADS-RULES.md` |
-| `yandex-metrika` | UTM-аналитика, CPA, конверсии, сравнение периодов | `PROJECTS.md`, `METRIKA-ADS-RULES.md` |
-| `demand-research` | Спрос, сезонность, каннибализация, упущенные запросы | `METRIKA-ADS-RULES.md` |
-| `serp-monitor` | Позиции в Яндексе, рекламные блоки, конкуренты | `tokens.env.example`, `PROJECTS.md` |
-| `article-writer` | SEO-статьи, обложки, публикация на Lidfly | `LEGAL.md`, `.styles/` |
+`wordstat_*` работают через серверный Yandex Search API LidFly. Не передавай `client_login`, `connection_id` или рекламный account scope. Все Wordstat calls read-only и идут через `call_tool`.
 
----
+## Ответ Пользователю
 
-## Задачи и напоминания
+В финальном сообщении всегда отделяй:
 
-Задачи и напоминания живут в **Workspace MCP** (облако LidFly): видны в кабинете `/app#tasks` и участвуют в email-напоминаниях. Старые `add_tasks` / `get_tasks` / `complete_task` и их `vk_*` / `lidfly_*` аналоги отключены — они возвращают только уведомление о миграции, не используй их.
+- что было прочитано или проверено;
+- какие scope identifiers использованы (`workspace_project_id`, provider entity);
+- что изменено или подготовлено;
+- что записано в Пространство;
+- какие write-действия требуют отдельного подтверждения.
 
-Инструменты:
+Не показывай токены, refresh tokens, seller secrets, internal provider routing, model/provider names или reasoning parameters.
 
-- `workspace_add_tasks` — создать задачи с готовым `prompt` для будущей проверки.
-- `workspace_get_tasks` — единая очередь задач по всем провайдерам (фильтры `due`, `status`, `show_prompts`).
-- `workspace_update_task` — изменить задачу, срок или статус.
-- `workspace_complete_task` — отметить выполненной или отклонённой.
-- `workspace_delete_task` — удалить задачу (только по явной просьбе пользователя).
+## Навигация
 
-Правила:
+- Яндекс Директ и Wordstat: `agent-direct_wordstat.md`, `METRIKA-ADS-RULES.md`
+- VK Ads: `agent-vk.md`, `VK-ADS-RULES.md`
+- Бизнес-настройки: `PROJECTS.md`
+- Юридические ограничения публичного контента: `LEGAL.md`
+- Canonical skills: `skills-source/`
+- Skill sync: `node scripts/sync-skills.mjs`
 
-1. Когда пользователь просит «напомни», «создай задачу», «проверить через N дней», «поставь на контроль» — используй `workspace_add_tasks` (с `prompt` и `due_date`), а не файлы, заметки или память.
-2. В начале рекламного сценария проверь просроченные задачи через `workspace_get_tasks` с `due: "overdue"` и сообщи пользователю, если они есть.
-3. После создания или изменения рекламной кампании предложи поставить контрольную задачу, но не создавай без подтверждения.
-4. Каждая задача содержит `prompt` — готовую инструкцию для будущей проверки. Получай его через `workspace_get_tasks` с `show_prompts: true`, выполняй, затем закрывай через `workspace_complete_task`.
-5. Привязывай задачу к клиенту или кампании через `workspace_client_id` / `workspace_campaign_id` (или `client_name` / `external_campaign_id`), чтобы она нашлась в контексте клиента.
-
----
-
-## CI/CD
-
-Правила релизов описаны в `README.md` и `.github/workflows/release-on-push.yml`; не дублируй их здесь.
+При изменении общих правил обновляй `AGENTS.md` и `CLAUDE.md` парой.

@@ -1,4 +1,13 @@
 tokens.env
+.env
+.env.*
+!.env.example
 .cache/
 data/serp-history/
 .DS_Store
+__pycache__/
+*.pyc
+.openclaw/openclaw.json
+*.local.json
+*.local.toml
+*.secret.json

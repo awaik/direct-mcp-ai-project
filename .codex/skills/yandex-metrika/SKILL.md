@@ -1,226 +1,33 @@
 ---
 name: yandex-metrika
-description: "Аналитика кампаний через Яндекс Метрику: отчёты по UTM, CPA, конверсии, сравнение периодов."
+description: Analyze Yandex Metrika through LidFly MCP v3: counter discovery, goals, UTM reports, Direct attribution, CPA/conversions, period comparisons, Workspace provider entities, and counter_id scope without client_login.
 ---
 
-# Яндекс Метрика — аналитика рекламных кампаний
+# Yandex Metrika
 
-Workflow-гайд для аналитики кампаний через MCP-инструменты `metrika_*`.
+Use for counters, goals, traffic sources, UTM, Direct reports, CPA, conversion health, popular pages, ecommerce, and period comparisons.
 
-**MCP-сервер:** `lidfly` — Метрика доступна через единый эндпоинт v3. Токен Метрики не нужен отдельно — используется тот же OAuth что и для Директа.
+## Scope
 
-**Зачем:** Директ даёт данные по расходам и кликам, Метрика — по поведению на сайте (визиты, отказы, конверсии). Вместе — полная картина эффективности.
+- Metrika uses `counter_id`; it does not use `client_login`.
+- If counter/project is unclear, call `get_provider_context({ provider: "yandex", query? })` and use returned Metrika scope.
+- If a Пространство is selected, prefer counters linked as provider entities to `workspace_project_id`.
+- Do not rely on `PROJECTS.md` as the only counter/goal source; verify live counters/goals when access exists.
 
----
+## Read Workflow
 
-## Правило финального ответа
+1. `search_tools({ provider: "yandex", query: "metrika ..." })`.
+2. `get_tool_schema`.
+3. `call_tool` for `metrika_get_counters`, `metrika_get_counter`, `metrika_get_goals`, reports.
+4. Use explicit date ranges, attribution assumptions, dimensions, and goal ids.
 
-Любой workflow этого скилла заверши итогом в чат: что проверено, период, ключевые метрики, вывод, рекомендации и обновлённую запись в Workspace если она менялась. Workspace и отчётные таблицы не заменяют ответ пользователю.
+## Analysis
 
----
+- Name goals as "цель Название (id)", not bare ids.
+- Separate total conversions from target lead/order goals.
+- Compare periods with the same attribution and filters.
+- For Direct-linked analysis, include campaign ids and UTM where possible.
 
-## Инструменты `metrika_*`
+## Workspace
 
-| Инструмент | Описание |
-|---|---|
-| `metrika_get_counters` | Список доступных счётчиков (ID, сайт, статус) |
-| `metrika_get_counter` | Детали одного счётчика (название, сайт, настройки) |
-| `metrika_get_goals` | Цели счётчика — ID нужны для метрик конверсий |
-| `metrika_get_report` | Универсальный отчёт: любые метрики + группировки + фильтры |
-| `metrika_get_report_bytime` | Данные с разбивкой по времени (день/неделя/месяц) — для графиков |
-| `metrika_get_report_comparison` | Сравнение двух сегментов или периодов |
-| `metrika_get_direct_report` | Кампании Директа из Метрики: визиты, отказы, конверсии после клика |
-| `metrika_get_traffic_sources` | Источники трафика: Директ, поиск, соцсети, прямые заходы |
-| `metrika_get_audience` | Демография и техника: гео, устройства, пол, возраст |
-| `metrika_get_popular_pages` | Популярные страницы входа/выхода — для оптимизации посадочных |
-| `metrika_get_goals_report` | Отчёт по конверсиям: достижения, конверсия, целевые визиты |
-
----
-
-## Workflow 1: Счётчики и цели
-
-Начни с идентификации счётчика и целей.
-
-1. **Найти счётчик:**
-   ```
-   metrika_get_counters()
-   ```
-   Или использовать ID из `PROJECTS.md`.
-
-2. **Получить цели:**
-   ```
-   metrika_get_goals(counter_id: <id>)
-   ```
-   Запомнить ID основной цели конверсии — нужен для всех отчётов.
-
----
-
-## Workflow 2: Отчёт по кампании (основной)
-
-Полный отчёт по эффективности кампании — сочетает данные Директа и Метрики.
-
-### Шаги
-
-1. **Статистика Директа:**
-   ```
-   get_campaign_stats(
-     campaign_id: <id>,
-     date_from: "<7 дней назад>",
-     date_to: "<вчера>",
-     attribution: "LYDC"
-   )
-   ```
-   Получить: расход, клики, показы, CTR, конверсии.
-
-2. **Данные Метрики:**
-   ```
-   metrika_get_direct_report(
-     counter_id: <из PROJECTS.md>,
-     date1: "<7 дней назад>",
-     date2: "<вчера>",
-     utm_campaign: "<slug кампании>"
-   )
-   ```
-   Получить: визиты, отказы, глубина просмотра, время на сайте.
-
-3. **Расчёт CPA:**
-   ```
-   CPA = расход / конверсии
-   ```
-
-4. **Оценка здоровья** (пороги из `PROJECTS.md`):
-
-   | Статус | Условие | Действие |
-   |--------|---------|----------|
-   | GOOD | CPA в пределах нормы | Продолжать, масштабировать |
-   | ATTENTION | CPA выше нормы | Проверить поисковые запросы, минус-слова |
-   | CRITICAL | CPA сильно выше нормы | Минус-слова, пересмотр ключевых, проверка лендинга |
-
-5. **Записать результат в Workspace MCP**: цифры за период — `workspace_save_analytics_snapshot`, изменение и вывод — `workspace_record_decision`.
-
----
-
-## Workflow 3: Трафик и источники
-
-Анализ откуда приходит трафик.
-
-```
-metrika_get_traffic_sources(
-  counter_id: <id>,
-  date1: "<начало периода>",
-  date2: "<конец периода>"
-)
-```
-
-Смотреть: доля Директа vs органика vs соцсети, качество трафика по источникам (отказы, глубина).
-
----
-
-## Workflow 4: Конверсии
-
-Детальный анализ конверсий по целям.
-
-```
-metrika_get_goals_report(
-  counter_id: <id>,
-  date1: "<начало периода>",
-  date2: "<конец периода>",
-  goal_id: <id цели>
-)
-```
-
-Анализ: какие источники и кампании приносят конверсии, конверсия по этапам воронки.
-
----
-
-## Workflow 5: Сравнение периодов
-
-Сравнение двух временных периодов — для оценки динамики.
-
-```
-metrika_get_report_comparison(
-  counter_id: <id>,
-  date1a: "<начало периода A>",
-  date2a: "<конец периода A>",
-  date1b: "<начало периода B>",
-  date2b: "<конец периода B>"
-)
-```
-
-Типичное использование: текущая неделя vs прошлая, текущий месяц vs предыдущий.
-
----
-
-## Workflow 6: Аудитория и страницы
-
-### Демография и устройства
-
-```
-metrika_get_audience(
-  counter_id: <id>,
-  date1: "<начало>",
-  date2: "<конец>",
-  dimension: "gender"  // или "age", "device", "geo"
-)
-```
-
-Используй для корректировки таргетинга — если 80% конверсий с мобильных, усилить мобильную рекламу.
-
-### Популярные страницы
-
-```
-metrika_get_popular_pages(
-  counter_id: <id>,
-  date1: "<начало>",
-  date2: "<конец>"
-)
-```
-
-Используй для оптимизации посадочных — если страница с высоким трафиком имеет высокие отказы, нужно её доработать.
-
----
-
-## Каденция проверок
-
-| День | Действие |
-|------|----------|
-| Понедельник | Недельный отчёт по всем активным кампаниям (workflow 2) |
-| Четверг | Сравнение периодов (workflow 5): текущая vs прошлая неделя |
-| По запросу | Разовые отчёты, аудитория, страницы |
-
----
-
-## Интеграция с другими источниками
-
-| Задача | Источник |
-|--------|----------|
-| Расходы, клики, показы, CTR | MCP: `get_campaign_stats` (attribution: LYDC) |
-| Визиты, отказы, глубина, конверсии | MCP: `metrika_get_direct_report` |
-| Поисковые запросы | MCP: `get_search_queries` |
-| Ставки, стратегия, статус кампании | MCP: `get_campaigns`, `get_ads` |
-
----
-
-## Кросс-ссылки
-
-- **demand-research** — если CPA высокий, исследуй спрос и ищи новые ключи
-- **serp-monitor** — если позиции падают, конверсии тоже упадут
-- **yandex-direct-campaign-builder** — создание и управление кампаниями
-
-## Запись результата в Workspace
-
-После каждой проверки зафиксируй результат в Workspace MCP:
-
-1. Сохрани цифры за период через `workspace_save_analytics_snapshot` (расход, клики, конверсии, CPA), например:
-```markdown
-| 2026-03-15 | 450 | 35% | 12 | 3 750₽ | GOOD |
-```
-
-2. Зафиксируй текущий статус и рекомендации через `workspace_record_decision` (актуальная сводка — через `workspace_get_context`).
-
-## Настройка
-
-- **counter_id** — из `PROJECTS.md` (секция «Счётчик Яндекс Метрики»)
-- **goal_id** — из `PROJECTS.md` (секция «Цель конверсии»)
-- **CPA-пороги** — из `PROJECTS.md` (секция «Бюджетные правила»)
-- **Атрибуция** — всегда LYDC для отчётов Директа (last yandex direct click)
+Save analytics snapshots, documents, or decisions only with resolved `workspace_project_id`.

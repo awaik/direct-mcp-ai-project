@@ -1,0 +1,7 @@
+name: "mcp-v3-provider-context"
+description: "Use for LidFly MCP v3 provider scope resolution: get_provider_context, resolve_campaign_scope, multi-account Yandex/VK/Avito/LidFly workflows, campaign lookup by name, and safe transfer of scope_arguments into call_tool/call_write_tool."
+version: 1
+interface:
+  display_name: "Mcp V3 Provider Context"
+  short_description: "Use for LidFly MCP v3 provider scope resolution: get_provider..."
+  default_prompt: "Используй $mcp-v3-provider-context для безопасного workflow LidFly MCP v3."

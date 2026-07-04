@@ -1,14 +1,8 @@
 {
   "servers": {
     "lidfly": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://lidfly.ru/mcp/v3",
-        "--header",
-        "Authorization: Bearer YOUR_API_KEY"
-      ]
+      "type": "http",
+      "url": "https://lidfly.ru/mcp/v3"
     }
   }
 }

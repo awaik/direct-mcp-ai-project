@@ -1,47 +1,31 @@
-# Подключение direct-mcp к Gemini CLI
+# Подключение LidFly MCP к Gemini CLI
 
-## 1. Настройка MCP-сервера
+## Настройка
 
-В корне проекта уже есть файл `.gemini/settings.json`:
+Gemini CLI использует `~/.gemini/settings.json`. В проекте лежит пример `.gemini/settings.json`:
 
 ```json
 {
   "mcpServers": {
     "lidfly": {
-      "type": "http",
-      "url": "https://lidfly.ru/mcp/v3",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
+      "httpUrl": "https://lidfly.ru/mcp/v3"
     }
   }
 }
 ```
 
-Замените `YOUR_API_KEY` на ваш API-ключ из [личного кабинета direct-mcp](https://lidfly.ru).
+После добавления сервера пройдите OAuth-вход по email, если Gemini CLI запросит авторизацию. API-key header используйте только как legacy fallback.
 
-## 2. Запуск
-
-Откройте терминал в папке проекта и запустите:
+## Проверка
 
 ```bash
 gemini
 ```
 
-Gemini CLI автоматически прочитает `.gemini/settings.json`.
+В сессии:
 
-## 3. Проверка подключения
-
-В сессии напишите:
-
-```
-покажи мои кампании
+```text
+Покажи мои доступные Пространства и рекламные кабинеты.
 ```
 
-Gemini должен обнаружить сервер `lidfly` (6 meta-инструментов v3) и через них показать ваши кампании.
-
-## 4. Инструкции для агента
-
-Gemini CLI читает `GEMINI.md` из корня проекта, который ссылается на `CLAUDE.md` с правилами работы с API.
-
-Ваши бизнес-настройки — в `PROJECTS.md`.
+Gemini читает корневые `AGENTS.md` и `CLAUDE.md`; отдельный входной файл для Gemini в этом шаблоне не нужен.

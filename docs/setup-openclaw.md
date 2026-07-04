@@ -1,50 +1,43 @@
-# Подключение direct-mcp к OpenClaw
+# Подключение LidFly MCP к OpenClaw
 
-## 1. Настройка
+## Настройка
 
-Скопируйте пример конфига:
+Скопируйте пример:
 
 ```bash
 cp .openclaw/openclaw.example.json .openclaw/openclaw.json
 ```
 
-Отредактируйте `.openclaw/openclaw.json` — замените `YOUR_API_KEY` на ваш API-ключ:
+Пример содержит MCP URL и список skills:
 
 ```json
 {
-  "skills": {
-    "entries": {
-      "yandex-direct": {
-        "enabled": true,
-        "env": {
-          "LIDFLY_TOKEN": "YOUR_API_KEY"
-        }
-      }
+  "mcpServers": {
+    "lidfly": {
+      "type": "http",
+      "url": "https://lidfly.ru/mcp/v3"
     }
+  },
+  "skills": {
+    "directory": ".openclaw/skills"
   }
 }
 ```
 
-API-ключ получите в [личном кабинете direct-mcp](https://lidfly.ru). Под v3 это единый ключ LidFly — один эндпоинт `https://lidfly.ru/mcp/v3` покрывает Директ, VK, Вордстат, Workspace и публикацию.
+Если OpenClaw в вашей версии не поддерживает OAuth remote MCP, добавьте Bearer API-key только в локальный `.openclaw/openclaw.json` и не коммитьте этот файл.
 
-> **Важно:** Файл `.openclaw/openclaw.json` содержит ваш токен — не коммитьте его в git. В репозитории лежит только `.openclaw/openclaw.example.json` с плейсхолдером.
+## Skills
 
-## 2. Навыки (Skills)
+Копии skills в `.openclaw/skills` генерируются из `skills-source/`:
 
-В папке `.openclaw/skills/yandex-direct-campaign-builder/` лежит готовый навык для создания и управления кампаниями Яндекс Директа. Он автоматически активируется, когда вы спрашиваете про кампании, объявления, статистику.
-
-## 3. Проверка подключения
-
-Запустите OpenClaw и напишите:
-
-```
-покажи мои кампании
+```bash
+node scripts/sync-skills.mjs
 ```
 
-OpenClaw должен вызвать MCP-сервер через навык `yandex-direct-campaign-builder`.
+## Проверка
 
-## 4. Инструкции для агента
+```text
+Покажи мои доступные Пространства и рекламные кабинеты.
+```
 
-Правила работы с API описаны в навыке `.openclaw/skills/yandex-direct-campaign-builder/SKILL.md`.
-
-Ваши бизнес-настройки — в `PROJECTS.md`.
+Дальше OpenClaw должен работать через v3 meta-layer: `search_tools`, `get_tool_schema`, `call_tool`, `call_write_tool`, `get_provider_context`, `resolve_campaign_scope`.

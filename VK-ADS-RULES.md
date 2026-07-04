@@ -1,5 +1,13 @@
 # Правила создания кампаний VK Ads
 
+## Unified MCP v3
+
+VK Ads вызывается через `https://lidfly.ru/mcp/v3`: сначала `search_tools`, затем `get_tool_schema`, потом `call_tool` для чтения или `call_write_tool` для изменений.
+
+Если неясен кабинет, клиент или Пространство, сначала вызывай `get_provider_context({ provider: "vk" })`. Если пользователь назвал кампанию, вызывай `resolve_campaign_scope({ provider: "vk", query })` и используй возвращённые `connection_id`, `client_id`, `workspace_project_id` и `scope_arguments`.
+
+Manual VK user-filter используй только когда он уже сохранён в LidFly и вернулся в provider context; произвольный id не подставляй.
+
 ## Запрещённые символы в текстах объявлений
 
 **ВАЖНО:** VK Ads API НЕ принимает символ `→` (стрелка) в текстовых блоках баннеров.

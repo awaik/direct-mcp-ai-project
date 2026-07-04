@@ -1,55 +1,26 @@
-# Подключение direct-mcp к Cline
+# Подключение LidFly MCP к Cline
 
-## 1. Требования
+## Настройка
 
-- VS Code с расширением [Cline](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev)
-
-## 2. Настройка MCP-сервера
-
-В корне проекта уже есть файл `.cline/mcp_settings.json`:
+Файл `.cline/mcp_settings.json`:
 
 ```json
 {
   "mcpServers": {
     "lidfly": {
       "type": "http",
-      "url": "https://lidfly.ru/mcp/v3",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
+      "url": "https://lidfly.ru/mcp/v3"
     }
   }
 }
 ```
 
-Замените `YOUR_API_KEY` на ваш API-ключ из [личного кабинета direct-mcp](https://lidfly.ru).
+Если ваша версия Cline поддерживает remote MCP OAuth, пройдите вход по email в браузере. Если поддерживается только static headers, используйте Bearer API-key локально и не коммитьте его.
 
-## 3. Открытие проекта
+## Проверка
 
-1. Откройте VS Code с установленным Cline
-2. File → Open Folder → выберите папку проекта
-3. Cline автоматически прочитает `.cline/mcp_settings.json`
-
-## 4. Проверка подключения
-
-Откройте панель Cline и напишите:
-
-```
-покажи мои кампании
+```text
+Покажи мои доступные Пространства и рекламные кабинеты.
 ```
 
-Cline должен обнаружить сервер `lidfly` (6 meta-инструментов v3) и через них показать ваши кампании.
-
-## 5. Альтернативный способ — через UI
-
-1. Откройте панель Cline
-2. Нажмите на иконку настроек (шестерёнка)
-3. Перейдите в раздел MCP Servers
-4. Добавьте сервер:
-   - Name: `lidfly`
-   - URL: `https://lidfly.ru/mcp/v3`
-   - Headers: `Authorization: Bearer YOUR_API_KEY`
-
-## 6. Инструкции для агента
-
-Cline читает `CLAUDE.md` из корня проекта как системные инструкции. Ваши бизнес-настройки — в `PROJECTS.md`.
+Для изменений Cline должен показывать план и вызывать `call_write_tool`, а не read-only `call_tool`.

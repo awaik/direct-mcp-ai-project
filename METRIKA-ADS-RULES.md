@@ -1,5 +1,13 @@
 # Правила работы с Яндекс Директ API (MCP: yandex-direct)
 
+## Unified MCP v3
+
+Для новых клиентов все вызовы идут через `https://lidfly.ru/mcp/v3`: `search_tools` -> `get_tool_schema` -> `call_tool`/`call_write_tool`. Прямые provider tool calls не используются.
+
+Перед multi-account задачами вызывай `get_provider_context({ provider: "yandex" })`. Если пользователь назвал кампанию, используй `resolve_campaign_scope({ provider: "yandex", query })` и передавай возвращённые `scope_arguments`. Для campaign write в Пространствах нужен точный `workspace_project_id`, если preflight не доказал единственный scope.
+
+Метрика работает по `counter_id`; `client_login` к Metрике не относится.
+
 ## Получение кампаний — ВАЖНО
 
 Когда пользователь просит "покажи кампании", "получи кампании", "что у меня запущено" — **всегда фильтруй по активным**:

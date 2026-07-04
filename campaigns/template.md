@@ -1,16 +1,16 @@
-> ⚠️ **Устарело. Журнал кампаний переехал в Workspace (облако LidFly, единый эндпоинт `https://lidfly.ru/mcp/v3`).**
-> Не создавай файлы `campaigns/<utm>.md`. Веди память кампании в облаке LidFly — она общая для всех ИИ-клиентов и видна в `/app`:
+> **Устарело. Журнал кампаний переехал в Пространства LidFly через единый endpoint `https://lidfly.ru/mcp/v3`.**
+> Не создавай файлы `campaigns/<utm>.md`. Веди память кампании в Workspace project с точным `workspace_project_id`.
 >
 > | Раздел шаблона ниже | Инструмент Workspace |
 > |---|---|
 > | Шапка, бюджет, стратегия, посадочная | `workspace_upsert_campaign` |
 > | История изменений | `workspace_record_decision` + `workspace_update_decision_effect` |
 > | Результаты по периодам | `workspace_save_analytics_snapshot` |
-> | Где сейчас | `workspace_get_context` |
-> | Что проверяем и когда | `workspace_add_tasks` |
+> | Где сейчас | `workspace_get_project` + campaign snapshots |
+> | Что проверяем и когда | `workspace_schedule_ai_task` |
 > | Бриф / документы | `workspace_save_document` |
 >
-> Старый файл импортируй разово через `workspace_import_legacy_markdown`. Структура ниже оставлена только как справочник — что именно фиксировать в Workspace.
+> Перед любой записью сначала используй `workspace_prepare_project_scope`, если `workspace_project_id` не известен. Структура ниже оставлена только как справочник — что именно фиксировать в Пространстве.
 
 # Кампания: [Название кампании] ([ID кампании])
 

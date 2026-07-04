@@ -1,71 +1,34 @@
-# Подключение direct-mcp к VS Code (GitHub Copilot)
+# Подключение LidFly MCP к VS Code
 
-## 1. Требования
+Подходит для GitHub Copilot Chat, Cline, Continue.dev и других расширений VS Code с MCP.
 
-- VS Code с расширением GitHub Copilot Chat
-- Copilot Chat должен поддерживать MCP (доступно в последних версиях)
+## Настройка
 
-## 2. Настройка MCP-сервера
-
-В корне проекта уже есть файл `.vscode/mcp.json`:
+Файл `.vscode/mcp.json`:
 
 ```json
 {
   "servers": {
     "lidfly": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://lidfly.ru/mcp/v3",
-        "--header",
-        "Authorization: Bearer YOUR_API_KEY"
-      ]
+      "type": "http",
+      "url": "https://lidfly.ru/mcp/v3"
     }
   }
 }
 ```
 
-Замените `YOUR_API_KEY` на ваш API-ключ из [личного кабинета direct-mcp](https://lidfly.ru).
+При первом запуске пройдите OAuth-вход по email, если расширение покажет кнопку `Authenticate` / `Connect`.
 
-> **Примечание:** VS Code использует stdio-транспорт через `mcp-remote` в качестве моста к HTTP MCP-серверу. Пакет `mcp-remote` устанавливается автоматически через `npx`.
+## Проверка
 
-## 3. Требования к окружению
+Откройте Agent chat и напишите:
 
-Убедитесь, что установлен Node.js (v18+):
-
-```bash
-node --version
-npx --version
+```text
+Покажи мои доступные Пространства и рекламные кабинеты.
 ```
 
-## 4. Открытие проекта
+Ожидаемый workflow: `get_provider_context` для scope, затем `search_tools` -> `get_tool_schema` -> `call_tool`.
 
-1. Откройте VS Code
-2. File → Open Folder → выберите папку проекта
-3. VS Code прочитает `.vscode/mcp.json` и запустит MCP-сервер
+## Legacy Fallback
 
-## 5. Проверка подключения
-
-1. Откройте Copilot Chat (Ctrl+Shift+I / Cmd+Shift+I)
-2. Переключитесь в режим Agent (иконка `@`)
-3. Напишите:
-
-```
-покажи мои кампании
-```
-
-Copilot должен обнаружить 6 meta-инструментов v3 и через них (`search_tools` → `call_tool`) показать ваши кампании.
-
-## 6. Устранение проблем
-
-| Проблема | Решение |
-|----------|---------|
-| MCP-сервер не виден | Перезагрузите окно: Ctrl+Shift+P → "Reload Window" |
-| `npx` не найден | Установите Node.js и перезапустите VS Code |
-| Ошибка авторизации | Проверьте API-ключ в `.vscode/mcp.json` |
-| Copilot не использует MCP | Убедитесь, что используете режим Agent, а не обычный чат |
-
-## 7. Инструкции для агента
-
-Copilot читает `CLAUDE.md` как контекст проекта. Ваши бизнес-настройки — в `PROJECTS.md`.
+Если конкретное расширение поддерживает только stdio MCP, используйте `mcp-remote` локально с Bearer header. Не коммитьте API-ключ и не меняйте основной `.vscode/mcp.json` без необходимости.

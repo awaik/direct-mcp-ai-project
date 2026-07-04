@@ -1,0 +1,7 @@
+name: "yandex-webmaster"
+description: "Use Yandex Webmaster tools through LidFly MCP v3 for SEO audits, host discovery, indexing, search queries, sitemap, recrawl, verification, feeds, Pro exports, and Workspace-scoped host access without client_login."
+version: 1
+interface:
+  display_name: "Yandex Webmaster"
+  short_description: "Use Yandex Webmaster tools through LidFly MCP v3 for SEO audi..."
+  default_prompt: "Используй $yandex-webmaster для безопасного workflow LidFly MCP v3."

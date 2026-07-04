@@ -1,0 +1,7 @@
+name: "human-editorial-polish"
+description: "Polish Russian marketing or technical text into a natural human editorial style while preserving facts, grammar, structure, and publication quality; replaces unsafe AI-marker removal and never adds intentional mistakes."
+version: 1
+interface:
+  display_name: "Human Editorial Polish"
+  short_description: "Polish Russian marketing or technical text into a natural hum..."
+  default_prompt: "Используй $human-editorial-polish для безопасного workflow LidFly MCP v3."

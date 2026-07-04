@@ -1,0 +1,7 @@
+name: "workspace-project-manager"
+description: "Manage LidFly Пространства with project-first Workspace memory: projects, provider entities, campaign links, documents, decisions, settings, snapshots, tasks, scheduled AI runs, and ambiguity-safe workspace_project_id scope."
+version: 1
+interface:
+  display_name: "Workspace Project Manager"
+  short_description: "Manage LidFly Пространства with project-first Workspace memor..."
+  default_prompt: "Используй $workspace-project-manager для безопасного workflow LidFly MCP v3."
