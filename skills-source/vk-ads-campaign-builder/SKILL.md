@@ -43,3 +43,7 @@ Use for VK Ads campaigns, ad groups, banners, lead forms, statistics, audiences,
 ## Workspace
 
 Save decisions, campaign snapshots, analytics summaries, and follow-up scheduled tasks only after resolving `workspace_project_id`.
+
+## Google Export
+
+When the user asks to export a VK Ads report to Google Sheets or Google Docs, keep this skill for account/campaign scope and report reads, then hand the verified Google write and reread to `$export-ad-reports`.

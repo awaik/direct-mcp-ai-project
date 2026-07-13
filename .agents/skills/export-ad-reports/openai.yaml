@@ -1,0 +1,7 @@
+name: "export-ad-reports"
+description: "Export advertising reports from Yandex Direct, Yandex Metrika, VK Ads, and Avito Ads through LidFly MCP v3 into connected Google Sheets, Google Docs, or Google Drive files, including verified tables and public creative images. Use when the user asks to export, save, append, or update advertising statistics in a Google file."
+version: 1
+interface:
+  display_name: "Export Ad Reports"
+  short_description: "Export advertising reports from Yandex Direct, Yandex Metrika..."
+  default_prompt: "Используй $export-ad-reports для безопасного workflow LidFly MCP v3."

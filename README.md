@@ -104,6 +104,10 @@ OAuth в браузере - основной путь для современн�
 Покажи кампании Авито Рекламы и риски по бюджету. Ничего не меняй.
 ```
 
+```text
+Выгрузи отчёт по кампании «Бренд Москва» за последние 30 дней в Google Sheets по ссылке <URL>: добавь расходы, показы, клики, конверсии и публичные креативы, затем перечитай диапазон и проверь формулы.
+```
+
 ## Skills
 
 Канонический источник skills лежит в `skills-source/`. Клиентские копии в `.codex/skills`, `.claude/skills`, `.agents/skills` и `.openclaw/skills` генерируются командой:
@@ -120,6 +124,7 @@ node scripts/sync-skills.mjs
 |---|---|
 | `mcp-v3-provider-context` | Provider scope, `get_provider_context`, `resolve_campaign_scope` |
 | `workspace-project-manager` | Пространства, project-first memory, tasks, scheduled AI |
+| `export-ad-reports` | Проверенная выгрузка отчётов и публичных креативов в Google Sheets и Google Docs |
 | `yandex-direct-campaign-builder` | Директ, Wordstat, Метрика, modern EPK/responsive workflow |
 | `vk-ads-campaign-builder` | VK Ads campaigns, groups, banners, statistics and guardrails |
 | `avito-ads` | Авито Реклама read/write workflows |

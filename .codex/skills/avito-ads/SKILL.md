@@ -43,3 +43,7 @@ Money/access/legal/destructive actions always require explicit intent.
 ## Workspace
 
 If a Пространство is selected or the account belongs to several projects, pass exact `workspace_project_id` and fail closed on ambiguity.
+
+## Google Export
+
+When the user asks to export an Avito Ads report to Google Sheets or Google Docs, keep this skill for account/campaign scope and report reads, then hand the verified Google write and reread to `$export-ad-reports`.

@@ -31,3 +31,7 @@ Use for counters, goals, traffic sources, UTM, Direct reports, CPA, conversion h
 ## Workspace
 
 Save analytics snapshots, documents, or decisions only with resolved `workspace_project_id`.
+
+## Google Export
+
+When the user asks to export a Metrika report to Google Sheets or Google Docs, keep this skill for counter scope and report reads, then hand the verified Google write and reread to `$export-ad-reports`.

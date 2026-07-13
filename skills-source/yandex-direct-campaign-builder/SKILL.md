@@ -53,3 +53,7 @@ Legacy `add_campaign`, `add_ad`, `add_ads` are compatibility-only for old text s
 ## Workspace
 
 After confirmed work, save decisions, documents, analytics, campaign snapshots, or follow-up tasks only with resolved `workspace_project_id`. Use `workspace_prepare_project_scope` if uncertain.
+
+## Google Export
+
+When the user asks to export a Direct report to Google Sheets or Google Docs, keep this skill for campaign scope and report reads, then hand the verified Google write and reread to `$export-ad-reports`.
