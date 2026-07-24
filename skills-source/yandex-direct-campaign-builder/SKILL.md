@@ -1,6 +1,6 @@
 ---
 name: yandex-direct-campaign-builder
-description: Build, audit, launch, and optimize Yandex Direct campaigns through LidFly MCP v3 with Wordstat, Metrika, provider context, resolve_campaign_scope, workspace_project_id, modern add_unified_campaign/add_responsive_ad workflows, and strict write guardrails.
+description: "Создавать, аудитить, запускать и оптимизировать кампании Яндекс Директа через LidFly MCP v3 с Wordstat, Метрикой и точным provider scope. Использовать для кампаний, групп, ключей, объявлений, ставок, бюджетов и статистики с современным ЕПК workflow."
 ---
 
 # Yandex Direct Campaign Builder
@@ -24,13 +24,13 @@ Use modern managed campaigns by default:
 
 ```text
 add_unified_campaign
--> add_adgroup/add_adgroups with adgroup_type: UNIFIED_AD_GROUP
--> add_keywords/add_keywords_batch
+-> add_adgroup with adgroup_type: UNIFIED_AD_GROUP
+-> add_keywords_batch
 -> add_responsive_ad
 -> manage_ads action: moderate only after explicit confirmation
 ```
 
-Legacy `add_campaign`, `add_ad`, `add_ads` are compatibility-only for old text scenarios. If used, say clearly that it is a legacy TEXT_AD path and reread actual ad `Type` after creation.
+`add_adgroups` creates multiple legacy `TEXT_AD_GROUP` groups and must not be used for `UNIFIED_AD_GROUP`. Legacy `add_campaign`, `add_adgroups`, `add_ad`, and `add_ads` are compatibility-only for old text scenarios. If used, say clearly that it is a legacy TEXT_AD path and reread actual ad `Type` after creation.
 
 ## Guardrails
 

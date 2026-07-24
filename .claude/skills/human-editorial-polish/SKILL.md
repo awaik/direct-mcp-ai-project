@@ -1,6 +1,6 @@
 ---
 name: human-editorial-polish
-description: Polish Russian marketing or technical text into a natural human editorial style while preserving facts, grammar, structure, and publication quality; replaces unsafe AI-marker removal and never adds intentional mistakes.
+description: "Редактировать русский маркетинговый или технический текст в естественном человеческом стиле, сохраняя факты, структуру, грамотность и качество публикации. Использовать, когда текст звучит шаблонно, перегруженно или AI-подобно."
 ---
 
 # Human Editorial Polish

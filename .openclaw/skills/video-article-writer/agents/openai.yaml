@@ -1,0 +1,12 @@
+interface:
+  display_name: "Статья из видео"
+  short_description: "SEO-статья из видео, аудио или транскрипта"
+  default_prompt: "Используй $video-article-writer, чтобы превратить этот медиафайл или транскрипт в большую SEO-статью."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для транскрипции, Wordstat и публикации"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

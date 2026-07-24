@@ -1,7 +1,0 @@
-name: "youtube-video-seo"
-description: "Prepare YouTube SEO packaging for a video or transcript: title, description, tags, chapters, hooks, Wordstat-informed search demand, and safe factual preservation."
-version: 1
-interface:
-  display_name: "Youtube Video Seo"
-  short_description: "Prepare YouTube SEO packaging for a video or transcript: titl..."
-  default_prompt: "Используй $youtube-video-seo для безопасного workflow LidFly MCP v3."

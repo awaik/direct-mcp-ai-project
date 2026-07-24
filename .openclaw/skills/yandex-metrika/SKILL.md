@@ -1,6 +1,6 @@
 ---
 name: yandex-metrika
-description: Analyze Yandex Metrika through LidFly MCP v3: counter discovery, goals, UTM reports, Direct attribution, CPA/conversions, period comparisons, Workspace provider entities, and counter_id scope without client_login.
+description: "Анализировать Яндекс Метрику через LidFly MCP v3: счётчики, цели, UTM, Директ, CPA, конверсии, страницы и сравнение периодов. Использовать для отчётов и диагностики с точным counter_id и без client_login."
 ---
 
 # Yandex Metrika

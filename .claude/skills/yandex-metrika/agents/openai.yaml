@@ -1,0 +1,12 @@
+interface:
+  display_name: "Яндекс Метрика"
+  short_description: "Отчёты и диагностика Яндекс Метрики"
+  default_prompt: "Используй $yandex-metrika, чтобы проверить цели, трафик, конверсии и динамику по нужному счётчику."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Яндекс Метрики"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

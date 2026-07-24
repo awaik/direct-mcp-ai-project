@@ -1,6 +1,6 @@
 ---
 name: workspace-project-manager
-description: Manage LidFly Пространства with project-first Workspace memory: projects, provider entities, campaign links, documents, decisions, settings, snapshots, tasks, scheduled AI runs, and ambiguity-safe workspace_project_id scope.
+description: "Управлять Пространствами LidFly и project-first памятью Workspace: проекты, provider entities, кампании, документы, решения, настройки, задачи и AI-автозапуски. Использовать для любой записи памяти или управления проектом с точным workspace_project_id."
 ---
 
 # Workspace Project Manager
@@ -26,18 +26,34 @@ Before writing audits, documents, decisions, snapshots, settings, provider links
 
 ## Tools To Prefer
 
+Find every internal Workspace tool with `search_tools({ provider: "workspace", ... })` and read its schema with `get_tool_schema` before the first call.
+
+Read through `call_tool`:
+
 - `workspace_list_projects`
 - `workspace_get_project`
-- `workspace_create_project`
 - `workspace_prepare_project_scope`
-- `workspace_upsert_provider_entity`
-- `workspace_link_campaign`
 - `workspace_get_settings`
-- `workspace_update_settings`
-- `workspace_schedule_ai_task`
+- `workspace_get_tasks`
 - `workspace_get_scheduled_ai_tasks`
 
-## Scheduled AI
+Write through `call_write_tool`:
+
+- `workspace_create_project`
+- `workspace_upsert_provider_entity`
+- `workspace_link_campaign`
+- `workspace_update_settings`
+- `workspace_add_tasks`
+- `workspace_schedule_ai_task`
+
+Never pass top-level meta-tools such as `search_tools` or `get_tool_schema` as `tool_name`.
+
+## Reminders vs AI Autostarts
+
+- `workspace_add_tasks` is a manual reminder: it stores a prompt and due date, but the due date only triggers email and never runs AI or provider tools.
+- If a future check must be shown to the owner, asks a question, or needs a new decision or confirmation, use `workspace_add_tasks`.
+- `workspace_schedule_ai_task` is an AI autostart: LidFly executes the saved plan automatically at the specified time without a new confirmation.
+- Objects, actions, values, and all conditional branches must be fully approved before using `workspace_schedule_ai_task`.
 
 For `workspace_schedule_ai_task`:
 
@@ -47,4 +63,4 @@ For `workspace_schedule_ai_task`:
 
 ## Output
 
-Return a short human summary: project selected, what was saved or scheduled, and what remains unconfirmed.
+Return a short human summary: project selected, which type was created, whether it runs automatically, what the user must do next, and what remains unconfirmed.

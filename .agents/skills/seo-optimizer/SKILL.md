@@ -1,6 +1,6 @@
 ---
 name: seo-optimizer
-description: Audit and optimize pages for SEO/GEO visibility with Yandex/Google intent, Wordstat where useful, Webmaster signals, content structure, metadata, internal links, and Workspace-scoped recommendations.
+description: "Проводить SEO/GEO-аудит и оптимизацию страницы или сайта: интент, Wordstat, Вебмастер, метаданные, структура контента, перелинковка и конверсия. Использовать для аудита URL, плана улучшений или проверки видимости в поиске и AI-ответах."
 ---
 
 # SEO Optimizer
@@ -15,6 +15,8 @@ Use for SEO audits, GEO/AI-search visibility, page optimization, metadata, inter
 4. Inspect page content and search intent.
 5. Produce prioritized fixes: technical blockers, intent gaps, title/meta/H1, headings, content, internal links, conversion elements.
 6. Save the audit only with resolved `workspace_project_id`.
+
+Read `references/audit-checklist.md` before producing the final priority list. If the page content cannot be opened through an available browser, connector, or supplied file, ask for the text/HTML and do not pretend to have inspected the page.
 
 ## Rules
 

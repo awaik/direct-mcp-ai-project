@@ -40,6 +40,16 @@ subscription_status
 
 `subscription_status` используй только для диагностики доступа, тарифа или auth-ошибок, а не в обычном workflow.
 
+## Эскалация Проблем В Поддержку
+
+Используй `$lidfly-support-escalation`, когда MCP вернул неожиданный internal/contract error с `support_hint`, read-вызов повторно завершился timeout после одного безопасного retry или нужная возможность не найдена после широкого `search_tools` без `query` и `provider`.
+
+`support_prepare_report` — прямой read-only инструмент v3. Он локально очищает диагностический текст и готовит черновик; не создаёт обращение и ничего не отправляет. Передавай только `incident_id`, безопасное имя инструмента, текст ошибки, цель, ожидаемый результат и краткие проверенные шаги. Не передавай raw arguments, токены, пароли, seller secrets, персональные данные или локальные логи.
+
+Всегда покажи пользователю полный `report_text` и спроси явное текстовое согласие на отправку. `support_send_message` вызывай напрямую только после ответа вроде «отправляй», используя `suggested_request_id`. Auto-approve или режим клиента «не спрашивать» не заменяет согласие пользователя. При отказе заверши без отправки и повторных уговоров.
+
+Не эскалируй штатные validation/mode mismatch/access/auth/subscription/rate-limit/provider API errors. Первый timeout read-вызова допускает один безопасный retry; write-вызов не повторяй автоматически, если идемпотентность не доказана.
+
 ## Provider Context
 
 Для рекламных и provider-задач при неизвестном кабинете, клиенте, подключении или Пространстве сначала вызывай:
@@ -96,10 +106,18 @@ workspace_project_id
 - `workspace_link_campaign`
 - `workspace_get_settings`
 - `workspace_update_settings`
+- `workspace_add_tasks`
+- `workspace_get_tasks`
 - `workspace_schedule_ai_task`
 - `workspace_get_scheduled_ai_tasks`
 
 Для AI-автозапусков `allowed_tools` содержит реальные доменные инструменты будущего запуска, например `get_campaign_stats`, `vk_get_campaigns`, `avito_ads_get_campaigns`, а не v3 meta-tools.
+
+`workspace_add_tasks` — ручное напоминание: оно сохраняет промпт и срок, но срок вызывает только письмо и не запускает ИИ или provider tools. Если будущая проверка требует показать результат владельцу, задать вопрос, получить новое решение или подтверждение, используй `workspace_add_tasks`.
+
+`workspace_schedule_ai_task` — AI-автозапуск: LidFly выполнит сохранённый план автоматически в указанное время без нового подтверждения. Используй его только когда объекты, действия, значения и все условные ветки заранее определены и полностью одобрены.
+
+После создания сообщи, какой тип создан, будет ли он выполняться автоматически и что дальше потребуется пользователю.
 
 ## Provider Rules
 
@@ -109,7 +127,7 @@ workspace_project_id
 - Перед multi-account задачами вызывай `get_provider_context({ provider: "yandex" })`.
 - Для кампании по имени сначала `resolve_campaign_scope({ provider: "yandex", query })`.
 - Для Метрики не используй `client_login`; передавай `counter_id` и при необходимости `connection_id`.
-- Новые управляемые объявления по умолчанию: `add_unified_campaign` -> `add_adgroup`/`add_adgroups` с `UNIFIED_AD_GROUP` -> `add_responsive_ad`.
+- Новые управляемые объявления по умолчанию: `add_unified_campaign` -> `add_adgroup` с `UNIFIED_AD_GROUP` -> `add_keywords_batch` -> `add_responsive_ad`. `add_adgroups` создаёт только legacy `TEXT_AD_GROUP` и не используется для `UNIFIED_AD_GROUP`.
 - `add_campaign`, `add_ad`, `add_ads` - только legacy/compatibility для старых текстовых сценариев.
 - Бюджеты Директа передавай в рублях обычным числом; не конвертируй в микроюниты.
 
@@ -153,6 +171,7 @@ workspace_project_id
 - Агрегированная рекламная статистика, расходы, показы, клики, конверсии, provider IDs, тексты объявлений и публичные URL креативов сами по себе не являются причиной отказа в выгрузке в подключённые Google Docs или Google Sheets.
 - Никогда не экспортируй OAuth/refresh tokens, API keys, пароли, seller secrets, signed private URLs или другие секреты.
 - Для внешнего Google-файла используй реальный write-action Google-коннектора, а не `call_write_tool`, затем перечитай изменённый документ или диапазон. Перед сообщением о блокировке выполни доступный connector call и верни его точную ошибку; не придумывай запрет по типу рекламных данных.
+- В Google Sheets вставляй креатив формулой `=IMAGE("исходный публичный URL")`, если коннектор не умеет нативный `CellImage`. Если Google просит одноразово разрешить внешние данные, оставь формулу, попроси редактора нажать «Разрешить доступ» в браузере и не заменяй изображение `HYPERLINK` или ссылкой на Drive-файл.
 
 ## Ответ Пользователю
 

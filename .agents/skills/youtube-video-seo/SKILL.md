@@ -1,6 +1,6 @@
 ---
 name: youtube-video-seo
-description: Prepare YouTube SEO packaging for a video or transcript: title, description, tags, chapters, hooks, Wordstat-informed search demand, and safe factual preservation.
+description: "Готовить YouTube SEO-обвязку для видео, аудио или транскрипта: названия, описание, теги, главы, закреплённый комментарий и идеи обложки с проверкой спроса. Использовать для видеофайлов .mov/.mp4/.mkv/.webm/.avi и готовых расшифровок."
 ---
 
 # YouTube Video SEO
@@ -9,11 +9,12 @@ Use when the user asks for YouTube title, description, tags, chapters, transcrip
 
 ## Workflow
 
-1. Read or transcribe the source.
-2. Extract topic, audience, promise, and factual limits.
-3. Use Wordstat/search demand when useful.
-4. Draft 3-5 title options, description, tags, chapters, pinned comment, and thumbnail text ideas.
-5. Keep claims faithful to the source and `LEGAL.md`.
+1. Read `references/output-contract.md`.
+2. Read or transcribe the source. For a local media file, follow the same LidFly upload/transcription sequence as `video-article-writer`; never invent a transcript or timestamps.
+3. Extract topic, audience, promise, and factual limits.
+4. Use Wordstat/search demand when useful.
+5. Draft 3-5 title options, description, tags, chapters, pinned comment, and thumbnail text ideas.
+6. Keep claims faithful to the source and `LEGAL.md`.
 
 ## Output
 

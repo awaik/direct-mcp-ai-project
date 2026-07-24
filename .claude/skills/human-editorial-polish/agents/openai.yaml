@@ -1,0 +1,4 @@
+interface:
+  display_name: "Естественная редактура"
+  short_description: "Естественная редактура русского текста"
+  default_prompt: "Используй $human-editorial-polish, чтобы сделать этот текст естественнее, сохранив факты и грамотность."

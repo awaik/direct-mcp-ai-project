@@ -1,6 +1,6 @@
 ---
 name: semantic-core
-description: Build a semantic core for SEO or ads using Wordstat Search API, clustering, minus words, intent classification, site structure, campaign structure, and Workspace project documentation.
+description: "Собирать семантическое ядро для SEO или рекламы через Wordstat: интенты, кластеризация, минус-слова, структура страниц и кампаний. Использовать для нового ядра, группировки запросов или проектирования поискового спроса."
 ---
 
 # Semantic Core
@@ -33,6 +33,12 @@ Ask only for missing essentials:
 5. Cluster by user intent, not only lexical similarity.
 6. Produce SEO page structure and/or ad group structure.
 7. Save a document through Workspace only after project scope is resolved.
+
+Before clustering or formatting the final result, read the relevant bundled references:
+
+- `references/clustering-rules.md` for cluster and campaign boundaries;
+- `references/intent-and-minus-words.md` for intent and negative-keyword decisions;
+- `references/output-format.md` for the deliverable structure.
 
 ## Output
 

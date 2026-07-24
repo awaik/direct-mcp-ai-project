@@ -110,19 +110,20 @@ OAuth в браузере - основной путь для современн�
 
 ## Skills
 
-Канонический источник skills лежит в `skills-source/`. Клиентские копии в `.codex/skills`, `.claude/skills`, `.agents/skills` и `.openclaw/skills` генерируются командой:
+Канонический источник skills лежит в `skills-source/`. Клиентские копии в `.agents/skills` (актуальный Codex), `.codex/skills` (legacy compatibility), `.claude/skills` и `.openclaw/skills` генерируются командой:
 
 ```bash
 node scripts/sync-skills.mjs
 ```
 
-Правьте только `skills-source/<skill>/SKILL.md`, затем запускайте sync. Для Codex копии получают `openai.yaml` автоматически.
+Правьте только `skills-source/<skill>/`, затем запускайте sync. Каждый skill хранит основной файл `SKILL.md` и Codex metadata в `agents/openai.yaml`. Генератор работает недеструктивно, отказывается перезаписывать расходящиеся клиентские копии и удаляет только известные legacy-файлы собственного старого формата.
 
 Ключевые skills:
 
 | Skill | Задача |
 |---|---|
 | `mcp-v3-provider-context` | Provider scope, `get_provider_context`, `resolve_campaign_scope` |
+| `lidfly-support-escalation` | Диагностика MCP, очищенный черновик и отправка только после согласия |
 | `workspace-project-manager` | Пространства, project-first memory, tasks, scheduled AI |
 | `export-ad-reports` | Проверенная выгрузка отчётов и публичных креативов в Google Sheets и Google Docs |
 | `yandex-direct-campaign-builder` | Директ, Wordstat, Метрика, modern EPK/responsive workflow |

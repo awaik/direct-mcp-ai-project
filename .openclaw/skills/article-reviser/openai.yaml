@@ -1,7 +1,0 @@
-name: "article-reviser"
-description: "Perform an independent editorial revision of a completed article: intent fit, usefulness, SEO/GEO, internal links, human technical-professional voice, no AI cliches, no invented product facts, and a concise review report."
-version: 1
-interface:
-  display_name: "Article Reviser"
-  short_description: "Perform an independent editorial revision of a completed arti..."
-  default_prompt: "Используй $article-reviser для безопасного workflow LidFly MCP v3."

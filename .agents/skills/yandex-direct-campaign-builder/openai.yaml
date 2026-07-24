@@ -1,7 +1,0 @@
-name: "yandex-direct-campaign-builder"
-description: "Build, audit, launch, and optimize Yandex Direct campaigns through LidFly MCP v3 with Wordstat, Metrika, provider context, resolve_campaign_scope, workspace_project_id, modern add_unified_campaign/add_responsive_ad workflows, and strict write guardrails."
-version: 1
-interface:
-  display_name: "Yandex Direct Campaign Builder"
-  short_description: "Build, audit, launch, and optimize Yandex Direct campaigns th..."
-  default_prompt: "Используй $yandex-direct-campaign-builder для безопасного workflow LidFly MCP v3."

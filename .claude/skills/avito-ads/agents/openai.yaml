@@ -1,0 +1,12 @@
+interface:
+  display_name: "Авито Реклама"
+  short_description: "Аудит и управление рекламой на Авито"
+  default_prompt: "Используй $avito-ads, чтобы безопасно проверить или изменить мой кабинет Авито Рекламы."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Авито Рекламы"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

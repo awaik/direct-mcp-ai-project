@@ -1,0 +1,12 @@
+interface:
+  display_name: "Сайты и Commerce LidFly"
+  short_description: "Сайты, магазины и Commerce в LidFly"
+  default_prompt: "Используй $lidfly-site-commerce, чтобы безопасно проверить или изменить мой сайт либо магазин LidFly."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для сайтов и Commerce"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

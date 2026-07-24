@@ -7,7 +7,8 @@
 > | История изменений | `workspace_record_decision` + `workspace_update_decision_effect` |
 > | Результаты по периодам | `workspace_save_analytics_snapshot` |
 > | Где сейчас | `workspace_get_project` + campaign snapshots |
-> | Что проверяем и когда | `workspace_schedule_ai_task` |
+> | Будущая проверка, после которой нужно решение | `workspace_add_tasks` |
+> | Заранее одобренное автоматическое действие | `workspace_schedule_ai_task` |
 > | Бриф / документы | `workspace_save_document` |
 >
 > Перед любой записью сначала используй `workspace_prepare_project_scope`, если `workspace_project_id` не известен. Структура ниже оставлена только как справочник — что именно фиксировать в Пространстве.

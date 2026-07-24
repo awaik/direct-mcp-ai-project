@@ -1,6 +1,6 @@
 ---
 name: demand-research
-description: Research search demand through LidFly Wordstat Search API, seasonality, missed demand, intent, cannibalization, and Workspace-scoped documents without Yandex Direct client_login or connection_id.
+description: "Исследовать поисковый спрос через LidFly Wordstat: сезонность, упущенный спрос, интент, регионы и каннибализация. Использовать для проверки спроса и подготовки рекомендаций без client_login или connection_id Директа."
 ---
 
 # Demand Research

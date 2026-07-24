@@ -1,6 +1,6 @@
 ---
 name: article-reviser
-description: Perform an independent editorial revision of a completed article: intent fit, usefulness, SEO/GEO, internal links, human technical-professional voice, no AI cliches, no invented product facts, and a concise review report.
+description: "Проверять и усиливать готовую статью: интент, польза, SEO/GEO, перелинковка, живой техно-профессиональный голос, честность фактов и краткий отчёт. Использовать для редакторского прохода по завершённой статье или HTML-файлу."
 ---
 
 # Article Reviser

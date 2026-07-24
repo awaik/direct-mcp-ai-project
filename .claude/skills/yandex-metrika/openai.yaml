@@ -1,7 +1,0 @@
-name: "yandex-metrika"
-description: "Analyze Yandex Metrika through LidFly MCP v3: counter discovery, goals, UTM reports, Direct attribution, CPA/conversions, period comparisons, Workspace provider entities, and counter_id scope without client_login."
-version: 1
-interface:
-  display_name: "Yandex Metrika"
-  short_description: "Analyze Yandex Metrika through LidFly MCP v3: counter discove..."
-  default_prompt: "Используй $yandex-metrika для безопасного workflow LidFly MCP v3."

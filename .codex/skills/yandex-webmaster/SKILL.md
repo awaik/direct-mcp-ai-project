@@ -1,6 +1,6 @@
 ---
 name: yandex-webmaster
-description: Use Yandex Webmaster tools through LidFly MCP v3 for SEO audits, host discovery, indexing, search queries, sitemap, recrawl, verification, feeds, Pro exports, and Workspace-scoped host access without client_login.
+description: "Работать с Яндекс Вебмастером через LidFly MCP v3: сайты, диагностика, индексация, запросы, позиции, sitemap, переобход, подтверждение, feeds и Pro exports. Использовать для SEO-проверок и операций с точным host_id без client_login."
 ---
 
 # Yandex Webmaster

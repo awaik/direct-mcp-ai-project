@@ -1,6 +1,6 @@
 ---
 name: video-article-writer
-description: Turn a video or transcript into a long SEO article: transcription through LidFly when needed, style/resource intake, semantic-core, editorial article, human polish, article-reviser, SEO fields, and confirmed cover prompt.
+description: "Превращать видео, аудио или транскрипт в большую SEO-статью: распознавание через LidFly, семантика, редактура, SEO-поля и согласованная обложка. Использовать, когда пользователь даёт медиафайл или расшифровку и просит статью, лонгрид или материал блога."
 ---
 
 # Video Article Writer
@@ -11,7 +11,7 @@ Use when the user gives a video/audio file or transcript and asks for an article
 
 1. Ask for publication resource, style from `.styles/` or custom style, and mode of presentation.
 2. Create one run folder under `RESULTS/<basename>-<YYYYMMDD-HHMMSS>/`.
-3. Extract/transcribe audio through LidFly tools if needed.
+3. Read `references/transcription-workflow.md`, then extract/transcribe audio through LidFly tools if needed.
 4. Save transcript and brief in the run folder.
 5. Build semantic core for the article, not an ad campaign.
 6. Write an article that preserves source meaning and marks unverifiable claims.

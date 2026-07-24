@@ -1,7 +1,0 @@
-name: "semantic-core"
-description: "Build a semantic core for SEO or ads using Wordstat Search API, clustering, minus words, intent classification, site structure, campaign structure, and Workspace project documentation."
-version: 1
-interface:
-  display_name: "Semantic Core"
-  short_description: "Build a semantic core for SEO or ads using Wordstat Search AP..."
-  default_prompt: "Используй $semantic-core для безопасного workflow LidFly MCP v3."

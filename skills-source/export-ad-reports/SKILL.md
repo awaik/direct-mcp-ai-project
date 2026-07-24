@@ -1,6 +1,6 @@
 ---
 name: export-ad-reports
-description: Export advertising reports from Yandex Direct, Yandex Metrika, VK Ads, and Avito Ads through LidFly MCP v3 into connected Google Sheets, Google Docs, or Google Drive files, including verified tables and public creative images. Use when the user asks to export, save, append, or update advertising statistics in a Google file.
+description: "Выгружать отчёты Яндекс Директа, Метрики, VK Ads и Авито Рекламы через LidFly MCP v3 в подключённые Google Sheets или Google Docs с проверкой таблиц и публичных креативов. Использовать по запросам выгрузить, сохранить, дополнить или обновить статистику в Google-файле."
 ---
 
 # Export Ad Reports
@@ -27,11 +27,14 @@ Use this skill as the handoff between a provider skill, LidFly MCP v3 read calls
 ## Google Sheets
 
 - Write explicit headers and data rows, then reread the exact changed range.
-- Insert a public creative with the single-argument formula `=IMAGE("URL")` by default.
+- If the connector exposes a native in-cell image or `CellImage` write action, prefer it and verify the resulting image value. The ordinary Google Sheets REST value/batch-update surface usually exposes formulas but not native `CellImage` creation.
+- Otherwise insert a public creative with the single-argument formula `=IMAGE("URL")`, using the original public URL from the provider response. Do not upload the creative to Drive for this formula: `IMAGE` does not support URLs hosted at `drive.google.com`.
 - Adjust image display size through row height and column width.
 - Use a multi-argument formula only when cell sizing cannot meet the request. For a Russian-locale sheet use semicolons, for example `=IMAGE("URL";4;120;120)`.
 - Inspect reread values for `#ERROR!`, `#N/A`, `#REF!`, `#VALUE!`, and any other formula error.
-- If an image cell returns `#ERROR!`, replace it with `=IMAGE("URL")` and reread that cell. If it or any other cell still contains an error, list every affected cell address and do not declare the export successful.
+- If an image cell returns a syntax error, replace it with the single-argument `=IMAGE("URL")` and reread that cell.
+- If readback returns `#REF!`, another external-data access error, or the sheet displays an access banner, leave the `=IMAGE(...)` formula in the target cell. Ask an editor to open the spreadsheet in a desktop browser and click `Allow access` / «Разрешить доступ» once for that spreadsheet. After the user confirms, reread the image cells and continue verification.
+- Never replace an intended image with `HYPERLINK`, plain link text, or a link to an uploaded Drive file. A clickable link is not an image in the cell; if access remains unconfirmed, report the exact affected cells as pending instead of claiming a completed export.
 - Declare a table successful only after the expected rows are present and the changed range contains no unresolved formula errors.
 
 ## Google Docs
@@ -54,7 +57,8 @@ Treat these as required outcome branches:
 - Successful Sheet: write, reread the target range, verify row count and zero formula errors.
 - Docs image: insert and verify a real inline image.
 - Russian locale: use `;` only for a necessary multi-argument `IMAGE` formula.
-- Image `#ERROR!`: downgrade to single-argument `IMAGE`, reread, and report failure if unresolved.
+- Image syntax error: downgrade to single-argument `IMAGE` and reread.
+- External-data access prompt: leave `IMAGE` in place, request one-time «Разрешить доступ», and resume verification after confirmation; never fall back to a link.
 - No write actions: recommend write enablement, OAuth reconnect, or permission review.
 - OAuth/permission error: return the exact connector error without claiming success.
 - Ambiguous target: stop before writing and request the exact file ID or URL.

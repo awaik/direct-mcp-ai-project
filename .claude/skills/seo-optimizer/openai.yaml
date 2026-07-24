@@ -1,7 +1,0 @@
-name: "seo-optimizer"
-description: "Audit and optimize pages for SEO/GEO visibility with Yandex/Google intent, Wordstat where useful, Webmaster signals, content structure, metadata, internal links, and Workspace-scoped recommendations."
-version: 1
-interface:
-  display_name: "Seo Optimizer"
-  short_description: "Audit and optimize pages for SEO/GEO visibility with Yandex/G..."
-  default_prompt: "Используй $seo-optimizer для безопасного workflow LidFly MCP v3."

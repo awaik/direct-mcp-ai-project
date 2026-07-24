@@ -1,0 +1,20 @@
+name: Validate skills
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/test-skills.mjs
+      - run: node scripts/test-export-ad-reports.mjs
+      - run: node scripts/test-workspace-project-manager.mjs

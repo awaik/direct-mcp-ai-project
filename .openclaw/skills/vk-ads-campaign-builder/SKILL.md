@@ -1,6 +1,6 @@
 ---
 name: vk-ads-campaign-builder
-description: Build, audit, and optimize VK Ads campaigns through LidFly MCP v3 with connection_id/client_id provider context, manual VK user-filter limits, campaign scope resolution, creative preflight, statistics, and safe write workflows.
+description: "Создавать, аудитить и оптимизировать кампании VK Ads через LidFly MCP v3: connection_id/client_id, группы, объявления, лид-формы, аудитории, статистика и бюджеты. Использовать для работы с VK Рекламой с безопасным scope и write workflow."
 ---
 
 # VK Ads Campaign Builder

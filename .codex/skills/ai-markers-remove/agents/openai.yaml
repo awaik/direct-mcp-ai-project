@@ -1,0 +1,7 @@
+interface:
+  display_name: "AI-маркеры: безопасная редактура"
+  short_description: "Безопасная редактура без обхода детекторов"
+  default_prompt: "Используй $ai-markers-remove, чтобы безопасно отредактировать этот текст без искусственных ошибок и обхода детекторов."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,6 +1,6 @@
 ---
 name: mcp-v3-provider-context
-description: Use for LidFly MCP v3 provider scope resolution: get_provider_context, resolve_campaign_scope, multi-account Yandex/VK/Avito/LidFly workflows, campaign lookup by name, and safe transfer of scope_arguments into call_tool/call_write_tool.
+description: "Разрешать provider scope в LidFly MCP v3 через get_provider_context и resolve_campaign_scope. Использовать вместе с provider-скиллом, когда кабинет, подключение, кампания или workspace_project_id не заданы точно либо пользователь называет объект по имени."
 ---
 
 # MCP v3 Provider Context
@@ -9,13 +9,15 @@ Use this helper before any provider task where the account, client, connection, 
 
 ## Required Sequence
 
-1. Find tools with `search_tools`.
-2. Read schemas with `get_tool_schema` before the first call.
-3. Resolve provider scope:
+1. Resolve provider scope with the top-level meta-tools:
    - account/client/project unknown: `get_provider_context({ provider, query? })`;
    - campaign named by user: `resolve_campaign_scope({ provider, query, workspace_project_id? })`.
-4. Copy only returned `tool_args`, `scope_arguments`, or `next_call.arguments` into the next provider call.
+2. Find internal provider tools with `search_tools`, passing resolved provider/project scope when supported.
+3. Read each internal tool schema with `get_tool_schema` before its first call.
+4. Copy only returned `tool_args`, `scope_arguments`, or `next_call.arguments` into the internal provider call.
 5. Read with `call_tool`; write with `call_write_tool`.
+
+Call `search_tools`, `get_tool_schema`, `get_provider_context`, and `resolve_campaign_scope` directly. Never pass these top-level meta-tools as `tool_name` to `call_tool` or `call_write_tool`.
 
 ## Scope Rules
 

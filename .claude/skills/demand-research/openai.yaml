@@ -1,7 +1,0 @@
-name: "demand-research"
-description: "Research search demand through LidFly Wordstat Search API, seasonality, missed demand, intent, cannibalization, and Workspace-scoped documents without Yandex Direct client_login or connection_id."
-version: 1
-interface:
-  display_name: "Demand Research"
-  short_description: "Research search demand through LidFly Wordstat Search API, se..."
-  default_prompt: "Используй $demand-research для безопасного workflow LidFly MCP v3."

@@ -1,0 +1,12 @@
+interface:
+  display_name: "Provider scope LidFly"
+  short_description: "Безопасный выбор provider и campaign scope"
+  default_prompt: "Используй $mcp-v3-provider-context, чтобы найти точный кабинет, проект и кампанию перед вызовом provider tools."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 meta-layer"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

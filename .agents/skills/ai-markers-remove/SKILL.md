@@ -1,6 +1,6 @@
 ---
 name: ai-markers-remove
-description: Legacy alias for safe human editorial polish of AI-like text; use to remove generic AI cliches without bypass tactics, artificial typos, factual drift, or grammar degradation.
+description: "Legacy-алиас безопасной редакторской полировки AI-подобного текста без обхода детекторов, искусственных ошибок и искажения фактов. Использовать только при явном вызове $ai-markers-remove; для обычной редактуры использовать human-editorial-polish."
 ---
 
 # AI Markers Remove (Safe Alias)

@@ -1,0 +1,12 @@
+interface:
+  display_name: "Кампании VK Ads"
+  short_description: "Создание, аудит и оптимизация VK Ads"
+  default_prompt: "Используй $vk-ads-campaign-builder, чтобы безопасно проверить, создать или оптимизировать кампанию VK Ads."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для VK Ads"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

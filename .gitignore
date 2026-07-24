@@ -3,7 +3,6 @@ tokens.env
 .env.*
 !.env.example
 .cache/
-data/serp-history/
 .DS_Store
 __pycache__/
 *.pyc

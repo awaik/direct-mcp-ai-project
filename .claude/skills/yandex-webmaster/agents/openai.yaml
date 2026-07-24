@@ -1,0 +1,12 @@
+interface:
+  display_name: "Яндекс Вебмастер"
+  short_description: "SEO-данные и операции Яндекс Вебмастера"
+  default_prompt: "Используй $yandex-webmaster, чтобы проверить индексацию, запросы, позиции, sitemap и проблемы сайта."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Яндекс Вебмастера"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

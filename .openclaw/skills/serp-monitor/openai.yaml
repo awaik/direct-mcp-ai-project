@@ -1,7 +1,0 @@
-name: "serp-monitor"
-description: "Monitor Yandex SERP positions, competitors, snippets, ads blocks, and dynamics with explicit region/query scope, read-only checks, and Workspace-scoped reports."
-version: 1
-interface:
-  display_name: "Serp Monitor"
-  short_description: "Monitor Yandex SERP positions, competitors, snippets, ads blo..."
-  default_prompt: "Используй $serp-monitor для безопасного workflow LidFly MCP v3."

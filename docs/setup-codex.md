@@ -1,8 +1,38 @@
-# Подключение LidFly MCP к OpenAI Codex
+# Подключение LidFly к OpenAI Codex
 
-Codex CLI, приложение Codex и расширение Codex в VS Code используют `.codex/config.toml`.
+Основной desktop-путь — MCP-only плагин LidFly через персональный marketplace Codex. Плагин подключает `https://lidfly.ru/mcp/v3`; OAuth-токены остаются под управлением Codex, API-ключ вручную копировать не нужно.
 
-## Настройка
+## Приложение Codex без терминала
+
+1. Откройте на компьютере инструкцию LidFly и скачайте подписанный установщик для macOS или Windows:
+   - `https://lidfly.ru/downloads/codex-plugin/macos-universal.dmg`
+   - `https://lidfly.ru/downloads/codex-plugin/windows-x64-setup.exe`
+2. Нажмите «Установить». Установщик добавит только локальный marketplace LidFly и откроет карточку плагина в Codex.
+3. В Codex нажмите **Install** и пройдите OAuth LidFly по email.
+4. Полностью перезапустите Codex и откройте новый чат.
+
+Установщик не изменяет внутренний cache, installed-state или OAuth-хранилище Codex. Если политика организации запрещает персональные marketplaces, обратитесь к администратору Workspace: установщик не обходит managed requirements.
+
+В плагин v1 не входят skills, prompts или локальные API-ключи. Их source of truth остаётся в этом AI-проекте.
+
+Для проектной установки актуальный Codex обнаруживает skills в `.agents/skills/<name>/SKILL.md`. Каталог `.codex/skills` в шаблоне сохранён только для совместимости со старыми клиентами. UI-метаданные каждого skill лежат в `<skill>/agents/openai.yaml`.
+
+## Codex CLI и Linux
+
+```bash
+codex plugin marketplace add awaik/lidfly-plugins
+codex plugin add lidfly@lidfly
+```
+
+После установки пройдите OAuth в Codex, полностью перезапустите клиент и откройте новый чат. Проверка:
+
+```bash
+codex plugin list --json
+```
+
+## Ручной MCP fallback
+
+Если плагин недоступен, Codex CLI, приложение Codex и расширение Codex в VS Code можно подключить напрямую через `.codex/config.toml`.
 
 Создайте или проверьте файл `.codex/config.toml` в корне проекта:
 
@@ -13,7 +43,7 @@ startup_timeout_sec = 45
 tool_timeout_sec = 120
 ```
 
-Не используйте проектный Codex JSON-конфиг и не смешивайте `command`/`args` с `url` в одном сервере. Старый путь через `npx mcp-remote` нужен только как fallback для старых версий клиента без remote HTTP MCP.
+Не используйте проектный Codex JSON-конфиг и не смешивайте `command`/`args` с `url` в одном сервере. Установщик не удаляет и не изменяет прежние custom MCP записи: после проверки плагина отключите дублирующий сервер вручную.
 
 ## Авторизация
 
@@ -47,7 +77,7 @@ codex mcp list
 
 Ожидаемо: Codex видит v3 meta-layer, начинает с `get_provider_context` для provider scope и не вызывает provider tools напрямую.
 
-## Legacy Fallback
+## Legacy Bearer fallback
 
 Если клиент не поддерживает remote MCP OAuth, используйте ручной Bearer header только локально и не коммитьте его:
 

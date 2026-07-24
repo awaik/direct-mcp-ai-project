@@ -1,7 +1,0 @@
-name: "vk-ads-campaign-builder"
-description: "Build, audit, and optimize VK Ads campaigns through LidFly MCP v3 with connection_id/client_id provider context, manual VK user-filter limits, campaign scope resolution, creative preflight, statistics, and safe write workflows."
-version: 1
-interface:
-  display_name: "Vk Ads Campaign Builder"
-  short_description: "Build, audit, and optimize VK Ads campaigns through LidFly MC..."
-  default_prompt: "Используй $vk-ads-campaign-builder для безопасного workflow LidFly MCP v3."

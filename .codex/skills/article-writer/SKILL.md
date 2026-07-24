@@ -1,6 +1,6 @@
 ---
 name: article-writer
-description: Write SEO/GEO articles for LidFly or a file with Wordstat-informed semantics, editorial drafting, cover prompt confirmation, human editorial polish, article-reviser pass, and Workspace-safe publishing notes.
+description: "Писать SEO/GEO-статьи и материалы блога с семантикой Wordstat, редакторской полировкой, финальным ревью и безопасной публикацией. Использовать для новой статьи, поста, контентного лендинга или публикационного черновика."
 ---
 
 # Article Writer

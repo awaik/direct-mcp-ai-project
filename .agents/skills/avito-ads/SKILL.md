@@ -1,6 +1,6 @@
 ---
 name: avito-ads
-description: Work with Avito Ads through LidFly MCP v3: account discovery, campaigns, groups, budgets, statistics, agency/access/legal operations, 9-digit account_id validation, and read-preflight-write-reread guardrails.
+description: "Работать с Авито Рекламой через LidFly MCP v3: кабинеты, кампании, группы, бюджеты, статистика, доступы и юридические операции. Использовать для аудита или управления Avito Ads с проверкой 9-значного account_id и безопасным write workflow."
 ---
 
 # Avito Ads

@@ -1,7 +1,0 @@
-name: "article-writer"
-description: "Write SEO/GEO articles for LidFly or a file with Wordstat-informed semantics, editorial drafting, cover prompt confirmation, human editorial polish, article-reviser pass, and Workspace-safe publishing notes."
-version: 1
-interface:
-  display_name: "Article Writer"
-  short_description: "Write SEO/GEO articles for LidFly or a file with Wordstat-inf..."
-  default_prompt: "Используй $article-writer для безопасного workflow LidFly MCP v3."

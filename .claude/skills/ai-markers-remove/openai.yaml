@@ -1,7 +1,0 @@
-name: "ai-markers-remove"
-description: "Legacy alias for safe human editorial polish of AI-like text; use to remove generic AI cliches without bypass tactics, artificial typos, factual drift, or grammar degradation."
-version: 1
-interface:
-  display_name: "Ai Markers Remove"
-  short_description: "Legacy alias for safe human editorial polish of AI-like text;..."
-  default_prompt: "Используй $ai-markers-remove для безопасного workflow LidFly MCP v3."

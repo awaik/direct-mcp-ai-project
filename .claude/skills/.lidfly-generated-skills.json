@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "skills": {
+    "ai-markers-remove": {
+      "SKILL.md": "2116fa1472e31658fc5c9c7b27c825db098a4c745cd03d3822bbc0641e567052",
+      "agents/openai.yaml": "56c74e0b1cdba8ecf74171f9bbcd78970c8722a09e94472cef14afbe473dd2ba"
+    },
+    "article-reviser": {
+      "SKILL.md": "f3af3e42496dd35912292fdd882b7bd955c24c7d58cbfa887bf25d91cb1899e3",
+      "agents/openai.yaml": "306fe19a7514ec9c8ea051f900c37530a9041e6d7b79748c226a3b533334cbe6"
+    },
+    "article-writer": {
+      "SKILL.md": "00a67c89735804cda0f41bbc9d5c26f8e7c8b24cdd028bbf2f8ae6c0f86faed2",
+      "agents/openai.yaml": "147f0ded057b6f55d3ef72bcb580f93283a4ac64980df8f17a3ca642105b0685"
+    },
+    "avito-ads": {
+      "SKILL.md": "b0de76241e737396469036521c56a2496eed67a8b631257d5fa20f73d72ca758",
+      "agents/openai.yaml": "2e20daa9bd78e2d2c0fd26d32618c9964fbacd8175c21c77bf5e14866210864f"
+    },
+    "demand-research": {
+      "SKILL.md": "21f0f2701605d9c95c4c3643572ac49765074e126d09eb36c7c1408680c4abd9",
+      "agents/openai.yaml": "4ae1e34f8b136042dcd3c07452dc35f1d2606960631248b61d6ce3ec9dca0738"
+    },
+    "export-ad-reports": {
+      "SKILL.md": "9787092a030b95bde23574f76bfcdb050460131fd01ee05197c004de767f5153",
+      "agents/openai.yaml": "755bf4d827ada5e21953bcf51430a8ecda8e8acd6eeb341bce1459f6acc5377f"
+    },
+    "human-editorial-polish": {
+      "SKILL.md": "46798ca167cc056bd35151d66cba328d571671976ab483955fa97cb7c26d5037",
+      "agents/openai.yaml": "ae5eb77bedc6987c0359b6ca5fa0399c69b869e3ff0663b6b22406d136520c84"
+    },
+    "lidfly-site-commerce": {
+      "SKILL.md": "1ea344a1755b3bb7670d3489af91a410ce5cb1209ed5fb43308362264e0dda37",
+      "agents/openai.yaml": "956b538749795c2c0f2adedf4af1f0c9b62ba48d1b82ab80ea4299087d4c811a"
+    },
+    "lidfly-support-escalation": {
+      "SKILL.md": "09676d7f184aa4d1c4ebcb3273470f4732180b49206c123699a03f897756515e",
+      "agents/openai.yaml": "1bdcb2f9939b2ddef56ca1d8b98242d92296e3a13704ffca815faaad8e5e23ba"
+    },
+    "mcp-v3-provider-context": {
+      "SKILL.md": "ceca3b1ba9985d319c42d21193899b5ea8a9ef38532640dcbd7b547cf4e3ab8f",
+      "agents/openai.yaml": "a434eefccb4a06abe645aa604c56c875ef7b36db5ee555172611d63d7e7905c0"
+    },
+    "semantic-core": {
+      "SKILL.md": "70fd57674c769b5429cc517b36c47b6b74e44ba1d0291b8574dcb2809d8e19a4",
+      "agents/openai.yaml": "116b7b6af9e73c0f2824a5c668df362166c734900a4a51da4069e0b5c229772a",
+      "references/clustering-rules.md": "a585827955324684585f29845501cd2341cf384ecdfd6882c122edd55575ea64",
+      "references/intent-and-minus-words.md": "4b0a701449b30413991780a8bffe32a51aa9b412623fe13222921cacfa68157d",
+      "references/output-format.md": "606d1437069e5245ce6b7b95afcef7efa4204cc5161d2e51a4369cc93f378d2e"
+    },
+    "seo-optimizer": {
+      "SKILL.md": "3b642ae8a6f1d1ecb62835d0b7131ee25475104b3dc8773804b61a4bc3c5e1fb",
+      "agents/openai.yaml": "bf9afce6ad5171bca986e2484d40290ef8ee4843180e66c7773a23312d271623",
+      "references/audit-checklist.md": "de2aad3d19639844a09bcfe5c19f0bcd50e1d716ff5a4bdf71bd9218df2a5777"
+    },
+    "serp-monitor": {
+      "SKILL.md": "52326a47670f6b86ad89a50d9867427a60f23349de4873e4c2fc6e6b12c4bc97",
+      "agents/openai.yaml": "9d55a40b9999bfa1405f5269fd42c4e1554533c8ad629e0e093b15ccf61e1ed1"
+    },
+    "video-article-writer": {
+      "SKILL.md": "6762146fda8e7f73569c92ed6c09a3d1478e8571b3d402a47024ce370795913c",
+      "agents/openai.yaml": "0ceb0626612d659107faa808215e1c68c051f812817932235d6c78e4a612f40f",
+      "references/transcription-workflow.md": "d5df33f317cd1124851c9a70a2f3454de8db4f22f2d8a19e5c006990016aed5f"
+    },
+    "vk-ads-campaign-builder": {
+      "SKILL.md": "93fed3d1e17a59651af6f0e3e99049384fd96880dbfb444a80603869a99cc14d",
+      "agents/openai.yaml": "ddc725a75e49fdd27c47f0083fcf27477e29979730eba293110083f4ed219617"
+    },
+    "workspace-project-manager": {
+      "SKILL.md": "d4eb95862d67d0fcc80ca816e146721811038b739c94233654705e155808dbf2",
+      "agents/openai.yaml": "9778d6c5f249e406d862ecb095de9b7e86df795274f59f7159fbaa43c5abbdbf"
+    },
+    "yandex-direct-campaign-builder": {
+      "SKILL.md": "9d8358179a18627e42a97687e99bee311bff3b85c084d9aa5ed37aefbbb74d7a",
+      "agents/openai.yaml": "839127223c9ba2f88a465a94f99060a717cb7f9dd25697904883548023d29bde"
+    },
+    "yandex-metrika": {
+      "SKILL.md": "c7d71d742616b40048e861ba394a9ed08af1f3fe58ae91d84894402e9c0fdc18",
+      "agents/openai.yaml": "2caeb4d2e8ce96647319f6284851146fd8362b4e58dc5bd9edc737efb66ec35d"
+    },
+    "yandex-webmaster": {
+      "SKILL.md": "8fac5f6f05c3ac706af32a2cb88d1ee6caef295b6fa7e0e0497118ca581bdb64",
+      "agents/openai.yaml": "5499c57d80aeaf6ac63e5ff2858936050945b782f6c36c6783c3b374903e9238"
+    },
+    "youtube-video-seo": {
+      "SKILL.md": "677b91bba228db19189c96789a83511d6983cbc062f34949478de25363eef2a0",
+      "agents/openai.yaml": "74ce67bce634e3617f2f491228b125aea16c721a21a6fe54bc1a203188d5da4e",
+      "references/output-contract.md": "55b1b847e85d0e3584a2732bfa12e4f59d475a9eae3e84ef68feb02fb06113c6"
+    }
+  }
+}

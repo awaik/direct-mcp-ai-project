@@ -1,7 +1,0 @@
-name: "video-article-writer"
-description: "Turn a video or transcript into a long SEO article: transcription through LidFly when needed, style/resource intake, semantic-core, editorial article, human polish, article-reviser, SEO fields, and confirmed cover prompt."
-version: 1
-interface:
-  display_name: "Video Article Writer"
-  short_description: "Turn a video or transcript into a long SEO article: transcrip..."
-  default_prompt: "Используй $video-article-writer для безопасного workflow LidFly MCP v3."

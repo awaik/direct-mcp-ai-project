@@ -1,7 +1,0 @@
-name: "avito-ads"
-description: "Work with Avito Ads through LidFly MCP v3: account discovery, campaigns, groups, budgets, statistics, agency/access/legal operations, 9-digit account_id validation, and read-preflight-write-reread guardrails."
-version: 1
-interface:
-  display_name: "Avito Ads"
-  short_description: "Work with Avito Ads through LidFly MCP v3: account discovery,..."
-  default_prompt: "Используй $avito-ads для безопасного workflow LidFly MCP v3."
