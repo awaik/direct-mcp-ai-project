@@ -14,7 +14,7 @@ Use when the user asks for YouTube title, description, tags, chapters, transcrip
 3. Extract topic, audience, promise, and factual limits.
 4. Use Wordstat/search demand when useful.
 5. Draft 3-5 title options, description, tags, chapters, pinned comment, and thumbnail text ideas.
-6. Keep claims faithful to the source and `LEGAL.md`.
+6. Keep claims faithful to the source and user-provided business/legal constraints; flag regulated or unsupported claims for qualified review.
 
 ## Output
 

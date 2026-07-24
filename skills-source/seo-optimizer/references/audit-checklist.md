@@ -20,7 +20,7 @@ Use this checklist after obtaining the page content and any available live data.
 - Title, description, H1, heading coverage, first-screen promise.
 - Missing subquestions, examples, proof, FAQ, and internal links.
 - Duplicate or cannibalizing pages.
-- Unsupported claims, stale facts, and legal constraints from `LEGAL.md`.
+- Unsupported claims, stale facts, and user-provided business or legal constraints.
 
 ## GEO And AI Visibility
 

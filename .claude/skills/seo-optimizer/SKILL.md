@@ -22,4 +22,4 @@ Read `references/audit-checklist.md` before producing the final priority list. I
 
 - Separate verified data from hypotheses.
 - Do not invent rankings or traffic numbers.
-- For generated page changes, keep brand/legal constraints from `LEGAL.md`.
+- For generated page changes, preserve user-provided brand and legal constraints; flag regulated or unsupported claims that require qualified review.

@@ -30,4 +30,4 @@ When saving a `.txt` artifact:
 - keep titles, description, chapters, tags, pinned comment, and thumbnail ideas in clearly labelled sections;
 - keep the raw transcript and research notes in separate files.
 
-Before delivery, verify that titles and description match the actual video and that `LEGAL.md` restrictions are respected.
+Before delivery, verify that titles and description match the actual video and respect any user-provided business or legal restrictions. Flag regulated or unsupported claims that require qualified review.

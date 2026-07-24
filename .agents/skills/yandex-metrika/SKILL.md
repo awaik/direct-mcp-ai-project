@@ -12,7 +12,7 @@ Use for counters, goals, traffic sources, UTM, Direct reports, CPA, conversion h
 - Metrika uses `counter_id`; it does not use `client_login`.
 - If counter/project is unclear, call `get_provider_context({ provider: "yandex", query? })` and use returned Metrika scope.
 - If a Пространство is selected, prefer counters linked as provider entities to `workspace_project_id`.
-- Do not rely on `PROJECTS.md` as the only counter/goal source; verify live counters/goals when access exists.
+- Do not rely on a local project brief or cached context as the only counter/goal source; verify live counters and goals when access exists.
 
 ## Read Workflow
 

@@ -193,5 +193,6 @@ workspace_project_id
 - Юридические ограничения публичного контента: `LEGAL.md`
 - Canonical skills: `skills-source/`
 - Skill sync: `node scripts/sync-skills.mjs`
+- Codex plugin export: `node scripts/sync-skills.mjs --plugin-target ../lidfly-plugins/plugins/lidfly/skills`
 
 При изменении общих правил обновляй `AGENTS.md` и `CLAUDE.md` парой.

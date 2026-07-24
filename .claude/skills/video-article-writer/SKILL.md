@@ -9,7 +9,7 @@ Use when the user gives a video/audio file or transcript and asks for an article
 
 ## Workflow
 
-1. Ask for publication resource, style from `.styles/` or custom style, and mode of presentation.
+1. Ask for publication resource, presentation mode, and a supplied or project-local style guide when one exists; otherwise clarify the desired voice without assuming a `.styles/` directory.
 2. Create one run folder under `RESULTS/<basename>-<YYYYMMDD-HHMMSS>/`.
 3. Read `references/transcription-workflow.md`, then extract/transcribe audio through LidFly tools if needed.
 4. Save transcript and brief in the run folder.
@@ -25,4 +25,4 @@ Use when the user gives a video/audio file or transcript and asks for an article
 - Do not invent facts absent from the video/transcript.
 - Keep all artifacts in the run folder.
 - Do not publish or generate paid assets without confirmation.
-- For regulated topics, check `LEGAL.md`.
+- For regulated topics, apply user-provided business/legal constraints, avoid unsupported promises, and flag claims that require qualified review.

@@ -14,7 +14,7 @@ Use after `article-writer` or `video-article-writer`, or when the user asks to s
 - Voice: human technical-professional Russian, no generic AI cliches.
 - Honesty: product facts and numbers are sourced or flagged.
 - SEO/GEO: title/H1/intro, H2 coverage, FAQ, internal links, meta notes.
-- Legal: risky claims checked against `LEGAL.md`.
+- Legal: risky or regulated claims checked against user-provided business rules and applicable requirements; flag uncertainty instead of presenting legal assumptions as facts.
 
 ## Editing Rules
 

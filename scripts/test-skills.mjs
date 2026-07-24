@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -43,6 +44,100 @@ for (const skill of skills) {
       `${clientRoot}/${skill}: legacy root openai.yaml remains`,
     );
   }
+}
+
+for (const relativePath of fs.readdirSync(sourceRoot, { recursive: true })) {
+  if (!relativePath.endsWith(".md")) continue;
+  const source = fs.readFileSync(path.join(sourceRoot, relativePath), "utf8");
+  assert.doesNotMatch(
+    source,
+    /`(?:LEGAL|PROJECTS)\.md`/,
+    `${relativePath}: external project-only reference remains`,
+  );
+}
+
+const pluginFixtureRoot = fs.mkdtempSync(
+  path.join(os.tmpdir(), "lidfly-plugin-skills-sync-"),
+);
+try {
+  const pluginRoot = path.join(pluginFixtureRoot, "plugins/lidfly");
+  const pluginSkills = path.join(pluginRoot, "skills");
+  fs.mkdirSync(path.join(pluginRoot, ".codex-plugin"), { recursive: true });
+  fs.writeFileSync(
+    path.join(pluginRoot, ".codex-plugin/plugin.json"),
+    `${JSON.stringify({ name: "lidfly", skills: "./skills/" }, null, 2)}\n`,
+  );
+  execFileSync(
+    process.execPath,
+    [
+      path.join(root, "scripts/sync-skills.mjs"),
+      "--plugin-target",
+      pluginSkills,
+    ],
+    { cwd: root, stdio: "pipe" },
+  );
+  execFileSync(
+    process.execPath,
+    [
+      path.join(root, "scripts/sync-skills.mjs"),
+      "--check",
+      "--plugin-target",
+      pluginSkills,
+    ],
+    { cwd: root, stdio: "pipe" },
+  );
+  assert.equal(
+    fs.readdirSync(pluginSkills, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory()).length,
+    20,
+    "plugin target must contain all canonical skills",
+  );
+
+  fs.writeFileSync(path.join(pluginSkills, "unexpected.txt"), "preserve me");
+  assert.throws(
+    () =>
+      execFileSync(
+        process.execPath,
+        [
+          path.join(root, "scripts/sync-skills.mjs"),
+          "--plugin-target",
+          pluginSkills,
+        ],
+        { cwd: root, stdio: "pipe" },
+    ),
+    "plugin sync must refuse an unmanaged target file",
+  );
+  fs.unlinkSync(path.join(pluginSkills, "unexpected.txt"));
+
+  const generatedManifestPath = path.join(
+    pluginSkills,
+    ".lidfly-generated-skills.json",
+  );
+  const generatedManifest = JSON.parse(
+    fs.readFileSync(generatedManifestPath, "utf8"),
+  );
+  generatedManifest.skills["escaped-skill"] = {
+    "../outside.txt": "a".repeat(64),
+  };
+  fs.writeFileSync(
+    generatedManifestPath,
+    `${JSON.stringify(generatedManifest, null, 2)}\n`,
+  );
+  assert.throws(
+    () =>
+      execFileSync(
+        process.execPath,
+        [
+          path.join(root, "scripts/sync-skills.mjs"),
+          "--plugin-target",
+          pluginSkills,
+        ],
+        { cwd: root, stdio: "pipe" },
+      ),
+    "plugin sync must reject traversal in a previous generated manifest",
+  );
+} finally {
+  fs.rmSync(pluginFixtureRoot, { recursive: true });
 }
 
 assert.equal(

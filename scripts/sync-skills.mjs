@@ -7,8 +7,45 @@ import { fileURLToPath } from "node:url";
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, "..");
 const sourceRoot = path.join(root, "skills-source");
-const checkOnly = process.argv.includes("--check");
 const manifestName = ".lidfly-generated-skills.json";
+
+function usage() {
+  return `Usage:
+  node scripts/sync-skills.mjs [--check] [--plugin-target <skills-directory>]
+
+Options:
+  --check           Validate generated copies without changing files.
+  --plugin-target   Also sync an existing LidFly plugin's skills directory.
+  --help, -h        Show this help.
+`;
+}
+
+let checkOnly = false;
+let pluginTargetArgument = null;
+const args = process.argv.slice(2);
+for (let index = 0; index < args.length; index += 1) {
+  const argument = args[index];
+  if (argument === "--check") {
+    checkOnly = true;
+    continue;
+  }
+  if (argument === "--plugin-target") {
+    if (pluginTargetArgument !== null) {
+      throw new Error("--plugin-target may be provided only once");
+    }
+    pluginTargetArgument = args[index + 1];
+    if (!pluginTargetArgument || pluginTargetArgument.startsWith("--")) {
+      throw new Error("--plugin-target requires a skills directory");
+    }
+    index += 1;
+    continue;
+  }
+  if (argument === "--help" || argument === "-h") {
+    console.log(usage());
+    process.exit(0);
+  }
+  throw new Error(`Unknown argument: ${argument}\n\n${usage()}`);
+}
 
 const targets = [
   { dir: ".agents/skills", legacySkillFile: "skill.md" },
@@ -16,6 +53,39 @@ const targets = [
   { dir: ".claude/skills", legacySkillFile: "skill.md" },
   { dir: ".openclaw/skills", legacySkillFile: "skill.md" },
 ];
+
+function resolvePluginTarget(rawTarget) {
+  const targetRoot = path.resolve(process.cwd(), rawTarget);
+  if (path.basename(targetRoot) !== "skills") {
+    throw new Error("--plugin-target must point to the plugin's skills directory");
+  }
+
+  const pluginRoot = path.dirname(targetRoot);
+  const pluginManifestPath = path.join(pluginRoot, ".codex-plugin", "plugin.json");
+  if (!fs.existsSync(pluginManifestPath)) {
+    throw new Error(`LidFly plugin manifest not found: ${pluginManifestPath}`);
+  }
+
+  const plugin = JSON.parse(readText(pluginManifestPath));
+  if (plugin.name !== "lidfly") {
+    throw new Error(`Expected LidFly plugin at ${pluginRoot}`);
+  }
+  if (plugin.skills !== undefined && plugin.skills !== "./skills/") {
+    throw new Error(`LidFly plugin has unsupported skills path: ${plugin.skills}`);
+  }
+
+  return targetRoot;
+}
+
+if (pluginTargetArgument !== null) {
+  const pluginTargetRoot = resolvePluginTarget(pluginTargetArgument);
+  targets.push({
+    dir: pluginTargetRoot,
+    label: pluginTargetRoot,
+    legacySkillFile: null,
+    strictGeneratedOnly: true,
+  });
+}
 
 const mcpSkills = new Set([
   "article-writer",
@@ -137,6 +207,39 @@ function listFiles(dir, baseDir = dir) {
   return files.sort();
 }
 
+function listAllTargetFiles(dir, baseDir = dir) {
+  if (!fs.existsSync(dir)) return [];
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const entryPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) files.push(...listAllTargetFiles(entryPath, baseDir));
+    if (entry.isFile() || entry.isSymbolicLink()) {
+      files.push(path.relative(baseDir, entryPath));
+    }
+  }
+  return files.sort();
+}
+
+function expectedGeneratedFiles(manifest) {
+  const expected = new Set([manifestName]);
+  for (const [skillName, files] of Object.entries(manifest.skills)) {
+    for (const relativePath of Object.keys(files)) {
+      expected.add(path.join(skillName, relativePath));
+    }
+  }
+  return expected;
+}
+
+function validateStrictGeneratedTarget(targetRoot, manifest) {
+  const expected = expectedGeneratedFiles(manifest);
+  const unexpected = listAllTargetFiles(targetRoot).filter((file) => !expected.has(file));
+  if (unexpected.length > 0) {
+    throw new Error(
+      `Refusing to manage plugin target with unexpected files: ${unexpected.join(", ")}`,
+    );
+  }
+}
+
 function validateReferences(skillDir, markdown, skillNames, skillName) {
   const resourceRefs = markdown.matchAll(/`((?:references|scripts|assets)\/[^`\s]+)`/g);
   for (const match of resourceRefs) {
@@ -164,7 +267,48 @@ function isLegacyOpenAiYaml(filePath, skillName) {
 function readManifest(targetRoot) {
   const manifestPath = path.join(targetRoot, manifestName);
   if (!fs.existsSync(manifestPath)) return null;
-  return JSON.parse(readText(manifestPath));
+  const manifest = JSON.parse(readText(manifestPath));
+  validateGeneratedManifest(manifest, manifestPath);
+  return manifest;
+}
+
+function validateGeneratedManifest(manifest, label) {
+  if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) {
+    throw new Error(`${label}: generated manifest must be an object`);
+  }
+  if (manifest.version !== 1
+    || !manifest.skills
+    || typeof manifest.skills !== "object"
+    || Array.isArray(manifest.skills)) {
+    throw new Error(`${label}: generated manifest must use version 1 and contain skills`);
+  }
+  for (const [skillName, files] of Object.entries(manifest.skills)) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(skillName)
+      || !files
+      || typeof files !== "object"
+      || Array.isArray(files)) {
+      throw new Error(`${label}: invalid generated skill ${skillName}`);
+    }
+    for (const [relativePath, expectedHash] of Object.entries(files)) {
+      const parts = relativePath.split(/[\\/]/);
+      if (!relativePath
+        || path.isAbsolute(relativePath)
+        || relativePath.includes("\0")
+        || parts.some((part) => !part || part === "." || part === "..")
+        || !/^[a-f0-9]{64}$/.test(expectedHash)) {
+        throw new Error(`${label}: unsafe generated path ${skillName}/${relativePath}`);
+      }
+    }
+  }
+}
+
+function resolveGeneratedPath(targetRoot, skillName, relativePath) {
+  const resolved = path.resolve(targetRoot, skillName, relativePath);
+  const relative = path.relative(targetRoot, resolved);
+  if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error(`Generated path escapes target root: ${skillName}/${relativePath}`);
+  }
+  return resolved;
 }
 
 function hasExactBasename(filePath) {
@@ -186,7 +330,7 @@ function cleanStaleGeneratedFiles(targetRoot, previousManifest, nextManifest) {
   for (const [skillName, files] of Object.entries(previousManifest.skills)) {
     for (const [relativePath, previousHash] of Object.entries(files)) {
       if (nextManifest.skills[skillName]?.[relativePath]) continue;
-      const stalePath = path.join(targetRoot, skillName, relativePath);
+      const stalePath = resolveGeneratedPath(targetRoot, skillName, relativePath);
       if (!fs.existsSync(stalePath)) continue;
       const current = fs.readFileSync(stalePath);
       if (hash(current) !== previousHash) {
@@ -251,7 +395,10 @@ for (const skillName of skills) {
 }
 
 for (const target of targets) {
-  const targetRoot = path.join(root, target.dir);
+  const targetRoot = path.isAbsolute(target.dir)
+    ? target.dir
+    : path.join(root, target.dir);
+  const targetLabel = target.label ?? target.dir;
   const nextManifest = { version: 1, skills: {} };
 
   for (const skillName of skills) {
@@ -264,28 +411,45 @@ for (const target of targets) {
   }
 
   if (checkOnly) {
+    if (target.strictGeneratedOnly) {
+      validateStrictGeneratedTarget(targetRoot, nextManifest);
+    }
     for (const skillName of skills) {
       for (const relativePath of sourceFiles.get(skillName)) {
         const sourcePath = path.join(sourceRoot, skillName, relativePath);
         const targetPath = path.join(targetRoot, skillName, relativePath);
         if (!hasExactBasename(targetPath)
           || !fs.readFileSync(targetPath).equals(fs.readFileSync(sourcePath))) {
-          throw new Error(`${target.dir}: out of sync: ${skillName}/${relativePath}`);
+          throw new Error(`${targetLabel}: out of sync: ${skillName}/${relativePath}`);
         }
       }
       if (target.legacySkillFile
         && hasExactBasename(path.join(targetRoot, skillName, target.legacySkillFile))) {
-        throw new Error(`${target.dir}: legacy ${skillName}/${target.legacySkillFile} still exists`);
+        throw new Error(`${targetLabel}: legacy ${skillName}/${target.legacySkillFile} still exists`);
       }
       if (fs.existsSync(path.join(targetRoot, skillName, "openai.yaml"))) {
-        throw new Error(`${target.dir}: legacy ${skillName}/openai.yaml still exists`);
+        throw new Error(`${targetLabel}: legacy ${skillName}/openai.yaml still exists`);
       }
     }
     const currentManifest = readManifest(targetRoot);
     if (JSON.stringify(currentManifest) !== JSON.stringify(nextManifest)) {
-      throw new Error(`${target.dir}: generated manifest is missing or stale`);
+      throw new Error(`${targetLabel}: generated manifest is missing or stale`);
     }
     continue;
+  }
+
+  if (target.strictGeneratedOnly && fs.existsSync(targetRoot)) {
+    const currentManifest = readManifest(targetRoot);
+    if (currentManifest === null) {
+      const existingFiles = listAllTargetFiles(targetRoot);
+      if (existingFiles.length > 0) {
+        throw new Error(
+          `Refusing to adopt non-empty plugin target without ${manifestName}: ${targetRoot}`,
+        );
+      }
+    } else {
+      validateStrictGeneratedTarget(targetRoot, currentManifest);
+    }
   }
 
   fs.mkdirSync(targetRoot, { recursive: true });
@@ -319,6 +483,9 @@ for (const target of targets) {
     path.join(targetRoot, manifestName),
     `${JSON.stringify(nextManifest, null, 2)}\n`,
   );
+  if (target.strictGeneratedOnly) {
+    validateStrictGeneratedTarget(targetRoot, nextManifest);
+  }
 }
 
 console.log(
