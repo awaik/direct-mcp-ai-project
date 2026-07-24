@@ -1,0 +1,46 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "my-custom-provider/claude-sonnet-5",
+  "small_model": "my-custom-provider/claude-haiku-4-5",
+  "provider": {
+    "my-custom-provider": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ashibalt",
+      "options": {
+        "baseURL": "https://api.ashibalt.ru/v1",
+        "apiKey": "{env:ASHIBALT_API_KEY}"
+      },
+      "models": {
+        "claude-sonnet-5": {
+          "name": "Claude Sonnet 5",
+          "limit": {
+            "context": 1000000,
+            "output": 65536
+          }
+        },
+        "claude-haiku-4-5": {
+          "name": "Claude Haiku 4.5",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8",
+          "limit": {
+            "context": 1000000,
+            "output": 65536
+          }
+        }
+      }
+    }
+  },
+  "mcp": {
+    "lidfly": {
+      "type": "remote",
+      "url": "https://lidfly.ru/mcp/v3",
+      "enabled": true,
+      "oauth": {}
+    }
+  }
+}
