@@ -29,6 +29,10 @@
       "SKILL.md": "46798ca167cc056bd35151d66cba328d571671976ab483955fa97cb7c26d5037",
       "agents/openai.yaml": "ae5eb77bedc6987c0359b6ca5fa0399c69b869e3ff0663b6b22406d136520c84"
     },
+    "lidfly-connection-doctor": {
+      "SKILL.md": "83d407ba1f7a2cda7d0f2ff2403b248de5ed0d00a0aa21518db7af938f3d7445",
+      "agents/openai.yaml": "0c122a44d7f8094be46f36aa15503db5698be801c1e1e2697c8aa1079ebb11ca"
+    },
     "lidfly-site-commerce": {
       "SKILL.md": "1ea344a1755b3bb7670d3489af91a410ce5cb1209ed5fb43308362264e0dda37",
       "agents/openai.yaml": "956b538749795c2c0f2adedf4af1f0c9b62ba48d1b82ab80ea4299087d4c811a"
@@ -63,7 +67,7 @@
       "references/transcription-workflow.md": "d5df33f317cd1124851c9a70a2f3454de8db4f22f2d8a19e5c006990016aed5f"
     },
     "vk-ads-campaign-builder": {
-      "SKILL.md": "93fed3d1e17a59651af6f0e3e99049384fd96880dbfb444a80603869a99cc14d",
+      "SKILL.md": "7cb52980d33153ae9aa7fd52d3da9867ed4f65a512069358b9e189f1a61b1f9c",
       "agents/openai.yaml": "ddc725a75e49fdd27c47f0083fcf27477e29979730eba293110083f4ed219617"
     },
     "workspace-project-manager": {

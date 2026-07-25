@@ -32,6 +32,10 @@ Use for VK Ads campaigns, ad groups, banners, lead forms, statistics, audiences,
 - Use `call_write_tool`.
 - Reread state and report before/after.
 - For agency/team Пространства include exact `workspace_project_id`.
+- For a new campaign, call `vk_prepare_campaign`, then pass exactly one bootstrap ad group to `vk_create_campaign`. Do not include nested `banners`.
+- Treat the created campaign and bootstrap group as `blocked`. Create remaining groups and banners with separate write tools, reread every object, and activate only as a final separate action.
+- If the result contains `outcome=unknown` or `outcome=ambiguous`, call top-level `get_write_operation_status({ operation_id })`. Keep the same campaign name and never send another create.
+- If status remains unresolved, offer a safe support draft containing the `operation_id`, never the raw payload or credentials.
 
 ## Creative And Text
 

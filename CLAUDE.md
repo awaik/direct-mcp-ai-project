@@ -16,7 +16,7 @@ https://lidfly.ru/mcp/v3
 
 Транспорт: Streamable HTTP. Для новых клиентов выбирай `http`, `streamable-http` или native remote MCP OAuth, если клиент это поддерживает. Старый `mcp-remote` и API-key headers оставляй только как legacy/manual fallback для клиентов без OAuth.
 
-`tools/list` в v3 показывает 8 meta-инструментов:
+`tools/list` в v3 показывает компактный набор верхнеуровневых meta-инструментов, включая:
 
 ```text
 search_tools
@@ -26,6 +26,7 @@ call_write_tool
 get_methodology
 get_provider_context
 resolve_campaign_scope
+get_write_operation_status
 subscription_status
 ```
 
@@ -39,6 +40,8 @@ subscription_status
 4. Любое создание, обновление, удаление, запуск, остановка, публикация, генерация платного изображения, запись памяти или управление доступами делать через `call_write_tool({ tool_name, arguments })`.
 
 `subscription_status` используй только для диагностики доступа, тарифа или auth-ошибок, а не в обычном workflow.
+
+`get_write_operation_status({ operation_id })` вызывай напрямую после provider write с `outcome=unknown/ambiguous`. Не передавай его через wrappers.
 
 ## Эскалация Проблем В Поддержку
 
@@ -138,6 +141,8 @@ workspace_project_id
 - Manual VK user-filter используй только если он вернулся в provider context; произвольный VK user id не подставляй.
 - Для кампании по имени сначала `resolve_campaign_scope({ provider: "vk", query })`.
 - Read -> preflight -> write -> reread обязателен для статусов, бюджетов, ставок, лид-форм и доступа.
+- `vk_create_campaign` принимает ровно одну стартовую группу без banners и принудительно создаёт кампанию/группу остановленными. Остальные группы и объявления создавай отдельно; запуск — отдельное последнее действие после reread.
+- При `outcome=unknown/ambiguous` сразу вызови `get_write_operation_status` с тем же `operation_id`. Не меняй имя кампании и не отправляй новый create. Если результат остаётся неопределённым, предложи безопасный support draft.
 
 ### Avito Ads
 

@@ -13,7 +13,7 @@ const skills = fs.readdirSync(sourceRoot, { withFileTypes: true })
   .map((entry) => entry.name)
   .sort();
 
-assert.equal(skills.length, 20, "unexpected canonical skill count");
+assert.equal(skills.length, 21, "unexpected canonical skill count");
 
 execFileSync(process.execPath, [path.join(root, "scripts/sync-skills.mjs"), "--check"], {
   cwd: root,
@@ -89,7 +89,7 @@ try {
   assert.equal(
     fs.readdirSync(pluginSkills, { withFileTypes: true })
       .filter((entry) => entry.isDirectory()).length,
-    20,
+    21,
     "plugin target must contain all canonical skills",
   );
 

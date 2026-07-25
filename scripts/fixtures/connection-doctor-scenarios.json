@@ -1,0 +1,58 @@
+[
+  {
+    "id": "claude_failed_authenticate",
+    "client": "Claude Code",
+    "signals": ["Failed", "Authenticate"],
+    "expected_layer": "mcp_oauth",
+    "expected_action": "Authenticate",
+    "forbidden": [".cursor/mcp.json", "provider tools"]
+  },
+  {
+    "id": "claude_desktop_login",
+    "client": "Claude Desktop",
+    "signals": ["Failed", "Login"],
+    "expected_layer": "mcp_oauth",
+    "expected_action": "Login",
+    "forbidden": [".cursor/mcp.json", "provider tools"]
+  },
+  {
+    "id": "cursor_missing_config",
+    "client": "Cursor",
+    "signals": ["no server named lidfly"],
+    "expected_layer": "config",
+    "expected_action": ".cursor/mcp.json",
+    "forbidden": [".mcp.json for Claude"]
+  },
+  {
+    "id": "codex_transport_timeout",
+    "client": "Codex",
+    "signals": ["connection timeout", "OAuth complete"],
+    "expected_layer": "transport",
+    "expected_action": "retry read-only check",
+    "forbidden": ["repeat provider write"]
+  },
+  {
+    "id": "vscode_host",
+    "client": "VS Code",
+    "signals": ["Codex extension"],
+    "expected_layer": "config",
+    "expected_action": "use Codex configuration",
+    "forbidden": ["mandatory separate VS Code connection"]
+  },
+  {
+    "id": "provider_not_connected",
+    "client": "Codex",
+    "signals": ["MCP OAuth complete", "VK connection absent"],
+    "expected_layer": "provider",
+    "expected_action": "connect VK in LidFly",
+    "forbidden": ["edit MCP config"]
+  },
+  {
+    "id": "stale_skills",
+    "client": "Claude Code",
+    "signals": ["MCP read works", "connection doctor missing"],
+    "expected_layer": "skills",
+    "expected_action": "update client skills",
+    "forbidden": ["repeat provider write"]
+  }
+]

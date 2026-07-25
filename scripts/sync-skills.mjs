@@ -93,6 +93,7 @@ const mcpSkills = new Set([
   "demand-research",
   "export-ad-reports",
   "lidfly-site-commerce",
+  "lidfly-connection-doctor",
   "lidfly-support-escalation",
   "mcp-v3-provider-context",
   "semantic-core",

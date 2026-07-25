@@ -1,0 +1,12 @@
+interface:
+  display_name: "Диагностика подключения LidFly"
+  short_description: "Диагностика подключения и OAuth LidFly"
+  default_prompt: "Используй $lidfly-connection-doctor, чтобы определить причину сбоя подключения LidFly и дать одно безопасное следующее действие."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для проверки подключения"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"
