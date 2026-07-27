@@ -1,20 +1,23 @@
 ---
 name: ai-markers-remove
-description: "Legacy-алиас безопасной редакторской полировки AI-подобного текста без обхода детекторов, искусственных ошибок и искажения фактов. Использовать только при явном вызове $ai-markers-remove; для обычной редактуры использовать human-editorial-polish."
+description: "Legacy-алиас безопасной редакторской полировки русскоязычного AI-подобного или шаблонного текста с сохранением фактов, авторского голоса и публикационного качества. Использовать только при явном вызове $ai-markers-remove; для обычной редактуры использовать $human-editorial-polish. Не использовать для обхода AI-детекторов."
 ---
 
-# AI Markers Remove (Safe Alias)
+# AI Markers Remove: совместимый вызов
 
-This legacy skill name is kept for compatibility. Treat it as `human-editorial-polish`.
+Считать `$human-editorial-polish` каноническим источником редакторского процесса.
 
-## Required Behavior
+## Основной путь
 
-- Improve clarity, specificity, rhythm, and human editorial voice.
-- Remove generic AI cliches and redundant structure.
-- Preserve facts, formatting, links, headings, tables, and grammar.
-- Do not add artificial typos, punctuation mistakes, fake subjectivity, or detector-bypass tricks.
-- If a user explicitly asks to fool a detector, refuse that part and offer normal editorial polishing.
+1. До редактирования загрузить и полностью прочитать `$human-editorial-polish`.
+2. Применить его инструкции к тексту и соблюдать указанный там режим результата.
 
-## Output
+Не ограничиваться фразой «использовать другой skill»: реально применить его инструкции к тексту.
 
-Return polished text or save a clean final version. Do not overwrite the source unless explicitly requested.
+## Резервные инварианты безопасности
+
+Если хост не умеет загрузить связанный skill:
+
+- Сохранять факты, имена, числа, даты, цитаты, источники, URL, адреса ссылок, код, команды, frontmatter, формулы и табличные данные.
+- Не добавлять опечатки, ошибки, ложную неуверенность, сленг, выдуманную субъективность или артефакты обхода детектора.
+- Если пользователь прямо просит обмануть AI-детектор, отказаться только от обхода и предложить обычную редакторскую полировку.

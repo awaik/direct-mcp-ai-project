@@ -2,8 +2,8 @@
   "version": 1,
   "skills": {
     "ai-markers-remove": {
-      "SKILL.md": "2116fa1472e31658fc5c9c7b27c825db098a4c745cd03d3822bbc0641e567052",
-      "agents/openai.yaml": "56c74e0b1cdba8ecf74171f9bbcd78970c8722a09e94472cef14afbe473dd2ba"
+      "SKILL.md": "e22afa9870a2ae4cd990028be5be3e66333d9822438ecb88535b57b9061eb9c2",
+      "agents/openai.yaml": "e7f4c0c7cb12533b2855f83a10fc8bfa7e0109e5504d50dc2670813585f79cff"
     },
     "article-reviser": {
       "SKILL.md": "ed0a93c9b7dbae1104c372fa7e55f7f980671f17332baeb78d0cc34b5be10507",
@@ -26,8 +26,9 @@
       "agents/openai.yaml": "755bf4d827ada5e21953bcf51430a8ecda8e8acd6eeb341bce1459f6acc5377f"
     },
     "human-editorial-polish": {
-      "SKILL.md": "46798ca167cc056bd35151d66cba328d571671976ab483955fa97cb7c26d5037",
-      "agents/openai.yaml": "ae5eb77bedc6987c0359b6ca5fa0399c69b869e3ff0663b6b22406d136520c84"
+      "SKILL.md": "ff835b3b2418d47d175ec884f94cb287e3a38485f325616cf9da584fd0f7504d",
+      "agents/openai.yaml": "beb719bfe76a743c384ef835df9eb080c493c684f8a634bf8229f5dd59ee6d00",
+      "references/russian-patterns.md": "e7a62d940ee30b1ddcc7f97900064588470f9c1b2f27888f26c503ee83308c66"
     },
     "lidfly-connection-doctor": {
       "SKILL.md": "83d407ba1f7a2cda7d0f2ff2403b248de5ed0d00a0aa21518db7af938f3d7445",

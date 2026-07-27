@@ -166,4 +166,50 @@ const aliasMetadata = fs.readFileSync(
 );
 assert.match(aliasMetadata, /allow_implicit_invocation: false/);
 
+const editorialSkill = fs.readFileSync(
+  path.join(sourceRoot, "human-editorial-polish/SKILL.md"),
+  "utf8",
+);
+assert.match(editorialSkill, /`references\/russian-patterns\.md`/);
+assert.match(editorialSkill, /^## Подготовка$/m);
+assert.match(editorialSkill, /^## Калибровка по жанру$/m);
+assert.match(editorialSkill, /^## Рабочий цикл$/m);
+assert.match(editorialSkill, /^## Смысл и структура$/m);
+assert.match(editorialSkill, /^## Защита от переусердствования$/m);
+assert.match(editorialSkill, /^## Режим результата$/m);
+assert.doesNotMatch(editorialSkill, /запретить длинное тире|заменить «ёлочки»/i);
+
+const editorialPatterns = fs.readFileSync(
+  path.join(sourceRoot, "human-editorial-polish/references/russian-patterns.md"),
+  "utf8",
+);
+const patternNumbers = [
+  ...editorialPatterns.matchAll(/^### ([0-9]+)\. /gm),
+].map((match) => Number(match[1]));
+assert.deepEqual(
+  patternNumbers,
+  Array.from({ length: patternNumbers.length }, (_, index) => index + 1),
+  "human-editorial-polish Russian pattern groups must use contiguous numbering",
+);
+assert.ok(
+  patternNumbers.length >= 18,
+  "human-editorial-polish must keep at least 18 Russian pattern groups",
+);
+assert.match(editorialPatterns, /## Ложные срабатывания/);
+assert.match(editorialPatterns, /русские типографские кавычки «ёлочки»/);
+assert.match(editorialPatterns, /Если текст уже конкретен[\s\S]*не переписывать его/);
+
+const aliasSkill = fs.readFileSync(
+  path.join(sourceRoot, "ai-markers-remove/SKILL.md"),
+  "utf8",
+);
+assert.match(aliasSkill, /\$human-editorial-polish/);
+assert.match(aliasSkill, /^# AI Markers Remove:/m);
+assert.match(aliasSkill, /^## Основной путь$/m);
+assert.match(aliasSkill, /^## Резервные инварианты безопасности$/m);
+assert.doesNotMatch(aliasSkill, /^## (?:Рабочий цикл|Результат)$/m);
+assert.doesNotMatch(aliasSkill, /^1\. Определить задачу/m);
+assert.match(aliasSkill, /отказаться только от обхода/);
+assert.doesNotMatch(aliasSkill, /Treat it as/);
+
 console.log("All skill structure and workflow tests passed");
