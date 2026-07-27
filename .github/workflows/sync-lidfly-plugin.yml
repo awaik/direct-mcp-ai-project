@@ -40,7 +40,7 @@ jobs:
       - uses: actions/create-github-app-token@v3
         id: app-token
         with:
-          app-id: ${{ secrets.LIDFLY_PLUGIN_SYNC_APP_ID }}
+          client-id: ${{ vars.LIDFLY_PLUGIN_SYNC_CLIENT_ID }}
           private-key: ${{ secrets.LIDFLY_PLUGIN_SYNC_PRIVATE_KEY }}
           owner: awaik
           repositories: lidfly-plugins
