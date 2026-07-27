@@ -1,0 +1,125 @@
+name: Sync LidFly plugin skills
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skills-source/**"
+      - "scripts/sync-skills.mjs"
+      - "scripts/prepare-plugin-sync.mjs"
+  workflow_dispatch:
+
+concurrency:
+  group: sync-lidfly-plugin
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: source
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate canonical skills
+        working-directory: source
+        run: |
+          node scripts/test-skills.mjs
+          node scripts/test-export-ad-reports.mjs
+          node scripts/test-workspace-project-manager.mjs
+          node scripts/test-lidfly-support-escalation.mjs
+          node scripts/test-connection-doctor.mjs
+
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.LIDFLY_PLUGIN_SYNC_APP_ID }}
+          private-key: ${{ secrets.LIDFLY_PLUGIN_SYNC_PRIVATE_KEY }}
+          owner: awaik
+          repositories: lidfly-plugins
+
+      - uses: actions/checkout@v4
+        with:
+          repository: awaik/lidfly-plugins
+          token: ${{ steps.app-token.outputs.token }}
+          path: plugin
+          fetch-depth: 0
+
+      - name: Prepare deterministic plugin snapshot
+        run: |
+          cd plugin
+          git fetch origin main
+          git fetch origin automation/sync-skills:refs/remotes/origin/automation/sync-skills || true
+          git checkout -B automation/sync-skills origin/main
+          cd ../source
+          node scripts/prepare-plugin-sync.mjs \
+            --target-repo ../plugin \
+            --source-commit "${GITHUB_SHA}"
+
+      - name: Validate allowed automation diff
+        working-directory: plugin
+        run: |
+          node scripts/verify-project.mjs
+          node scripts/check-versions.mjs
+          unexpected="$(
+            git status --short |
+              awk '{print $2}' |
+              grep -Ev '^(plugins/lidfly/skills/|plugins/lidfly/skills-source\.lock\.json$|plugins/lidfly/\.codex-plugin/plugin\.json$|plugin-releases/[0-9]+\.[0-9]+\.[0-9]+\.json$)' ||
+              true
+          )"
+          test -z "$unexpected" || {
+            printf 'Automation changed files outside its allowlist:\n%s\n' "$unexpected"
+            exit 1
+          }
+
+      - name: Push rolling branch
+        id: push
+        working-directory: plugin
+        run: |
+          if git diff --quiet && test -z "$(git status --short)"; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "lidfly-plugin-sync[bot]"
+          git config user.email "lidfly-plugin-sync[bot]@users.noreply.github.com"
+          git add plugins/lidfly/skills plugins/lidfly/skills-source.lock.json \
+            plugins/lidfly/.codex-plugin/plugin.json plugin-releases
+          git commit -m "chore: sync LidFly skills from ${GITHUB_SHA}"
+          git push --force-with-lease origin automation/sync-skills
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update rolling PR
+        if: steps.push.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        working-directory: plugin
+        run: |
+          existing="$(
+            gh pr list \
+              --repo awaik/lidfly-plugins \
+              --head automation/sync-skills \
+              --base main \
+              --state open \
+              --json number \
+              --jq '.[0].number // empty'
+          )"
+          if test -n "$existing"; then
+            gh pr edit "$existing" \
+              --repo awaik/lidfly-plugins \
+              --title "chore: sync LidFly skills" \
+              --body "Rolling sync from awaik/direct-mcp-ai-project@${GITHUB_SHA}."
+          else
+            gh pr create \
+              --repo awaik/lidfly-plugins \
+              --head automation/sync-skills \
+              --base main \
+              --title "chore: sync LidFly skills" \
+              --body "Rolling sync from awaik/direct-mcp-ai-project@${GITHUB_SHA}."
+          fi

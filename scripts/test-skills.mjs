@@ -8,27 +8,59 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const sourceRoot = path.join(root, "skills-source");
-const skills = fs.readdirSync(sourceRoot, { withFileTypes: true })
+const skills = fs
+  .readdirSync(sourceRoot, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
   .sort();
 
 assert.equal(skills.length, 21, "unexpected canonical skill count");
 
-execFileSync(process.execPath, [path.join(root, "scripts/sync-skills.mjs"), "--check"], {
-  cwd: root,
-  stdio: "inherit",
-});
+execFileSync(
+  process.execPath,
+  [path.join(root, "scripts/sync-skills.mjs"), "--check"],
+  {
+    cwd: root,
+    stdio: "inherit",
+  },
+);
+
+const sourceSnapshot = JSON.parse(
+  execFileSync(
+    process.execPath,
+    [path.join(root, "scripts/sync-skills.mjs"), "--check", "--json"],
+    { cwd: root, encoding: "utf8" },
+  ),
+);
+assert.equal(sourceSnapshot.schema_version, 1);
+assert.equal(sourceSnapshot.skill_count, 21);
+assert.equal(sourceSnapshot.files.length, sourceSnapshot.file_count);
+assert.match(sourceSnapshot.skills_tree_sha256, /^[a-f0-9]{64}$/);
+assert.deepEqual(
+  sourceSnapshot.files.map((file) => file.path),
+  [...sourceSnapshot.files.map((file) => file.path)].sort((left, right) =>
+    left < right ? -1 : left > right ? 1 : 0,
+  ),
+  "source snapshot paths must be deterministic",
+);
 
 for (const skill of skills) {
-  const source = fs.readFileSync(path.join(sourceRoot, skill, "SKILL.md"), "utf8");
+  const source = fs.readFileSync(
+    path.join(sourceRoot, skill, "SKILL.md"),
+    "utf8",
+  );
   assert.match(source, /^---\nname: [a-z0-9-]+\ndescription: ".+"\n---\n/);
   assert.ok(
     fs.existsSync(path.join(sourceRoot, skill, "agents/openai.yaml")),
     `${skill}: agents/openai.yaml missing`,
   );
 
-  for (const clientRoot of [".agents/skills", ".codex/skills", ".claude/skills", ".openclaw/skills"]) {
+  for (const clientRoot of [
+    ".agents/skills",
+    ".codex/skills",
+    ".claude/skills",
+    ".openclaw/skills",
+  ]) {
     const skillDir = path.join(root, clientRoot, skill);
     assert.equal(
       fs.readFileSync(path.join(skillDir, "SKILL.md"), "utf8"),
@@ -87,10 +119,74 @@ try {
     { cwd: root, stdio: "pipe" },
   );
   assert.equal(
-    fs.readdirSync(pluginSkills, { withFileTypes: true })
+    fs
+      .readdirSync(pluginSkills, { withFileTypes: true })
       .filter((entry) => entry.isDirectory()).length,
     21,
     "plugin target must contain all canonical skills",
+  );
+
+  const provenanceTarget = path.join(pluginFixtureRoot, "provenance-target");
+  const provenancePluginRoot = path.join(provenanceTarget, "plugins/lidfly");
+  fs.mkdirSync(path.join(provenancePluginRoot, ".codex-plugin"), {
+    recursive: true,
+  });
+  fs.writeFileSync(
+    path.join(provenancePluginRoot, ".codex-plugin/plugin.json"),
+    `${JSON.stringify(
+      { name: "lidfly", version: "1.0.0", skills: "./skills/" },
+      null,
+      2,
+    )}\n`,
+  );
+  const firstPreparation = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [
+        path.join(root, "scripts/prepare-plugin-sync.mjs"),
+        "--target-repo",
+        provenanceTarget,
+      ],
+      { cwd: root, encoding: "utf8" },
+    ),
+  );
+  assert.equal(firstPreparation.changed, true);
+  assert.equal(firstPreparation.plugin_version, "1.0.1");
+  const preparedLock = JSON.parse(
+    fs.readFileSync(
+      path.join(provenancePluginRoot, "skills-source.lock.json"),
+      "utf8",
+    ),
+  );
+  assert.equal(
+    preparedLock.skills_tree_sha256,
+    sourceSnapshot.skills_tree_sha256,
+  );
+  assert.match(preparedLock.source.commit, /^[a-f0-9]{40}$/);
+  assert.ok(
+    fs.existsSync(path.join(provenanceTarget, "plugin-releases/1.0.1.json")),
+  );
+  const repeatedPreparation = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [
+        path.join(root, "scripts/prepare-plugin-sync.mjs"),
+        "--target-repo",
+        provenanceTarget,
+      ],
+      { cwd: root, encoding: "utf8" },
+    ),
+  );
+  assert.equal(repeatedPreparation.changed, false);
+  assert.equal(
+    JSON.parse(
+      fs.readFileSync(
+        path.join(provenancePluginRoot, ".codex-plugin/plugin.json"),
+        "utf8",
+      ),
+    ).version,
+    "1.0.1",
+    "idempotent preparation must not bump the plugin twice",
   );
 
   fs.writeFileSync(path.join(pluginSkills, "unexpected.txt"), "preserve me");
@@ -104,7 +200,7 @@ try {
           pluginSkills,
         ],
         { cwd: root, stdio: "pipe" },
-    ),
+      ),
     "plugin sync must refuse an unmanaged target file",
   );
   fs.unlinkSync(path.join(pluginSkills, "unexpected.txt"));
@@ -141,7 +237,8 @@ try {
 }
 
 assert.equal(
-  fs.readdirSync(path.join(root, ".agents/skills"), { recursive: true })
+  fs
+    .readdirSync(path.join(root, ".agents/skills"), { recursive: true })
     .filter((item) => path.basename(item) === "skill.md").length,
   0,
   "lowercase .agents skill.md files remain",
@@ -152,10 +249,16 @@ const directSkill = fs.readFileSync(
   "utf8",
 );
 assert.match(directSkill, /add_adgroup with adgroup_type: UNIFIED_AD_GROUP/);
-assert.doesNotMatch(directSkill, /add_adgroup\/add_adgroups[\s\S]*UNIFIED_AD_GROUP/);
+assert.doesNotMatch(
+  directSkill,
+  /add_adgroup\/add_adgroups[\s\S]*UNIFIED_AD_GROUP/,
+);
 assert.match(directSkill, /add_adgroups.*legacy `TEXT_AD_GROUP`/);
 
-const serpSkill = fs.readFileSync(path.join(sourceRoot, "serp-monitor/SKILL.md"), "utf8");
+const serpSkill = fs.readFileSync(
+  path.join(sourceRoot, "serp-monitor/SKILL.md"),
+  "utf8",
+);
 assert.match(serpSkill, /webmaster_get_popular_queries/);
 assert.match(serpSkill, /aggregated search-performance data/);
 assert.doesNotMatch(serpSkill, /configured local scripts|Yandex XML tools/i);
@@ -177,10 +280,16 @@ assert.match(editorialSkill, /^## Рабочий цикл$/m);
 assert.match(editorialSkill, /^## Смысл и структура$/m);
 assert.match(editorialSkill, /^## Защита от переусердствования$/m);
 assert.match(editorialSkill, /^## Режим результата$/m);
-assert.doesNotMatch(editorialSkill, /запретить длинное тире|заменить «ёлочки»/i);
+assert.doesNotMatch(
+  editorialSkill,
+  /запретить длинное тире|заменить «ёлочки»/i,
+);
 
 const editorialPatterns = fs.readFileSync(
-  path.join(sourceRoot, "human-editorial-polish/references/russian-patterns.md"),
+  path.join(
+    sourceRoot,
+    "human-editorial-polish/references/russian-patterns.md",
+  ),
   "utf8",
 );
 const patternNumbers = [
@@ -197,7 +306,10 @@ assert.ok(
 );
 assert.match(editorialPatterns, /## Ложные срабатывания/);
 assert.match(editorialPatterns, /русские типографские кавычки «ёлочки»/);
-assert.match(editorialPatterns, /Если текст уже конкретен[\s\S]*не переписывать его/);
+assert.match(
+  editorialPatterns,
+  /Если текст уже конкретен[\s\S]*не переписывать его/,
+);
 
 const aliasSkill = fs.readFileSync(
   path.join(sourceRoot, "ai-markers-remove/SKILL.md"),

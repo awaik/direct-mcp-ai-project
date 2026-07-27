@@ -11,17 +11,19 @@ const manifestName = ".lidfly-generated-skills.json";
 
 function usage() {
   return `Usage:
-  node scripts/sync-skills.mjs [--check] [--plugin-target <skills-directory>]
+  node scripts/sync-skills.mjs [--check] [--plugin-target <skills-directory>] [--json]
 
 Options:
   --check           Validate generated copies without changing files.
   --plugin-target   Also sync an existing LidFly plugin's skills directory.
+  --json            Print a machine-readable source snapshot instead of prose.
   --help, -h        Show this help.
 `;
 }
 
 let checkOnly = false;
 let pluginTargetArgument = null;
+let jsonOutput = false;
 const args = process.argv.slice(2);
 for (let index = 0; index < args.length; index += 1) {
   const argument = args[index];
@@ -38,6 +40,10 @@ for (let index = 0; index < args.length; index += 1) {
       throw new Error("--plugin-target requires a skills directory");
     }
     index += 1;
+    continue;
+  }
+  if (argument === "--json") {
+    jsonOutput = true;
     continue;
   }
   if (argument === "--help" || argument === "-h") {
@@ -57,11 +63,17 @@ const targets = [
 function resolvePluginTarget(rawTarget) {
   const targetRoot = path.resolve(process.cwd(), rawTarget);
   if (path.basename(targetRoot) !== "skills") {
-    throw new Error("--plugin-target must point to the plugin's skills directory");
+    throw new Error(
+      "--plugin-target must point to the plugin's skills directory",
+    );
   }
 
   const pluginRoot = path.dirname(targetRoot);
-  const pluginManifestPath = path.join(pluginRoot, ".codex-plugin", "plugin.json");
+  const pluginManifestPath = path.join(
+    pluginRoot,
+    ".codex-plugin",
+    "plugin.json",
+  );
   if (!fs.existsSync(pluginManifestPath)) {
     throw new Error(`LidFly plugin manifest not found: ${pluginManifestPath}`);
   }
@@ -71,7 +83,9 @@ function resolvePluginTarget(rawTarget) {
     throw new Error(`Expected LidFly plugin at ${pluginRoot}`);
   }
   if (plugin.skills !== undefined && plugin.skills !== "./skills/") {
-    throw new Error(`LidFly plugin has unsupported skills path: ${plugin.skills}`);
+    throw new Error(
+      `LidFly plugin has unsupported skills path: ${plugin.skills}`,
+    );
   }
 
   return targetRoot;
@@ -112,12 +126,25 @@ function hash(content) {
   return crypto.createHash("sha256").update(content).digest("hex");
 }
 
+function sourceTreeDigest(records) {
+  const digest = crypto.createHash("sha256");
+  for (const record of records) {
+    digest.update(record.path, "utf8");
+    digest.update("\0");
+    digest.update(String(record.size), "ascii");
+    digest.update("\0");
+    digest.update(record.sha256, "ascii");
+    digest.update("\0");
+  }
+  return digest.digest("hex");
+}
+
 function readText(filePath) {
   return fs.readFileSync(filePath, "utf8");
 }
 
 function parseQuotedValue(raw, label) {
-  if (!raw.startsWith("\"")) {
+  if (!raw.startsWith('"')) {
     throw new Error(`${label}: value must be a double-quoted YAML string`);
   }
   try {
@@ -135,19 +162,27 @@ function parseFrontmatter(markdown, skillName) {
   for (const line of match[1].split("\n")) {
     if (!line.trim()) continue;
     const field = line.match(/^([a-z-]+):\s*(.+)$/);
-    if (!field) throw new Error(`${skillName}: unsupported frontmatter line: ${line}`);
-    if (values.has(field[1])) throw new Error(`${skillName}: duplicate frontmatter field ${field[1]}`);
+    if (!field)
+      throw new Error(`${skillName}: unsupported frontmatter line: ${line}`);
+    if (values.has(field[1]))
+      throw new Error(`${skillName}: duplicate frontmatter field ${field[1]}`);
     values.set(field[1], field[2].trim());
   }
 
   const keys = [...values.keys()].sort();
   if (keys.join(",") !== "description,name") {
-    throw new Error(`${skillName}: frontmatter must contain only name and description`);
+    throw new Error(
+      `${skillName}: frontmatter must contain only name and description`,
+    );
   }
 
   const name = values.get("name");
-  const description = parseQuotedValue(values.get("description"), `${skillName}: description`);
-  if (name !== skillName) throw new Error(`${skillName}: folder name must match frontmatter name`);
+  const description = parseQuotedValue(
+    values.get("description"),
+    `${skillName}: description`,
+  );
+  if (name !== skillName)
+    throw new Error(`${skillName}: folder name must match frontmatter name`);
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name) || name.length > 64) {
     throw new Error(`${skillName}: invalid skill name`);
   }
@@ -159,48 +194,70 @@ function parseFrontmatter(markdown, skillName) {
 
 function quotedYamlField(yaml, field, skillName) {
   const match = yaml.match(new RegExp(`^\\s+${field}:\\s*(.+)$`, "m"));
-  if (!match) throw new Error(`${skillName}: agents/openai.yaml missing ${field}`);
+  if (!match)
+    throw new Error(`${skillName}: agents/openai.yaml missing ${field}`);
   return parseQuotedValue(match[1].trim(), `${skillName}: ${field}`);
 }
 
 function validateOpenAiYaml(skillDir, skillName) {
   const yamlPath = path.join(skillDir, "agents", "openai.yaml");
-  if (!fs.existsSync(yamlPath)) throw new Error(`${skillName}: missing agents/openai.yaml`);
+  if (!fs.existsSync(yamlPath))
+    throw new Error(`${skillName}: missing agents/openai.yaml`);
   const yaml = readText(yamlPath);
 
   if (/^(name|description|version):/m.test(yaml)) {
-    throw new Error(`${skillName}: agents/openai.yaml contains legacy top-level fields`);
+    throw new Error(
+      `${skillName}: agents/openai.yaml contains legacy top-level fields`,
+    );
   }
 
   const displayName = quotedYamlField(yaml, "display_name", skillName);
-  const shortDescription = quotedYamlField(yaml, "short_description", skillName);
+  const shortDescription = quotedYamlField(
+    yaml,
+    "short_description",
+    skillName,
+  );
   const defaultPrompt = quotedYamlField(yaml, "default_prompt", skillName);
-  if (!displayName.trim()) throw new Error(`${skillName}: display_name is empty`);
+  if (!displayName.trim())
+    throw new Error(`${skillName}: display_name is empty`);
   if (shortDescription.length < 25 || shortDescription.length > 64) {
-    throw new Error(`${skillName}: short_description must contain 25-64 characters`);
+    throw new Error(
+      `${skillName}: short_description must contain 25-64 characters`,
+    );
   }
   if (!defaultPrompt.includes(`$${skillName}`)) {
     throw new Error(`${skillName}: default_prompt must mention $${skillName}`);
   }
 
   if (mcpSkills.has(skillName)) {
-    if (!/^\s+value:\s*"lidfly"\s*$/m.test(yaml)
-      || !/^\s+transport:\s*"streamable_http"\s*$/m.test(yaml)
-      || !/^\s+url:\s*"https:\/\/lidfly\.ru\/mcp\/v3"\s*$/m.test(yaml)) {
+    if (
+      !/^\s+value:\s*"lidfly"\s*$/m.test(yaml) ||
+      !/^\s+transport:\s*"streamable_http"\s*$/m.test(yaml) ||
+      !/^\s+url:\s*"https:\/\/lidfly\.ru\/mcp\/v3"\s*$/m.test(yaml)
+    ) {
       throw new Error(`${skillName}: missing LidFly MCP v3 dependency`);
     }
   }
 
-  if (skillName === "ai-markers-remove"
-    && !/^\s+allow_implicit_invocation:\s*false\s*$/m.test(yaml)) {
-    throw new Error(`${skillName}: legacy alias must disable implicit invocation`);
+  if (
+    skillName === "ai-markers-remove" &&
+    !/^\s+allow_implicit_invocation:\s*false\s*$/m.test(yaml)
+  ) {
+    throw new Error(
+      `${skillName}: legacy alias must disable implicit invocation`,
+    );
   }
 }
 
 function listFiles(dir, baseDir = dir) {
   const files = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.name === ".DS_Store" || entry.name === "__pycache__" || entry.name.endsWith(".pyc")) continue;
+    if (
+      entry.name === ".DS_Store" ||
+      entry.name === "__pycache__" ||
+      entry.name.endsWith(".pyc")
+    )
+      continue;
     const entryPath = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...listFiles(entryPath, baseDir));
     if (entry.isFile()) files.push(path.relative(baseDir, entryPath));
@@ -213,7 +270,8 @@ function listAllTargetFiles(dir, baseDir = dir) {
   const files = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const entryPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) files.push(...listAllTargetFiles(entryPath, baseDir));
+    if (entry.isDirectory())
+      files.push(...listAllTargetFiles(entryPath, baseDir));
     if (entry.isFile() || entry.isSymbolicLink()) {
       files.push(path.relative(baseDir, entryPath));
     }
@@ -233,7 +291,9 @@ function expectedGeneratedFiles(manifest) {
 
 function validateStrictGeneratedTarget(targetRoot, manifest) {
   const expected = expectedGeneratedFiles(manifest);
-  const unexpected = listAllTargetFiles(targetRoot).filter((file) => !expected.has(file));
+  const unexpected = listAllTargetFiles(targetRoot).filter(
+    (file) => !expected.has(file),
+  );
   if (unexpected.length > 0) {
     throw new Error(
       `Refusing to manage plugin target with unexpected files: ${unexpected.join(", ")}`,
@@ -242,7 +302,9 @@ function validateStrictGeneratedTarget(targetRoot, manifest) {
 }
 
 function validateReferences(skillDir, markdown, skillNames, skillName) {
-  const resourceRefs = markdown.matchAll(/`((?:references|scripts|assets)\/[^`\s]+)`/g);
+  const resourceRefs = markdown.matchAll(
+    /`((?:references|scripts|assets)\/[^`\s]+)`/g,
+  );
   for (const match of resourceRefs) {
     if (!fs.existsSync(path.join(skillDir, match[1]))) {
       throw new Error(`${skillName}: missing referenced resource ${match[1]}`);
@@ -260,9 +322,13 @@ function validateReferences(skillDir, markdown, skillNames, skillName) {
 function isLegacyOpenAiYaml(filePath, skillName) {
   if (!fs.existsSync(filePath)) return false;
   const yaml = readText(filePath);
-  return yaml.includes(`name: "${skillName}"`)
-    && yaml.includes("version: 1")
-    && yaml.includes(`Используй $${skillName} для безопасного workflow LidFly MCP v3.`);
+  return (
+    yaml.includes(`name: "${skillName}"`) &&
+    yaml.includes("version: 1") &&
+    yaml.includes(
+      `Используй $${skillName} для безопасного workflow LidFly MCP v3.`,
+    )
+  );
 }
 
 function readManifest(targetRoot) {
@@ -277,27 +343,37 @@ function validateGeneratedManifest(manifest, label) {
   if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) {
     throw new Error(`${label}: generated manifest must be an object`);
   }
-  if (manifest.version !== 1
-    || !manifest.skills
-    || typeof manifest.skills !== "object"
-    || Array.isArray(manifest.skills)) {
-    throw new Error(`${label}: generated manifest must use version 1 and contain skills`);
+  if (
+    manifest.version !== 1 ||
+    !manifest.skills ||
+    typeof manifest.skills !== "object" ||
+    Array.isArray(manifest.skills)
+  ) {
+    throw new Error(
+      `${label}: generated manifest must use version 1 and contain skills`,
+    );
   }
   for (const [skillName, files] of Object.entries(manifest.skills)) {
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(skillName)
-      || !files
-      || typeof files !== "object"
-      || Array.isArray(files)) {
+    if (
+      !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(skillName) ||
+      !files ||
+      typeof files !== "object" ||
+      Array.isArray(files)
+    ) {
       throw new Error(`${label}: invalid generated skill ${skillName}`);
     }
     for (const [relativePath, expectedHash] of Object.entries(files)) {
       const parts = relativePath.split(/[\\/]/);
-      if (!relativePath
-        || path.isAbsolute(relativePath)
-        || relativePath.includes("\0")
-        || parts.some((part) => !part || part === "." || part === "..")
-        || !/^[a-f0-9]{64}$/.test(expectedHash)) {
-        throw new Error(`${label}: unsafe generated path ${skillName}/${relativePath}`);
+      if (
+        !relativePath ||
+        path.isAbsolute(relativePath) ||
+        relativePath.includes("\0") ||
+        parts.some((part) => !part || part === "." || part === "..") ||
+        !/^[a-f0-9]{64}$/.test(expectedHash)
+      ) {
+        throw new Error(
+          `${label}: unsafe generated path ${skillName}/${relativePath}`,
+        );
       }
     }
   }
@@ -307,14 +383,19 @@ function resolveGeneratedPath(targetRoot, skillName, relativePath) {
   const resolved = path.resolve(targetRoot, skillName, relativePath);
   const relative = path.relative(targetRoot, resolved);
   if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
-    throw new Error(`Generated path escapes target root: ${skillName}/${relativePath}`);
+    throw new Error(
+      `Generated path escapes target root: ${skillName}/${relativePath}`,
+    );
   }
   return resolved;
 }
 
 function hasExactBasename(filePath) {
   const parent = path.dirname(filePath);
-  return fs.existsSync(parent) && fs.readdirSync(parent).includes(path.basename(filePath));
+  return (
+    fs.existsSync(parent) &&
+    fs.readdirSync(parent).includes(path.basename(filePath))
+  );
 }
 
 function removeEmptyParents(startDir, stopDir) {
@@ -331,11 +412,17 @@ function cleanStaleGeneratedFiles(targetRoot, previousManifest, nextManifest) {
   for (const [skillName, files] of Object.entries(previousManifest.skills)) {
     for (const [relativePath, previousHash] of Object.entries(files)) {
       if (nextManifest.skills[skillName]?.[relativePath]) continue;
-      const stalePath = resolveGeneratedPath(targetRoot, skillName, relativePath);
+      const stalePath = resolveGeneratedPath(
+        targetRoot,
+        skillName,
+        relativePath,
+      );
       if (!fs.existsSync(stalePath)) continue;
       const current = fs.readFileSync(stalePath);
       if (hash(current) !== previousHash) {
-        throw new Error(`Refusing to delete modified generated file: ${stalePath}`);
+        throw new Error(
+          `Refusing to delete modified generated file: ${stalePath}`,
+        );
       }
       fs.unlinkSync(stalePath);
       removeEmptyParents(path.dirname(stalePath), targetRoot);
@@ -343,9 +430,11 @@ function cleanStaleGeneratedFiles(targetRoot, previousManifest, nextManifest) {
   }
 }
 
-if (!fs.existsSync(sourceRoot)) throw new Error(`skills-source not found: ${sourceRoot}`);
+if (!fs.existsSync(sourceRoot))
+  throw new Error(`skills-source not found: ${sourceRoot}`);
 
-const skills = fs.readdirSync(sourceRoot, { withFileTypes: true })
+const skills = fs
+  .readdirSync(sourceRoot, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
   .sort();
@@ -356,7 +445,8 @@ const skillMetadata = new Map();
 for (const skillName of skills) {
   const skillDir = path.join(sourceRoot, skillName);
   const skillPath = path.join(skillDir, "SKILL.md");
-  if (!fs.existsSync(skillPath)) throw new Error(`${skillName}: missing SKILL.md`);
+  if (!fs.existsSync(skillPath))
+    throw new Error(`${skillName}: missing SKILL.md`);
   const markdown = readText(skillPath);
   skillMetadata.set(skillName, parseFrontmatter(markdown, skillName));
   validateOpenAiYaml(skillDir, skillName);
@@ -364,13 +454,43 @@ for (const skillName of skills) {
   sourceFiles.set(skillName, listFiles(skillDir));
 }
 
-const directSkill = readText(path.join(sourceRoot, "yandex-direct-campaign-builder", "SKILL.md"));
+const sourceRecords = [];
+for (const skillName of skills) {
+  for (const relativePath of sourceFiles.get(skillName)) {
+    const content = fs.readFileSync(
+      path.join(sourceRoot, skillName, relativePath),
+    );
+    sourceRecords.push({
+      path: `${skillName}/${relativePath.split(path.sep).join("/")}`,
+      size: content.byteLength,
+      sha256: hash(content),
+    });
+  }
+}
+sourceRecords.sort((left, right) =>
+  left.path < right.path ? -1 : left.path > right.path ? 1 : 0,
+);
+const sourceSnapshot = {
+  schema_version: 1,
+  skill_count: skills.length,
+  file_count: sourceRecords.length,
+  skills_tree_sha256: sourceTreeDigest(sourceRecords),
+  files: sourceRecords,
+};
+
+const directSkill = readText(
+  path.join(sourceRoot, "yandex-direct-campaign-builder", "SKILL.md"),
+);
 if (/add_adgroup\/add_adgroups[\s\S]*UNIFIED_AD_GROUP/.test(directSkill)) {
-  throw new Error("yandex-direct-campaign-builder: add_adgroups must not be used for UNIFIED_AD_GROUP");
+  throw new Error(
+    "yandex-direct-campaign-builder: add_adgroups must not be used for UNIFIED_AD_GROUP",
+  );
 }
 const serpSkill = readText(path.join(sourceRoot, "serp-monitor", "SKILL.md"));
 if (/Yandex XML tools|configured local scripts/i.test(serpSkill)) {
-  throw new Error("serp-monitor: obsolete unbundled local-script workflow remains");
+  throw new Error(
+    "serp-monitor: obsolete unbundled local-script workflow remains",
+  );
 }
 
 // Preserve client-only edits: all existing generated copies of each source file must agree.
@@ -380,17 +500,26 @@ for (const skillName of skills) {
     for (const target of targets) {
       const targetRoot = path.join(root, target.dir);
       const preferredPath = path.join(targetRoot, skillName, relativePath);
-      const legacyPath = relativePath === "SKILL.md" && target.legacySkillFile
-        ? path.join(targetRoot, skillName, target.legacySkillFile)
-        : null;
+      const legacyPath =
+        relativePath === "SKILL.md" && target.legacySkillFile
+          ? path.join(targetRoot, skillName, target.legacySkillFile)
+          : null;
       const existingPath = fs.existsSync(preferredPath)
         ? preferredPath
-        : legacyPath && fs.existsSync(legacyPath) ? legacyPath : null;
-      if (existingPath) existing.push({ path: existingPath, content: fs.readFileSync(existingPath) });
+        : legacyPath && fs.existsSync(legacyPath)
+          ? legacyPath
+          : null;
+      if (existingPath)
+        existing.push({
+          path: existingPath,
+          content: fs.readFileSync(existingPath),
+        });
     }
     const hashes = new Set(existing.map((item) => hash(item.content)));
     if (hashes.size > 1) {
-      throw new Error(`Refusing to overwrite divergent client copies for ${skillName}/${relativePath}`);
+      throw new Error(
+        `Refusing to overwrite divergent client copies for ${skillName}/${relativePath}`,
+      );
     }
   }
 }
@@ -419,17 +548,29 @@ for (const target of targets) {
       for (const relativePath of sourceFiles.get(skillName)) {
         const sourcePath = path.join(sourceRoot, skillName, relativePath);
         const targetPath = path.join(targetRoot, skillName, relativePath);
-        if (!hasExactBasename(targetPath)
-          || !fs.readFileSync(targetPath).equals(fs.readFileSync(sourcePath))) {
-          throw new Error(`${targetLabel}: out of sync: ${skillName}/${relativePath}`);
+        if (
+          !hasExactBasename(targetPath) ||
+          !fs.readFileSync(targetPath).equals(fs.readFileSync(sourcePath))
+        ) {
+          throw new Error(
+            `${targetLabel}: out of sync: ${skillName}/${relativePath}`,
+          );
         }
       }
-      if (target.legacySkillFile
-        && hasExactBasename(path.join(targetRoot, skillName, target.legacySkillFile))) {
-        throw new Error(`${targetLabel}: legacy ${skillName}/${target.legacySkillFile} still exists`);
+      if (
+        target.legacySkillFile &&
+        hasExactBasename(
+          path.join(targetRoot, skillName, target.legacySkillFile),
+        )
+      ) {
+        throw new Error(
+          `${targetLabel}: legacy ${skillName}/${target.legacySkillFile} still exists`,
+        );
       }
       if (fs.existsSync(path.join(targetRoot, skillName, "openai.yaml"))) {
-        throw new Error(`${targetLabel}: legacy ${skillName}/openai.yaml still exists`);
+        throw new Error(
+          `${targetLabel}: legacy ${skillName}/openai.yaml still exists`,
+        );
       }
     }
     const currentManifest = readManifest(targetRoot);
@@ -463,7 +604,10 @@ for (const target of targets) {
     if (target.legacySkillFile) {
       const legacyPath = path.join(targetSkill, target.legacySkillFile);
       if (hasExactBasename(legacyPath)) {
-        legacySkillTemp = path.join(targetSkill, ".lidfly-legacy-skill-migration");
+        legacySkillTemp = path.join(
+          targetSkill,
+          ".lidfly-legacy-skill-migration",
+        );
         fs.renameSync(legacyPath, legacySkillTemp);
       }
     }
@@ -475,9 +619,11 @@ for (const target of targets) {
       fs.copyFileSync(sourcePath, targetPath);
     }
 
-    if (legacySkillTemp && fs.existsSync(legacySkillTemp)) fs.unlinkSync(legacySkillTemp);
+    if (legacySkillTemp && fs.existsSync(legacySkillTemp))
+      fs.unlinkSync(legacySkillTemp);
     const legacyOpenAiPath = path.join(targetSkill, "openai.yaml");
-    if (isLegacyOpenAiYaml(legacyOpenAiPath, skillName)) fs.unlinkSync(legacyOpenAiPath);
+    if (isLegacyOpenAiYaml(legacyOpenAiPath, skillName))
+      fs.unlinkSync(legacyOpenAiPath);
   }
 
   fs.writeFileSync(
@@ -489,8 +635,12 @@ for (const target of targets) {
   }
 }
 
-console.log(
-  checkOnly
-    ? `Validated ${skills.length} skills across ${targets.length} client directories.`
-    : `Synced ${skills.length} skills to ${targets.length} client directories without replacing target roots.`,
-);
+if (jsonOutput) {
+  process.stdout.write(`${JSON.stringify(sourceSnapshot, null, 2)}\n`);
+} else {
+  console.log(
+    checkOnly
+      ? `Validated ${skills.length} skills across ${targets.length} client directories.`
+      : `Synced ${skills.length} skills to ${targets.length} client directories without replacing target roots.`,
+  );
+}
