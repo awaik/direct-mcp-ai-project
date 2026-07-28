@@ -14,7 +14,7 @@ const skills = fs
   .map((entry) => entry.name)
   .sort();
 
-assert.equal(skills.length, 21, "unexpected canonical skill count");
+assert.equal(skills.length, 22, "unexpected canonical skill count");
 
 execFileSync(
   process.execPath,
@@ -33,7 +33,7 @@ const sourceSnapshot = JSON.parse(
   ),
 );
 assert.equal(sourceSnapshot.schema_version, 1);
-assert.equal(sourceSnapshot.skill_count, 21);
+assert.equal(sourceSnapshot.skill_count, 22);
 assert.equal(sourceSnapshot.files.length, sourceSnapshot.file_count);
 assert.match(sourceSnapshot.skills_tree_sha256, /^[a-f0-9]{64}$/);
 assert.deepEqual(
@@ -88,6 +88,46 @@ for (const relativePath of fs.readdirSync(sourceRoot, { recursive: true })) {
   );
 }
 
+const siteCommerceSkill = fs.readFileSync(
+  path.join(sourceRoot, "lidfly-site-commerce/SKILL.md"),
+  "utf8",
+);
+assert.match(
+  siteCommerceSkill,
+  /premium-header[\s\S]*commerce-header[\s\S]*logoImage[\s\S]*logoSize[\s\S]*compact[\s\S]*regular[\s\S]*large/,
+  "LidFly site skill must scope image logo size to supported headers with logoImage",
+);
+assert.match(
+  siteCommerceSkill,
+  /lidfly_get_site_chrome[\s\S]*lidfly_update_site_chrome[\s\S]*effective\.header\.logoSize/,
+  "LidFly site skill must require read → write → reread verification for logo size",
+);
+assert.match(
+  siteCommerceSkill,
+  /site-header[\s\S]*gallery-header[\s\S]*do not support `logoSize`/,
+  "LidFly site skill must reject logoSize for unsupported header types",
+);
+
+const vkSkill = fs.readFileSync(
+  path.join(sourceRoot, "vk-ads-campaign-builder/SKILL.md"),
+  "utf8",
+);
+assert.match(
+  vkSkill,
+  /goal_mode/,
+  "VK Ads skill must preserve package goal_mode safety rules",
+);
+
+const avitoBusinessSkill = fs.readFileSync(
+  path.join(sourceRoot, "avito-business/SKILL.md"),
+  "utf8",
+);
+assert.match(
+  avitoBusinessSkill,
+  /avito_user_id[\s\S]*Не подменяй[\s\S]*account_id/,
+  "Avito Business skill must not confuse profile avito_user_id with advertising account_id",
+);
+
 const pluginFixtureRoot = fs.mkdtempSync(
   path.join(os.tmpdir(), "lidfly-plugin-skills-sync-"),
 );
@@ -122,7 +162,7 @@ try {
     fs
       .readdirSync(pluginSkills, { withFileTypes: true })
       .filter((entry) => entry.isDirectory()).length,
-    21,
+    22,
     "plugin target must contain all canonical skills",
   );
 

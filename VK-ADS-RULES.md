@@ -59,20 +59,33 @@ Manual VK user-filter используй только когда он уже с�
 VK API требует создать кампанию вместе с минимум одной группой объявлений:
 
 ```
+vk_prepare_campaign(
+  name,
+  objective,
+  ad_groups: [{name, package_id}]
+)
+
+# priced_goal добавляется только если checked_packages[].goal_mode == "required"
 vk_create_campaign(
   name,
   objective: "site_conversions",
   budget_limit_day: "300",
   ad_groups: [{
     name,
-    package_id: 3858,
-    priced_goal: {source_id: COUNTER_ID, name: "CONDITION:SUBSTR"}
+    package_id: PACKAGE_ID
   }]
 )
 ```
 
-- `priced_goal.name` — формат `condition:substr`, например `uss:example.com`
-- `priced_goal.source_id` — ID счётчика (пикселя VK)
+- Всегда читай `checked_packages[].paid_event_type`, `priced_event_type`, `goal_mode` и `goal_reason`.
+- `goal_mode=required` — передай валидную цель группы или кампании: положительный `source_id` и непустой `name`.
+- При `goal_mode=required` получи цель через `vk_get_goals` / `vk_get_counter_goals`: для цели счётчика `priced_goal.name` имеет формат `condition:substr` (например, `uss:example.com`), а `source_id` — ID счётчика; для VK Mini Apps при `priced_event_type=43` используй `vk_get_inapp_events`, где `name=event.name`, а `source_id=tracker.id`.
+- `goal_mode=forbidden` — не передавай именованную цель. Не удаляй уже выбранную цель автоматически: согласуй CPC/CPM без цели либо другой goal/oCPM-пакет.
+- `goal_mode=unsupported` — остановись до POST; не угадывай правило нового provider event type.
+- Не требуй `priced_goal` только из-за `site_conversions` и не делай вывод из `options.settings.priced_goal`.
+- Пустой `priced_goal.name` из provider-read не является наследуемой целью.
+- Пакет 3509 имеет `priced_event_type=0` и не подходит для именованной goal-оптимизации.
+- При `provider_goal_package_mismatch` / `inconsistent_priced_goal` не повторяй тот же payload.
 
 ## Бюджеты
 

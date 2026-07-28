@@ -28,6 +28,20 @@ Use for LidFly sites, landing pages, published pages, assets/uploads, leads, ana
 5. Use `call_write_tool` for publishing, uploads, store/order changes, payment setup, and image generation.
 6. For paid image generation, show prompt, format, crop, and wait for explicit confirmation.
 
+### Change Header Logo Size
+
+For an inherited `premium-header` or `commerce-header`, change the image logo size through site chrome instead of replacing the image with a larger bitmap or claiming that the logo container cannot grow:
+
+1. Call `lidfly_get_site_chrome` through `call_tool` and verify that `header_type` is `premium-header` or `commerce-header`.
+2. Verify that `effective.header.logoImage` is set. Without `logoImage`, `logoSize` does not change the decorative mark or text brand.
+3. Choose `logoSize`: `compact` for a smaller logo, `regular` for the legacy default, or `large` for a larger responsive logo. Prefer `large` when the user asks to enlarge a vertical or detailed logo.
+4. Call `lidfly_update_site_chrome` through `call_write_tool` with `change.operation: "set"`, the exact current header type (`premium-header` or `commerce-header`), `props: { logoSize }`, and the exact `expected_updated_at` plus `expected_publication_revision` from the read.
+5. Call `lidfly_get_site_chrome` again and verify `effective.header.logoSize`.
+
+`site-header` and `gallery-header` do not support `logoSize`; do not send the field for those header types.
+
+The `large` preset keeps separate desktop, mobile, and compact scrolled sizes. Do not use page-level CSS or edit published HTML artifacts for inherited site chrome.
+
 ### Change Site Design Template
 
 For an existing site, use the shared read → write → reread workflow:

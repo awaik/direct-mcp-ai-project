@@ -17,6 +17,10 @@
       "SKILL.md": "b0de76241e737396469036521c56a2496eed67a8b631257d5fa20f73d72ca758",
       "agents/openai.yaml": "2e20daa9bd78e2d2c0fd26d32618c9964fbacd8175c21c77bf5e14866210864f"
     },
+    "avito-business": {
+      "SKILL.md": "5b23814eb8c39d1507b63a5b02e91cc1fe9647b302590b6fd90a761e100e08ba",
+      "agents/openai.yaml": "5369a5af63f518eca55800e6099ebb2ee98f42707b144c23fdd90c8251638bc1"
+    },
     "demand-research": {
       "SKILL.md": "21f0f2701605d9c95c4c3643572ac49765074e126d09eb36c7c1408680c4abd9",
       "agents/openai.yaml": "4ae1e34f8b136042dcd3c07452dc35f1d2606960631248b61d6ce3ec9dca0738"
@@ -35,7 +39,7 @@
       "agents/openai.yaml": "0c122a44d7f8094be46f36aa15503db5698be801c1e1e2697c8aa1079ebb11ca"
     },
     "lidfly-site-commerce": {
-      "SKILL.md": "1ea344a1755b3bb7670d3489af91a410ce5cb1209ed5fb43308362264e0dda37",
+      "SKILL.md": "b93d20b81d72d88af37d3ffde00046386010a079572dbd1bed23bff54828b68e",
       "agents/openai.yaml": "956b538749795c2c0f2adedf4af1f0c9b62ba48d1b82ab80ea4299087d4c811a"
     },
     "lidfly-support-escalation": {
@@ -68,7 +72,7 @@
       "references/transcription-workflow.md": "d5df33f317cd1124851c9a70a2f3454de8db4f22f2d8a19e5c006990016aed5f"
     },
     "vk-ads-campaign-builder": {
-      "SKILL.md": "7cb52980d33153ae9aa7fd52d3da9867ed4f65a512069358b9e189f1a61b1f9c",
+      "SKILL.md": "3605f9491d6a742b36afe3ac7b941678550714c4ee99a581cc157cd5a14ea097",
       "agents/openai.yaml": "ddc725a75e49fdd27c47f0083fcf27477e29979730eba293110083f4ed219617"
     },
     "workspace-project-manager": {

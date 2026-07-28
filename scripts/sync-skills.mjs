@@ -104,6 +104,7 @@ if (pluginTargetArgument !== null) {
 const mcpSkills = new Set([
   "article-writer",
   "avito-ads",
+  "avito-business",
   "demand-research",
   "export-ad-reports",
   "lidfly-site-commerce",
