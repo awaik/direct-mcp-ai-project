@@ -4,55 +4,63 @@
     "client": "Claude Code",
     "signals": ["Failed", "Authenticate"],
     "expected_layer": "mcp_oauth",
-    "expected_action": "Authenticate",
-    "forbidden": [".cursor/mcp.json", "provider tools"]
+    "expected_action": "Нажмите `Authenticate`/`Login`, завершите вход в открывшемся браузере и затем повторите проверку подключения.",
+    "forbidden": ["Не предлагай `.cursor/mcp.json` пользователю Claude.", "не обсуждай Яндекс, VK, Авито или другие provider tools до завершения MCP OAuth."]
   },
   {
     "id": "claude_desktop_login",
     "client": "Claude Desktop",
     "signals": ["Failed", "Login"],
     "expected_layer": "mcp_oauth",
-    "expected_action": "Login",
-    "forbidden": [".cursor/mcp.json", "provider tools"]
+    "expected_action": "Нажмите `Authenticate`/`Login`, завершите вход в открывшемся браузере и затем повторите проверку подключения.",
+    "forbidden": ["Не предлагай `.cursor/mcp.json` пользователю Claude.", "не обсуждай Яндекс, VK, Авито или другие provider tools до завершения MCP OAuth."]
   },
   {
     "id": "cursor_missing_config",
     "client": "Cursor",
     "signals": ["no server named lidfly"],
     "expected_layer": "config",
-    "expected_action": ".cursor/mcp.json",
-    "forbidden": [".mcp.json for Claude"]
+    "expected_action": "Cursor: `.cursor/mcp.json` с HTTP endpoint.",
+    "forbidden": ["Не создавай параллельный config другого клиента."]
   },
   {
     "id": "codex_transport_timeout",
     "client": "Codex",
     "signals": ["connection timeout", "OAuth complete"],
     "expected_layer": "transport",
-    "expected_action": "retry read-only check",
-    "forbidden": ["repeat provider write"]
+    "expected_action": "Проверь доступность endpoint и повтори один безопасный connect/read.",
+    "forbidden": ["Не советуй повторять provider write."]
+  },
+  {
+    "id": "opencode_static_authorization_overrides_oauth",
+    "client": "OpenCode",
+    "signals": ["OAuth complete", "Authentication failed", "SSE error 405", "same invalid API key before and after OAuth"],
+    "expected_layer": "config",
+    "expected_action": "Одно действие восстановления для подтверждённого OAuth-режима: удали только статический `headers.Authorization` и, если задан, `\"oauth\": false` из блока LidFly, не показывая значение заголовка, затем выполни `opencode mcp logout lidfly` и `opencode mcp auth lidfly`.",
+    "forbidden": ["новый API-ключ не создавай", "LidFly на SSE не переключай"]
   },
   {
     "id": "vscode_host",
     "client": "VS Code",
     "signals": ["Codex extension"],
     "expected_layer": "config",
-    "expected_action": "use Codex configuration",
-    "forbidden": ["mandatory separate VS Code connection"]
+    "expected_action": "VS Code: config Claude Code или Codex, который реально работает внутри VS Code.",
+    "forbidden": ["VS Code: только оболочка."]
   },
   {
     "id": "provider_not_connected",
     "client": "Codex",
     "signals": ["MCP OAuth complete", "VK connection absent"],
-    "expected_layer": "provider",
-    "expected_action": "connect VK in LidFly",
-    "forbidden": ["edit MCP config"]
+    "expected_layer": "provider_connection",
+    "expected_action": "объясни, какое подключение нужно добавить в LidFly.",
+    "forbidden": ["Не меняй MCP config: транспорт и MCP OAuth уже исправны."]
   },
   {
     "id": "stale_skills",
     "client": "Claude Code",
     "signals": ["MCP read works", "connection doctor missing"],
     "expected_layer": "skills",
-    "expected_action": "update client skills",
-    "forbidden": ["repeat provider write"]
+    "expected_action": "Предлагай обновить только skills текущего клиента.",
+    "forbidden": ["Отсутствие skills не выдавай за ошибку OAuth или транспорта."]
   }
 ]

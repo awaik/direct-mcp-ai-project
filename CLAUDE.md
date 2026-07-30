@@ -2,7 +2,7 @@
 
 ## Контекст
 
-Этот репозиторий - клиентский шаблон инструкций и skills для работы с LidFly MCP из внешних AI-клиентов: Codex, Claude Code, Claude Desktop, ChatGPT, Cursor, VS Code, Windsurf, Gemini, Cline и OpenClaw.
+Этот репозиторий - клиентский шаблон инструкций и skills для работы с LidFly MCP из внешних AI-клиентов: Codex, Claude Code, Claude Desktop, ChatGPT, Cursor, OpenCode, VS Code, Windsurf, Gemini, Cline и OpenClaw.
 
 Публичные setup snippets в продукте поддерживаются в основном репозитории LidFly в `public/js/guides.js`. Если локальная инструкция клиента и `public/js/guides.js` расходятся, актуальным считается `public/js/guides.js`, а этот шаблон нужно синхронизировать.
 
@@ -163,6 +163,9 @@ workspace_project_id
 - `resolve_campaign_scope` для обычного Авито не используется.
 - Недоступный partner API остаётся в каталоге с `unavailableReason`; объясни причину, не угадывай другое имя и не смешивай credentials профилей.
 - Read выполняется через `call_tool`; любая запись — через `call_write_tool` после current state, preflight и явного подтверждения.
+- `POST /autoload/v1/upload` — destructive запуск полного фида, а не edit одного объявления. Перед ним прочитай профиль и текущую/последнюю успешную загрузку, покажи URL и охват, затем получи явное подтверждение.
+- Для изменения полей объявления обнови полную запись в источнике фида с тем же неизменным `Id`; URL и расписание фида меняются через `POST /autoload/v2/profile`. Отдельного универсального item edit endpoint нет.
+- После Autoload проверь `Id → Avito ID` и v4 upload items. Не обещай сохранение Avito ID или статистики как безусловную гарантию Avito.
 - При `outcome=unknown/ambiguous` вызови `get_write_operation_status(operation_id)` и не повторяй write.
 - PII, резюме, записи звонков, коды доставки и приватные файлы требуют project access `admin`; signed artifact URL не сохраняй и не экспортируй.
 - Не настраивай автоматические AI-ответы на сообщения.

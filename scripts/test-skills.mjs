@@ -127,6 +127,54 @@ assert.match(
   /avito_user_id[\s\S]*Не подменяй[\s\S]*account_id/,
   "Avito Business skill must not confuse profile avito_user_id with advertising account_id",
 );
+assert.match(
+  avitoBusinessSkill,
+  /POST \/autoload\/v1\/upload[\s\S]*полного фида[\s\S]*тот же неизменный `Id`[\s\S]*Avito ID[\s\S]*не обещ/i,
+  "Avito Business skill must explain safe full-feed updates without promising provider statistics",
+);
+
+const transcriptionWorkflow = fs.readFileSync(
+  path.join(
+    sourceRoot,
+    "video-article-writer/references/transcription-workflow.md",
+  ),
+  "utf8",
+);
+assert.match(
+  transcriptionWorkflow,
+  /4 hours/,
+  "media workflows must know the real per-request transcription duration limit",
+);
+assert.match(
+  transcriptionWorkflow,
+  /M4A[\s\S]*200 MiB[\s\S]*segment_time 14340/,
+  "media workflows must inspect and split long recordings before upload",
+);
+assert.match(
+  transcriptionWorkflow,
+  /For every chunk in filename order[\s\S]*invoke `request_upload_audio` once[\s\S]*original order/,
+  "media workflows must transcribe and merge every chunk deterministically",
+);
+assert.match(
+  transcriptionWorkflow,
+  /Do not invent a `diarize` argument/,
+  "media workflows must not invent an argument absent from the current upload schema",
+);
+assert.match(
+  transcriptionWorkflow,
+  /96k[\s\S]*14340[\s\S]*coupled[\s\S]*200 MiB/,
+  "media workflows must keep bitrate and segment duration coupled to the upload limit",
+);
+assert.match(
+  transcriptionWorkflow,
+  /chunk-boundary marker[\s\S]*mark the seam[\s\S]*do not complete or reconstruct/,
+  "media workflows must preserve and mark phrases cut at chunk boundaries",
+);
+assert.match(
+  transcriptionWorkflow,
+  /delete only the generated chunk paths recorded by this run[\s\S]*Do not delete the original media/,
+  "media workflows must clean up only their own temporary chunks",
+);
 
 const pluginFixtureRoot = fs.mkdtempSync(
   path.join(os.tmpdir(), "lidfly-plugin-skills-sync-"),
