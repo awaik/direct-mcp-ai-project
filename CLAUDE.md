@@ -39,7 +39,7 @@ subscription_status
 3. Read-only действия вызвать через `call_tool({ tool_name, arguments })`.
 4. Любое создание, обновление, удаление, запуск, остановка, публикация, генерация платного изображения, запись памяти или управление доступами делать через `call_write_tool({ tool_name, arguments })`.
 
-`subscription_status` используй только для диагностики доступа, тарифа или auth-ошибок, а не в обычном workflow.
+`subscription_status` используй только для диагностики доступа, тарифа или auth-ошибок либо как одиночный connectivity/auth probe после повторной транспортной ошибки read-вызова по правилам ниже; не включай его в обычный workflow.
 
 `get_write_operation_status({ operation_id })` вызывай напрямую после provider write с `outcome=unknown/ambiguous`. Не передавай его через wrappers.
 
@@ -52,6 +52,16 @@ subscription_status
 Всегда покажи пользователю полный `report_text` и спроси явное текстовое согласие на отправку. `support_send_message` вызывай напрямую только после ответа вроде «отправляй», используя `suggested_request_id`. Auto-approve или режим клиента «не спрашивать» не заменяет согласие пользователя. При отказе заверши без отправки и повторных уговоров.
 
 Не эскалируй штатные validation/mode mismatch/access/auth/subscription/rate-limit/provider API errors. Первый timeout read-вызова допускает один безопасный retry; write-вызов не повторяй автоматически, если идемпотентность не доказана.
+
+`transport send error`, `HTTP request failed`, HTTP 000 и отсутствие HTTP-статуса/заголовков означают транспортную неопределённость, а не доказанную ошибку LidFly, Wordstat или рекламной платформы.
+
+- Для read-only вызова сделай один retry. При повторной ошибке без HTTP-ответа вызови прямой read-only `subscription_status({})` как одиночный connectivity/auth probe.
+- Если probe вернул корректный MCP/HTTP-ответ, соединение восстановлено: обработай структурированную auth/subscription/rate-limit ошибку по категории либо один раз повтори исходный read и продолжи задачу.
+- Если probe тоже не получил ответа, готовь support draft.
+
+Если после transport error успешно ответил сам `support_prepare_report`, endpoint снова доступен. До запроса согласия повтори исходный read; если задача продолжилась успешно, не предлагай отправлять уже неактуальный черновик.
+
+Если `search_tools` вернул `capability_notice.status=unsupported_by_provider_api`, это известное ограничение публичного API провайдера, а не ошибка LidFly. Объясни пользователю `user_action` и доступные альтернативы; не подменяй задачу похожим инструментом и не вызывай `support_prepare_report` или `support_send_message`.
 
 ## Provider Context
 

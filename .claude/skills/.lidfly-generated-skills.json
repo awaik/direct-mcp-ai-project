@@ -6,7 +6,7 @@
       "agents/openai.yaml": "e7f4c0c7cb12533b2855f83a10fc8bfa7e0109e5504d50dc2670813585f79cff"
     },
     "article-reviser": {
-      "SKILL.md": "ed0a93c9b7dbae1104c372fa7e55f7f980671f17332baeb78d0cc34b5be10507",
+      "SKILL.md": "cb05d8490dda328b2a29bd6328e36a3b2267e9ddefd5dfcd8d1e8ccce08a6daf",
       "agents/openai.yaml": "306fe19a7514ec9c8ea051f900c37530a9041e6d7b79748c226a3b533334cbe6"
     },
     "article-writer": {
@@ -32,18 +32,18 @@
     "human-editorial-polish": {
       "SKILL.md": "ff835b3b2418d47d175ec884f94cb287e3a38485f325616cf9da584fd0f7504d",
       "agents/openai.yaml": "beb719bfe76a743c384ef835df9eb080c493c684f8a634bf8229f5dd59ee6d00",
-      "references/russian-patterns.md": "e7a62d940ee30b1ddcc7f97900064588470f9c1b2f27888f26c503ee83308c66"
+      "references/russian-patterns.md": "f095b7ffd25d3502db6e71a1a479744cd1ea33807f23a8dd74a9f1e213663285"
     },
     "lidfly-connection-doctor": {
       "SKILL.md": "9a3605d6918508d71fdf62a03172356f656e7052aa5c81ad5b115834121a333a",
       "agents/openai.yaml": "0c122a44d7f8094be46f36aa15503db5698be801c1e1e2697c8aa1079ebb11ca"
     },
     "lidfly-site-commerce": {
-      "SKILL.md": "b93d20b81d72d88af37d3ffde00046386010a079572dbd1bed23bff54828b68e",
+      "SKILL.md": "bae3367ec200758bd44b1f8ff2c197f5528cd44b35468963f42af8246acf5849",
       "agents/openai.yaml": "956b538749795c2c0f2adedf4af1f0c9b62ba48d1b82ab80ea4299087d4c811a"
     },
     "lidfly-support-escalation": {
-      "SKILL.md": "09676d7f184aa4d1c4ebcb3273470f4732180b49206c123699a03f897756515e",
+      "SKILL.md": "424a40e8a77a9b8acced7dfc1f6bfa6624f77efde991e4a6adf9c540af486bd7",
       "agents/openai.yaml": "1bdcb2f9939b2ddef56ca1d8b98242d92296e3a13704ffca815faaad8e5e23ba"
     },
     "mcp-v3-provider-context": {
@@ -80,7 +80,7 @@
       "agents/openai.yaml": "9778d6c5f249e406d862ecb095de9b7e86df795274f59f7159fbaa43c5abbdbf"
     },
     "yandex-direct-campaign-builder": {
-      "SKILL.md": "9d8358179a18627e42a97687e99bee311bff3b85c084d9aa5ed37aefbbb74d7a",
+      "SKILL.md": "553f9996e3bcabc97e07260a21299efb486139be1d3ec35b95b082bec8c5f6ee",
       "agents/openai.yaml": "839127223c9ba2f88a465a94f99060a717cb7f9dd25697904883548023d29bde"
     },
     "yandex-metrika": {

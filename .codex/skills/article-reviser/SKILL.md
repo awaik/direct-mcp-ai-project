@@ -19,6 +19,7 @@ Use after `article-writer` or `video-article-writer`, or when the user asks to s
 ## Editing Rules
 
 - Improve structure and prose directly when a file path is given.
+- Run `$human-editorial-polish` as the final prose pass after structural and SEO edits. For a full-article revision, load its complete Russian-pattern catalog.
 - Preserve templates, metadata, JSON-LD, design classes, and generated sections unless the task explicitly asks.
 - Do not invent missing product facts; flag them in the report.
 - Do not add spelling or punctuation mistakes as a tactic.

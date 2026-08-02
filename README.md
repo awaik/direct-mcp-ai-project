@@ -130,7 +130,7 @@ node scripts/sync-skills.mjs
 | `vk-ads-campaign-builder` | VK Ads campaigns, groups, banners, statistics and guardrails |
 | `avito-ads` | Авито Реклама read/write workflows |
 | `yandex-webmaster` | Yandex Webmaster SEO audits and safe write actions |
-| `lidfly-site-commerce` | LidFly sites, assets, leads, Commerce |
+| `lidfly-site-commerce` | LidFly sites, SEO/social metadata, Schema.org, assets, leads, Commerce, RSS and product feeds |
 | `article-writer`, `video-article-writer`, `article-reviser`, `human-editorial-polish` | Контент, SEO/GEO, редактура без обхода детекторов |
 
 ## Настройка Под Бизнес
