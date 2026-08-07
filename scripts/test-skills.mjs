@@ -26,7 +26,7 @@ const skills = fs
   .map((entry) => entry.name)
   .sort();
 
-assert.equal(skills.length, 22, "unexpected canonical skill count");
+assert.equal(skills.length, 23, "unexpected canonical skill count");
 
 execFileSync(
   process.execPath,
@@ -45,7 +45,7 @@ const sourceSnapshot = JSON.parse(
   ),
 );
 assert.equal(sourceSnapshot.schema_version, 1);
-assert.equal(sourceSnapshot.skill_count, 22);
+assert.equal(sourceSnapshot.skill_count, 23);
 assert.equal(sourceSnapshot.files.length, sourceSnapshot.file_count);
 assert.match(sourceSnapshot.skills_tree_sha256, /^[a-f0-9]{64}$/);
 assert.deepEqual(
@@ -212,6 +212,52 @@ assert.match(
   "YML generation and Webmaster registration must remain separate workflows",
 );
 
+const pageMigrationSkill = fs.readFileSync(
+  path.join(sourceRoot, "lidfly-page-migration/SKILL.md"),
+  "utf8",
+);
+assert.match(
+  pageMigrationSkill,
+  /lidfly_list_pages[\s\S]*lidfly_get_page[\s\S]*lidfly_get_block[\s\S]*design_template_id[\s\S]*lidfly_audit_site_design_template[\s\S]*before the first write/i,
+  "page migration must audit an active site template before its first write",
+);
+assert.match(
+  pageMigrationSkill,
+  /intended template deviation[\s\S]*explicit textual confirmation before the write[\s\S]*confirm_template_deviation: true[\s\S]*auto-approve is not confirmation/i,
+  "page migration must confirm template deviations before writing",
+);
+assert.match(
+  pageMigrationSkill,
+  /complete replacement payload from the same page read[\s\S]*all reconstructed blocks[\s\S]*expected_publication_revision[\s\S]*Missing blocks are deletions[\s\S]*omitted optional fields can reset/i,
+  "page migration must use a complete CAS-guarded page replacement",
+);
+for (const field of [
+  "title",
+  "description",
+  "og_image",
+  "theme_preset",
+  "theme",
+  "custom_css",
+  "page_kind",
+  "inherit_site_design",
+  "auto_structured_data",
+]) {
+  assert.ok(
+    pageMigrationSkill.includes(`\`${field}\``),
+    `page migration replacement must preserve ${field}`,
+  );
+}
+assert.match(
+  pageMigrationSkill,
+  /Do not call `lidfly_update_site_theme` for a page-only migration or improvement[\s\S]*separate operation[\s\S]*cross-page impact before the write/i,
+  "page-only migration must not mutate the site-wide theme",
+);
+assert.match(
+  pageMigrationSkill,
+  /Reread the page after the write[\s\S]*rerun `lidfly_audit_site_design_template`/i,
+  "page migration must reread the page and reaudit template-sensitive changes",
+);
+
 const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
 assert.match(
   readme,
@@ -321,7 +367,7 @@ try {
     fs
       .readdirSync(pluginSkills, { withFileTypes: true })
       .filter((entry) => entry.isDirectory()).length,
-    22,
+    23,
     "plugin target must contain all canonical skills",
   );
 

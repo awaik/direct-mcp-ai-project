@@ -107,6 +107,7 @@ const mcpSkills = new Set([
   "avito-business",
   "demand-research",
   "export-ad-reports",
+  "lidfly-page-migration",
   "lidfly-site-commerce",
   "lidfly-connection-doctor",
   "lidfly-support-escalation",

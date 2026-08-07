@@ -1,6 +1,6 @@
 ---
 name: lidfly-site-commerce
-description: "Работать с сайтами и Commerce LidFly через MCP v3: страницы, SEO/social metadata, Schema.org, RSS/YML feeds, файлы, лиды, аналитика, публикация, товары, остатки, заказы и платежи. Использовать для операций с сайтом или магазином с точным scope и защитой секретов YooKassa."
+description: "Работать с сайтами и Commerce LidFly через MCP v3: страницы, Agent/GEO readiness, SEO/social metadata, Schema.org, RSS/YML feeds, файлы, лиды, аналитика, публикация, товары, остатки, заказы и платежи. Использовать для операций с сайтом или магазином с точным scope и защитой секретов YooKassa."
 ---
 
 # LidFly Site Commerce
@@ -27,6 +27,20 @@ Use for LidFly sites, landing pages, published pages, SEO and social metadata, S
 4. Use `call_tool` for reads: sites, pages, assets, leads, analytics, stores, orders.
 5. Use `call_write_tool` for publishing, uploads, store/order changes, payment setup, and image generation.
 6. For paid image generation, show prompt, format, crop, and wait for explicit confirmation.
+
+## Agent And GEO Readiness
+
+Use this workflow for requests about GEO, AI visibility, agent ready/readiness, MCP Card, AI robots, Markdown for agents, Agent Skills, WebMCP, or DNS-AID:
+
+1. Find `lidfly_get_agent_readiness` and read its schema, then call it through `call_tool` with the exact `subdomain`.
+2. Explain the two independent results: Agent Readiness is technical discovery/access for AI clients; GEO Content Readiness is factual clarity, entities, FAQ, characteristics, geography, dates, authorship, cases, and structured data for Generative Engine Optimization. GEO here does not mean geographic SEO.
+3. Treat `crawler_indexing_blocked=true` as a stronger privacy setting. Missing Markdown, Skills, MCP Card, WebMCP, sitemap, and a low external score are expected while the site is closed. Never enable indexing automatically.
+4. In `platform` mode, LidFly owns the publication marker, AI robots block, Link headers, Markdown negotiation, API catalog, OAuth metadata, protected-resource metadata, `auth.md`, MCP Card, Agent Skills, capabilities, and WebMCP runtime. Do not edit, upload, overwrite, or delete these platform artifacts manually.
+5. Change only the source setting through `lidfly_update_agent_readiness` via `call_write_tool`, using `mode: "platform" | "custom"` and the exact `expected_publication_revision` plus `expected_updated_at` from the same readiness read. Reread afterward. This write does not open search indexing.
+6. `custom` returns discovery ownership to the site owner and does not prove that custom artifacts are valid. Preserve user-owned HTML, ZIP, robots rules, CSP, and `.well-known` files.
+7. DNS-AID is versioned to draft-02 and remains an Internet-Draft. Report 100/100 only after both generated SVCB records, DNSSEC/AD, the public endpoints, and the current external scanner are verified. Do not publish `_a2a` without a real A2A endpoint.
+
+The default content policy for an open platform-managed site is `search=yes, ai-input=yes, ai-train=no`. A high technical score does not guarantee traffic, rankings, citations, or rich results.
 
 ## SEO, Social Metadata And Feeds
 
@@ -65,6 +79,31 @@ Publish or update an article through `lidfly_publish_blog_article`; LidFly gener
 
 The Commerce source of truth is products, variants, taxonomy, inventory, and store settings in PostgreSQL-backed tools. Read and update those records, use preview tools when the chosen operation exposes them, then call `lidfly_publish_store`. Publication generates Product or ProductGroup, visible-catalog OfferCatalog, `/yandex-market.yml`, and `/google-merchant.xml` from valid active physical products and variants. It may exclude invalid offers, including variants without a usable HTTPS image; report the returned feed counts and warnings.
 
+#### Private Product Import
+
+For more than 100 products, use this exact flow:
+
+1. Read the managed site and keep its current `publication_revision`.
+2. Call `lidfly_request_products_import_upload` through `call_write_tool` with the exact `subdomain`, local filename, and `format: "json" | "jsonl"`.
+3. Upload the local file to the returned private URL with `curl -T`. The URL is a five-minute one-use bearer capability; do not expose or save it in documents.
+4. Call `lidfly_import_products` through `call_write_tool` with `dry_run: true`, the returned `upload_id`, intended `on_conflict`, and the current `expected_publication_revision`.
+5. Review all counts and returned errors. A dry run executes the same transaction and rolls it back; it retains the staged file and does not change PostgreSQL, HTML, or publication revision.
+6. Only after an acceptable dry run, call the same import with `dry_run: false`. Then call `lidfly_publish_store` separately and reread representative products.
+
+Limits are 50 MiB and 5,000 products. JSON must be one flat top-level array; JSONL has one object on each non-empty line. Do not pass a public `source_url`, nested batch arrays, or provider-specific field conversions. A completed real `skip`/`update` import removes the upload; parse/CAS failures and an all-or-nothing `fail` rollback retain it until the one-hour TTL.
+
+Product create/import accepts ordered `addon_presets[]`. On update, omitting this field preserves assignments and `[]` clears them.
+
+#### Add-on Presets
+
+Use `lidfly_manage_addon_presets` for reusable site-level add-ons:
+
+1. Call `action: "list"` through `call_tool`; it is read-only and needs no publication revision. Without `key` it returns summaries; with `key` it returns the full preset.
+2. Call `action: "upsert"` or `action: "archive"` through `call_write_tool` with the current `expected_publication_revision`.
+3. Publish immediately with `lidfly_publish_store`, then reread affected products.
+
+An upsert fully replaces preset contents, preserves item IDs by preset + code, and reactivates an archived key. Archive preserves product links but removes the preset from effective add-ons. Assigned active presets expand in `addon_presets[]` order; duplicate codes across assigned presets are rejected. A product-local `addons[]` row overrides the same code in place, and unique local rows follow preset items. Do not copy `effective_addons` back into local `addons`: management reads intentionally distinguish local `addons`, assigned `addon_presets`, and diagnostic `effective_addons`, while storefront DTOs keep the effective result under the existing `addons` field. Quote and order creation revalidate current effective IDs and prices server-side.
+
 YML generation in LidFly and feed registration in Yandex Webmaster are separate workflows. Use the Yandex Webmaster skill only when the user explicitly asks to register or update the ready feed URL: start with `webmaster_get_hosts`, use the exact `host_id` without `client_login`, inspect the target host and feed state, and perform registration as a separate confirmed write.
 
 When `crawler_indexing_blocked=true`, missing sitemap, `/rss.xml`, and generated feeds are expected privacy behavior and not an SEO defect. Do not recommend enabling indexing unless the user explicitly asks for launch readiness or says the site should already be indexable.
@@ -72,6 +111,18 @@ When `crawler_indexing_blocked=true`, missing sitemap, `/rss.xml`, and generated
 Do not manually edit JSON-LD, `schemaOrigin`, `ssrProducts`, generated HTML, RSS, YML, Google Merchant XML, or platform-owned sitemap files. Do not promise indexing, ranking growth, stars, or rich results.
 
 ## Site Chrome And Design Template
+
+### Preserve An Active Site Template
+
+An active `design_template_id` is the site's persistent design system, not a suggestion to replace during ordinary page work.
+
+1. Before the first write to an existing templated site, call `lidfly_list_pages` and `lidfly_audit_site_design_template` through `call_tool`.
+2. Read the audit's applied template, expected starter block sequence, page-local overrides, key features, Commerce readiness, and generated-route conflicts. Explain relevant warnings before proposing a write.
+3. By default keep `inherit_site_design=true`, omit page-local `theme_preset`, `theme`, header/footer blocks, and custom CSS, and edit the saved content blocks in place. Do not replace inherited chrome with page blocks.
+4. Template deviations are allowed when the user chooses them. Never set `confirm_template_deviation=true` automatically or because the client is in auto-approve mode. First show the concrete impact, obtain explicit textual agreement, and only then repeat the exact write with the flag.
+5. Rerun `lidfly_audit_site_design_template` after structural, theme, chrome, storefront-route, or homepage changes and report remaining deviations.
+
+Changing normal content or props inside an existing content block is not itself a template deviation. Disabling inheritance, adding local chrome/theme, changing or deleting starter-home structure, disabling a declared key feature, or disabling a route that suppresses such a feature is.
 
 ### Change Header Logo Size
 

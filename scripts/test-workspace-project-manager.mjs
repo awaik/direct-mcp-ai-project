@@ -23,6 +23,10 @@ for (const skillPath of skillPaths) {
   assert.match(source, /new decision[^.]*workspace_add_tasks/i);
   assert.match(source, /objects, actions, values[^.]*conditional branches[^.]*workspace_schedule_ai_task/i);
   assert.match(source, /which type[^.]*automatically[^.]*user/i);
+  assert.match(source, /workspace_prepare_project_deletion[\s\S]*workspace_delete_project/i);
+  assert.match(source, /explicit textual confirmation/i);
+  assert.match(source, /expected_project_name[\s\S]*expected_updated_at/i);
+  assert.match(source, /never allowed in an AI autostart/i);
 }
 
 const agents = readFileSync("AGENTS.md", "utf8");

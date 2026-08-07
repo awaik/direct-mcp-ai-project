@@ -68,7 +68,7 @@ subscription_status
 Для рекламных и provider-задач при неизвестном кабинете, клиенте, подключении или Пространстве сначала вызывай:
 
 ```js
-get_provider_context({ provider: "yandex" | "vk" | "avito" | "avito_ads" | "lidfly" | "workspace", query? })
+get_provider_context({ provider: "yandex" | "vk" | "avito" | "avito_ads" | "lidfly" | "workspace", query?, client_login? })
 ```
 
 Если пользователь назвал кампанию или часть названия кампании, сначала вызывай:
@@ -77,7 +77,9 @@ get_provider_context({ provider: "yandex" | "vk" | "avito" | "avito_ads" | "lidf
 resolve_campaign_scope({ provider: "yandex" | "vk" | "avito_ads", query, workspace_project_id? })
 ```
 
-Дальше переноси в следующий `call_tool` или `call_write_tool` только возвращённые `scope_arguments` или `next_call.arguments`. Не придумывай `client_login`, `client_id`, `account_id`, `counter_id` или `host_id` из имени проекта.
+`query` — свободный поиск по проекту, названию, ИНН и отображаемым идентификаторам. Для Яндекс Директа точный логин передавай отдельно в `client_login`; оба поля можно использовать вместе. Legacy-вызов с логином в `query` допустим только как compatibility path и всё равно требует exact live-проверки.
+
+Дальше переноси в следующий `call_tool` или `call_write_tool` только возвращённые `tool_args`, `scope_arguments` или `next_call.arguments`. Не придумывай `client_login`, `client_id`, `account_id`, `counter_id` или `host_id` из имени проекта, `external_entity_name` или `external_entity_key`. Проверяй `scope_issues`: автоматически выполняй только read-only `next_action` с `may_execute_automatically=true`; `manual_scope_review`, неоднозначность, конфликт, outage и not-found нельзя обходить догадками.
 
 Для campaign write в командных/агентских Пространствах всегда передавай точный `workspace_project_id`. Исключение допустимо только если `call_write_tool` preflight по campaign id нашёл ровно один Workspace/provider scope и явно вернул следующий безопасный вызов.
 
@@ -139,6 +141,7 @@ workspace_project_id
 
 - Для Директа `connection_id` выбирает OAuth-подключение, `client_login` выбирает клиентский кабинет внутри подключения.
 - Перед multi-account задачами вызывай `get_provider_context({ provider: "yandex" })`.
+- Если известен точный логин, вызывай `get_provider_context({ provider: "yandex", client_login, query? })`; не подставляй его в `query` в новых вызовах.
 - Для кампании по имени сначала `resolve_campaign_scope({ provider: "yandex", query })`.
 - Для Метрики не используй `client_login`; передавай `counter_id` и при необходимости `connection_id`.
 - Новые управляемые объявления по умолчанию: `add_unified_campaign` -> `add_adgroup` с `UNIFIED_AD_GROUP` -> `add_keywords_batch` -> `add_responsive_ad`. `add_adgroups` создаёт только legacy `TEXT_AD_GROUP` и не используется для `UNIFIED_AD_GROUP`.
@@ -191,6 +194,7 @@ workspace_project_id
 
 - "Тема оформления" - визуальные tokens: цвета, шрифты, радиусы.
 - "Шаблон сайта" - persistent site-level design system: header, footer, карточки, checkout, page blueprints.
+- Перед первой записью в существующий сайт с `design_template_id` вызывай `lidfly_audit_site_design_template`; по умолчанию сохраняй inheritance, starter-блоки и site-level chrome. `confirm_template_deviation=true` допустим только после показа конкретных последствий и явного текстового согласия пользователя, никогда автоматически или из-за auto-approve.
 - Commerce source of truth - PostgreSQL/store tools; опубликованный HTML в `/sites` только publish artifact.
 - Для унаследованного `premium-header` или `commerce-header` с заданным `logoImage` размер логотипа-картинки меняется через `lidfly_get_site_chrome` → `lidfly_update_site_chrome` и `logoSize: compact|regular|large`; при просьбе увеличить вертикальный или детализированный логотип выбирай `large`, а не утверждай, что контейнер увеличить нельзя. У `site-header` и `gallery-header` поля `logoSize` нет.
 - YooKassa seller secrets никогда не показывай пользователю.

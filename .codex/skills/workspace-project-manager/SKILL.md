@@ -33,6 +33,7 @@ Read through `call_tool`:
 - `workspace_list_projects`
 - `workspace_get_project`
 - `workspace_prepare_project_scope`
+- `workspace_prepare_project_deletion`
 - `workspace_get_settings`
 - `workspace_get_tasks`
 - `workspace_get_scheduled_ai_tasks`
@@ -40,6 +41,7 @@ Read through `call_tool`:
 Write through `call_write_tool`:
 
 - `workspace_create_project`
+- `workspace_delete_project`
 - `workspace_upsert_provider_entity`
 - `workspace_link_campaign`
 - `workspace_update_settings`
@@ -47,6 +49,17 @@ Write through `call_write_tool`:
 - `workspace_schedule_ai_task`
 
 Never pass top-level meta-tools such as `search_tools` or `get_tool_schema` as `tool_name`.
+
+## Permanent Project Deletion
+
+Permanent deletion is owner-only, irreversible, and never allowed in an AI autostart.
+
+1. Resolve and use the exact `workspace_project_id`; never select a deletion target from a similar name.
+2. Call read-only `workspace_prepare_project_deletion`.
+3. If `can_delete=false`, explain the returned blocker. Archive an active project only if the user asked; protected accounting history means the project must remain archived.
+4. If ready, show `confirmation_message`, the deletion counts, and retained activity-history count. Wait for an explicit textual confirmation.
+5. Call `workspace_delete_project` through `call_write_tool` with the unchanged `workspace_project_id`, `expected_project_name`, and `expected_updated_at` from that preflight.
+6. If the target changed, run the preflight again and request a new confirmation. After a transport-uncertain delete, reread the exact project before considering any retry.
 
 ## Reminders vs AI Autostarts
 

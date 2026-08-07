@@ -38,8 +38,12 @@
       "SKILL.md": "9a3605d6918508d71fdf62a03172356f656e7052aa5c81ad5b115834121a333a",
       "agents/openai.yaml": "0c122a44d7f8094be46f36aa15503db5698be801c1e1e2697c8aa1079ebb11ca"
     },
+    "lidfly-page-migration": {
+      "SKILL.md": "f3817bbf9f75233ecad6bf8c340bf7cc9e72dc9cdd846618795afdaeb5dfc40e",
+      "agents/openai.yaml": "fc2411979ebcb472d11acfd3de9a1c22b0ca2c3b5c06c73a080e99cd0df2e923"
+    },
     "lidfly-site-commerce": {
-      "SKILL.md": "bae3367ec200758bd44b1f8ff2c197f5528cd44b35468963f42af8246acf5849",
+      "SKILL.md": "92613ba8cdfd2894fb94351e14944b07af62f7e1018607088f8557316705d86a",
       "agents/openai.yaml": "956b538749795c2c0f2adedf4af1f0c9b62ba48d1b82ab80ea4299087d4c811a"
     },
     "lidfly-support-escalation": {
@@ -47,7 +51,7 @@
       "agents/openai.yaml": "1bdcb2f9939b2ddef56ca1d8b98242d92296e3a13704ffca815faaad8e5e23ba"
     },
     "mcp-v3-provider-context": {
-      "SKILL.md": "ceca3b1ba9985d319c42d21193899b5ea8a9ef38532640dcbd7b547cf4e3ab8f",
+      "SKILL.md": "ca25e3cd278642e7a4da7645bd77d16cc978d64e36fec26599d118c018c6d38f",
       "agents/openai.yaml": "a434eefccb4a06abe645aa604c56c875ef7b36db5ee555172611d63d7e7905c0"
     },
     "semantic-core": {
@@ -76,11 +80,11 @@
       "agents/openai.yaml": "ddc725a75e49fdd27c47f0083fcf27477e29979730eba293110083f4ed219617"
     },
     "workspace-project-manager": {
-      "SKILL.md": "d4eb95862d67d0fcc80ca816e146721811038b739c94233654705e155808dbf2",
+      "SKILL.md": "befe7519c8dd13762f5d40d5bfacc16a5ed71f035a1844b5da163ec60cc67d70",
       "agents/openai.yaml": "9778d6c5f249e406d862ecb095de9b7e86df795274f59f7159fbaa43c5abbdbf"
     },
     "yandex-direct-campaign-builder": {
-      "SKILL.md": "553f9996e3bcabc97e07260a21299efb486139be1d3ec35b95b082bec8c5f6ee",
+      "SKILL.md": "cc14dcba957677fd40f617ca39edbfaffe624bb5649e53b4978721ba9371bbfa",
       "agents/openai.yaml": "839127223c9ba2f88a465a94f99060a717cb7f9dd25697904883548023d29bde"
     },
     "yandex-metrika": {

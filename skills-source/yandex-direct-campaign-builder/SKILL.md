@@ -11,12 +11,14 @@ Use for Yandex Direct campaign creation, audit, optimization, budgets, keywords,
 
 1. `search_tools({ provider: "yandex", query })`.
 2. `get_tool_schema` before each new tool.
-3. Unknown account/client/project: `get_provider_context({ provider: "yandex", query? })`.
+3. Unknown account/client/project: `get_provider_context({ provider: "yandex", query? })`. Keep `query` for free project/name/INN search; when the exact Direct login is known, pass it separately as `client_login` (both fields may be used together).
 4. Named campaign: `resolve_campaign_scope({ provider: "yandex", query, workspace_project_id? })`.
 5. Copy returned `scope_arguments` into Direct calls.
 6. Read through `call_tool`; write through `call_write_tool`.
 
 Direct tools use `connection_id` and optional `client_login`. Metrika tools use `counter_id` and optional `connection_id`, not `client_login`.
+
+For legacy Workspace links, accept a recovered Direct scope only when `get_provider_context` returns the complete `workspace_project_id + connection_id + client_login` in `tool_args`. Read `scope_issues`: run only a read-only `next_action` with `may_execute_automatically=true`; never guess around `manual_scope_review`, ambiguity, conflict, provider outage, or login-not-found. Do not derive `client_login` from `external_entity_key`, a project/account name, `external_entity_name`, or Direct `ClientId`.
 
 ## Default Modern Build
 
