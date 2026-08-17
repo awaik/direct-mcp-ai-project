@@ -24,6 +24,15 @@ Before writing audits, documents, decisions, snapshots, settings, provider links
 4. If ambiguous, show candidates and ask for exact `workspace_project_id`.
 5. If no project exists or no project matches, offer to create one with `workspace_create_project`; do not create "Основной проект" silently.
 
+## Provider Links
+
+- Call top-level `get_provider_context` with the exact `workspace_project_id` before treating a missing provider scope as an error.
+- If it returns `provider_link_candidates`, those scopes are verified but not executable inside the project yet.
+- When the user asked to link the cabinet, choose the exact candidate and execute only its prepared `next_action` through `call_write_tool`. Keep its arguments unchanged; MCP confirmation is still required.
+- If several candidates are returned, ask the user which cabinet to link. Never invent `client_login` from the project/account name or `external_entity_key`.
+- A missing provider link is a normal confirmation-gated write workflow, not a support incident. Do not call `support_prepare_report` for it.
+- Read-only project members must not receive unlinked owner OAuth candidates; do not try to recover them through personal scope enumeration.
+
 ## Tools To Prefer
 
 Find every internal Workspace tool with `search_tools({ provider: "workspace", ... })` and read its schema with `get_tool_schema` before the first call.

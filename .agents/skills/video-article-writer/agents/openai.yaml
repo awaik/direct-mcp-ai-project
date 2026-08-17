@@ -1,7 +1,7 @@
 interface:
   display_name: "Статья из видео"
-  short_description: "SEO-статья из видео, аудио или транскрипта"
-  default_prompt: "Используй $video-article-writer, чтобы превратить этот медиафайл или транскрипт в большую SEO-статью."
+  short_description: "SEO-статья из видео с продуктовым сценарием"
+  default_prompt: "Используй $video-article-writer, чтобы превратить этот медиафайл или транскрипт в большую SEO-статью и показать LidFly через реальные возможности и клиентские сценарии."
 
 dependencies:
   tools:

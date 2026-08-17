@@ -1,7 +1,7 @@
 interface:
   display_name: "SEO/GEO-статья"
-  short_description: "SEO/GEO-статьи с семантикой и ревью"
-  default_prompt: "Используй $article-writer, чтобы подготовить публикационную SEO/GEO-статью по моей теме."
+  short_description: "SEO/GEO-статьи с продуктовой историей LidFly"
+  default_prompt: "Используй $article-writer, чтобы подготовить публикационную SEO/GEO-статью по моей теме и показать LidFly через команды, клиентские сценарии и проверяемую пользу."
 
 dependencies:
   tools:

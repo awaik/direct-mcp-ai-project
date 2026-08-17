@@ -1,6 +1,6 @@
 ---
 name: video-article-writer
-description: "Превращать видео, аудио или транскрипт в большую SEO-статью: распознавание через LidFly, семантика, редактура, SEO-поля и согласованная обложка. Использовать, когда пользователь даёт медиафайл или расшифровку и просит статью, лонгрид или материал блога."
+description: "Превращать видео, аудио или транскрипт в большую SEO-статью: LidFly-распознавание, семантика, продуктовые сценарии для материалов LidFly, редактура, SEO и согласованная обложка. Использовать для статьи, лонгрида или материала блога из медиа."
 ---
 
 # Video Article Writer
@@ -14,7 +14,7 @@ Use when the user gives a video/audio file or transcript and asks for an article
 3. Read `references/transcription-workflow.md`, then extract/transcribe audio through LidFly tools if needed.
 4. Save transcript and brief in the run folder.
 5. Build semantic core for the article, not an ad campaign.
-6. Write an article that preserves source meaning and marks unverifiable claims.
+6. Write an article that preserves source meaning and marks unverifiable claims. For LidFly-owned material, apply the product rules below.
 7. Use `human-editorial-polish`; do not insert artificial mistakes.
 8. Run `article-reviser` for final editorial QA.
 9. Prepare SEO title/meta/FAQ.
@@ -26,3 +26,11 @@ Use when the user gives a video/audio file or transcript and asks for an article
 - Keep all artifacts in the run folder.
 - Do not publish or generate paid assets without confirmation.
 - For regulated topics, apply user-provided business/legal constraints, avoid unsupported promises, and flag claims that require qualified review.
+
+## LidFly-Owned Material
+
+- Put LidFly on the first meaningful screen and show user situation → command → data/tools → plan → confirmation → action/artifact → check.
+- Add at least two client scenarios and one paste-ready command; at least one scenario must show an end-to-end LidFly workflow.
+- Use only product capabilities confirmed by current tools or documentation, even when the video makes a broader claim.
+- Show how connected capabilities remove manual switching and expose an experienced marketer's reasoning. Do not claim instant expertise or unsupported speed.
+- Label composite scenarios; never invent customer results, quotes, CPA, savings, or conversion growth.

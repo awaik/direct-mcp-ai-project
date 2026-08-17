@@ -22,6 +22,8 @@ Use for Яндекс Вебмастер site checks: hosts, diagnostics, indexin
 3. `call_tool` for host list, summary, diagnostics, query analytics, sitemap, indexing, and links.
 4. Summarize SEO risks and next actions.
 
+`webmaster_query_analytics` covers only the last two weeks; for longer periods use `webmaster_get_popular_queries` or `webmaster_get_queries_history` with explicit dates. Never claim that Webmaster is not connected while `webmaster_*` tools are present: verify access with `webmaster_check_access` and report its actual result.
+
 ## Write Workflow
 
 Use `call_write_tool` only after explaining quota/risk and receiving explicit confirmation for:

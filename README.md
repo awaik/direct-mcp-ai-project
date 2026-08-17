@@ -22,6 +22,7 @@ call_write_tool
 get_methodology
 get_provider_context
 resolve_campaign_scope
+get_write_operation_status
 subscription_status
 ```
 
@@ -110,13 +111,15 @@ OAuth в браузере - основной путь для современн�
 
 ## Skills
 
-Канонический источник skills лежит в `skills-source/`. Клиентские копии в `.agents/skills` (актуальный Codex), `.codex/skills` (legacy compatibility), `.claude/skills` и `.openclaw/skills` генерируются командой:
+Канонический авторский источник skills находится в основном репозитории LidFly `direct-mcp/skills-source`. Этот репозиторий хранит только проверенную клиентскую проекцию подписанного immutable release: `skills-source/.lidfly-release-lock.json` фиксирует release и digests. Не редактируйте `skills-source/` вручную.
+
+Клиентские копии в `.agents/skills` (актуальный Codex), `.codex/skills` (legacy compatibility), `.claude/skills` и `.openclaw/skills` генерируются командой:
 
 ```bash
 node scripts/sync-skills.mjs
 ```
 
-Правьте только `skills-source/<skill>/`, затем запускайте sync. Каждый skill хранит основной файл `SKILL.md` и Codex metadata в `agents/openai.yaml`. Генератор работает недеструктивно, отказывается перезаписывать расходящиеся клиентские копии и удаляет только известные legacy-файлы собственного старого формата.
+Обновление `skills-source/` выполняет `scripts/pull-lidfly-skills.mjs`: он проверяет pinned Ed25519 key, подписи `latest.json`/manifest, registry и file digests, а затем меняет только файлы, совпадающие с предыдущим lock. После pull запускается обычный sync. Генераторы отказываются перезаписывать ручную дивергенцию.
 
 Ключевые skills:
 
@@ -131,6 +134,8 @@ node scripts/sync-skills.mjs
 | `avito-ads` | Авито Реклама read/write workflows |
 | `yandex-webmaster` | Yandex Webmaster SEO audits and safe write actions |
 | `lidfly-site-commerce` | LidFly sites, SEO/social metadata, Schema.org, assets, leads, Commerce, RSS and product feeds |
+| `lidfly-knowledge-maintainer` | Client-only ingest, query-to-wiki, provenance, changesets and lint for LidFly knowledge bases |
+| `restaurant-yandex` | Меню ресторана, фид Яндекс Бизнеса и аналитика действий в Картах |
 | `article-writer`, `video-article-writer`, `article-reviser`, `human-editorial-polish` | Контент, SEO/GEO, редактура без обхода детекторов |
 
 ## Настройка Под Бизнес

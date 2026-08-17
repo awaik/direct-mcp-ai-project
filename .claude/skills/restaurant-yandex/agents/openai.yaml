@@ -1,0 +1,12 @@
+interface:
+  display_name: "Ресторан и Яндекс Бизнес"
+  short_description: "Меню, фид и аналитика ресторанов в Яндексе"
+  default_prompt: "Используй $restaurant-yandex, чтобы обновить меню ресторана, проверить фид Яндекс Бизнеса или проанализировать действия в Картах."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для сайта, меню и Яндекс Бизнеса"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"
