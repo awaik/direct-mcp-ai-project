@@ -630,10 +630,10 @@ const editorialSkill = fs.readFileSync(
 assert.match(editorialSkill, /`references\/russian-patterns\.md`/);
 assert.match(editorialSkill, /^## Подготовка$/m);
 assert.match(editorialSkill, /^## Калибровка по жанру$/m);
-assert.match(editorialSkill, /^## Рабочий цикл$/m);
-assert.match(editorialSkill, /^## Смысл и структура$/m);
+assert.match(editorialSkill, /^## (?:Рабочий цикл|Двухэтапный цикл)$/m);
+assert.match(editorialSkill, /Зафиксировать защищённ/);
 assert.match(editorialSkill, /^## Защита от переусердствования$/m);
-assert.match(editorialSkill, /^## Режим результата$/m);
+assert.match(editorialSkill, /^## Результат$/m);
 assert.doesNotMatch(
   editorialSkill,
   /запретить длинное тире|заменить «ёлочки»/i,
@@ -645,17 +645,17 @@ const articleReviserSkill = fs.readFileSync(
 );
 assert.match(
   articleReviserSkill,
-  /\$human-editorial-polish[\s\S]*complete Russian-pattern catalog/,
+  /\$human-editorial-polish[\s\S]*(?:complete Russian-pattern catalog|русский каталог паттернов)/,
   "article-reviser must run the canonical Russian editorial pass",
 );
 assert.match(
   articleReviserSkill,
-  /first meaningful screen[\s\S]*paste-ready command[\s\S]*two client scenarios[\s\S]*confirmed action or verifiable artifact[\s\S]*reread\/check/,
+  /(?:first meaningful screen|первом смысловом экране)[\s\S]*paste-ready (?:command|команда)[\s\S]*(?:two client scenarios|минимум два клиентских сценария)[\s\S]*(?:confirmed action or verifiable artifact|подтверждённое действие или проверяемый read-only артефакт)[\s\S]*(?:reread\/check|повторное чтение)/,
   "article-reviser must enforce the LidFly product story and verification arc",
 );
 assert.match(
   articleReviserSkill,
-  /removing LidFly paragraphs leaves the method unchanged[\s\S]*rebuild the product arc/,
+  /(?:removing LidFly paragraphs leaves the method unchanged[\s\S]*rebuild the product arc|после удаления LidFly метод статьи действительно теряет существенную часть)/,
   "article-reviser must reject decorative LidFly mentions",
 );
 
@@ -663,15 +663,15 @@ const articleWriterSkill = fs.readFileSync(
   path.join(sourceRoot, "article-writer/SKILL.md"),
   "utf8",
 );
-assert.match(articleWriterSkill, /^## LidFly Product Story Contract$/m);
+assert.match(articleWriterSkill, /^## (?:LidFly Product Story Contract|Продуктовая история LidFly)$/m);
 assert.match(
   articleWriterSkill,
-  /user situation → paste-ready command → concrete LidFly data\/tools → explained plan → confirmed action or verifiable artifact → reread\/check → next improvement cycle/,
+  /(?:user situation → paste-ready command → concrete LidFly data\/tools → explained plan → confirmed action or verifiable artifact → reread\/check → next improvement cycle|ситуация → paste-ready команда → конкретные данные и инструменты → объяснённый план → подтверждённое действие или проверяемый артефакт → повторное чтение состояния → следующий цикл)/,
   "article-writer must define the complete product arc",
 );
 assert.match(
   articleWriterSkill,
-  /at least two client scenarios[\s\S]*experienced marketer's process accessible[\s\S]*Never invent a customer/,
+  /(?:at least two client scenarios[\s\S]*experienced marketer's process accessible[\s\S]*Never invent a customer|минимум два клиентских сценария[\s\S]*объяснить пользу[\s\S]*Не придумывать клиента)/,
   "article-writer must require client scenarios, expert reasoning, and honest examples",
 );
 
