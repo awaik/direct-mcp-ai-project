@@ -1,6 +1,6 @@
 ---
 name: lidfly-connection-doctor
-description: "Диагностировать подключение LidFly MCP v3 в Claude Code, Claude Desktop, Codex, Cursor, OpenCode и VS Code: неверный config, timeout транспорта, незавершённый MCP OAuth, конфликт статического Authorization с OAuth, отсутствие provider-подключения и устаревшие skills. Использовать при Failed, Authenticate/Login, Authentication failed, SSE 405 и недоступных инструментах."
+description: "Диагностировать подключение LidFly MCP v3 в Claude Code, Claude Desktop, Codex, Cursor, OpenCode и VS Code: неверный config, timeout транспорта, незавершённый или слетающий MCP OAuth, конфликт статического Authorization с OAuth, отсутствие provider-подключения и устаревшие skills. Использовать при Failed, Authenticate/Login, Authentication failed, requires OAuth reauthentication, SSE 405 и недоступных инструментах."
 ---
 
 # LidFly Connection Doctor
@@ -31,6 +31,29 @@ description: "Диагностировать подключение LidFly MCP v
 Не привязывай исправность к фиксированному числу tools или meta-tools.
 
 ## Классифицируй состояние
+
+### Codex: частая повторная авторизация
+
+Если Codex после уже завершённого входа пишет `requires OAuth reauthentication` или снова требует браузерный вход после истечения access token, сначала определи версии всех процессов, которые используют общее хранилище: CLI, приложение и расширение Codex в VS Code. Для этого сценария поддерживается Codex 0.149 или новее.
+
+Если хотя бы один клиент старше, обнови его или полностью закрой все старые процессы Codex до изменения credentials. Не запускай новый login, пока старый CLI, приложение или расширение ещё работает: старый процесс может снова сохранить запись без issuer. Затем выполни одну миграцию в таком порядке:
+
+```bash
+codex --version
+codex mcp logout lidfly
+codex mcp login lidfly
+codex mcp list
+```
+
+Классифицируй причину по границе клиента и сервера:
+
+- Если после истечения access token `/token` вообще не вызывался, ошибка возникла локально до обращения к LidFly. Это слой `mcp_oauth`: несовместимая legacy-схема credentials или отсутствующая issuer-привязка. Не обвиняй сервер, не меняй token TTL, `soft_rotation`, grants или rate limits и не предлагай повторять login без закрытия старых процессов.
+- Если `/token` вызывался и вернул `invalid_grant`, это отдельная серверная ветка refresh grant. Проверь безопасные события `oauth_refresh_*`, client binding и срок grant, не подменяя диагноз локальной issuer-ошибкой.
+- Если `/token` вернул успех, а следующий MCP-запрос не прошёл, проверяй доставку нового Bearer и MCP admission отдельно; новый браузерный вход сам по себе это не исправляет.
+
+При локальной диагностике credentials проверяй только наличие поля issuer и безопасные сроки. Никогда не показывай access/refresh token, authorization code, PKCE verifier, `state` или значения из Keychain. После миграции проверь read-only MCP-вызов, автоматический refresh после истечения 15-минутного access token и два параллельных актуальных процесса Codex без нового `/authorize`.
+
+Меняй только канонический `skills-source`. Generated-копии для AI-клиентов обновляй только через проверенный подписанный release, не вручную.
 
 ### Ожидается MCP OAuth
 
