@@ -15,6 +15,7 @@ description: "Безопасно восстанавливать transport errors
 - Инструмент или возможность не найдены: повторить `search_tools({})` без `query` и `provider`. Только если широкий поиск ничего подходящего не вернул, подготовить запрос на возможность.
 - `search_tools` вернул `capability_notice.status=unsupported_by_provider_api` либо методология явно говорит, что действие доступно только в интерфейсе провайдера: объяснить пользователю `summary`, `user_action` и доступные API-альтернативы. Это известная граница API, поэтому не эскалировать её, не вызывать `support_prepare_report`/`support_send_message` и не подменять задачу похожим write-инструментом.
 - Validation, mode mismatch, access denied, auth, subscription, rate limit и штатную provider API error исправлять обычным способом без предложения поддержки.
+- `resolve_campaign_scope.status=resolved|ambiguous|not_observed` — штатный типизированный результат, а не технический инцидент. Для `incomplete` эскалация допустима после второго типизированного timeout либо при contract error; для `failed` — только при internal/contract reason.
 
 ## Восстановить Транспорт Без Ложной Ошибки Провайдера
 
@@ -35,7 +36,7 @@ description: "Безопасно восстанавливать transport errors
 
    ```js
    support_prepare_report({
-     incident_id: support_hint.incident_id,
+     reason: support_hint.next_arguments.reason,
      tool_name: support_hint.next_arguments.tool_name,
      error: support_hint.next_arguments.error,
      user_goal: "...",
@@ -44,9 +45,11 @@ description: "Безопасно восстанавливать transport errors
    })
    ```
 
-2. При повторном timeout или отсутствующей возможности вызвать тот же tool без `incident_id`; сервер создаст UUID. Для отсутствующей возможности использовать `tool_name: "search_tools"` и кратко описать широкий поиск в `attempted_steps`.
-3. Передавать только диагностический текст: цель, ожидаемый результат и до восьми коротких проверенных шагов. Не передавать raw arguments, токены, OAuth/API keys, пароли, seller secrets, персональные данные, содержимое файлов или локальные логи.
-4. Если `redactions_count > 0`, сообщить, что секретные фрагменты автоматически скрыты.
+2. При повторном read-timeout передать `reason: { kind: "repeated_read_timeout", attempt_count: 2, error_code: "timeout" }`. Для campaign discovery также передать фактический `campaign_resolution_status: "incomplete"`.
+3. При неизвестном результате write передать `reason: { kind: "unknown_write_outcome", operation_id }`; при ошибке structured provider-контракта — `reason: { kind: "provider_contract_error", contract_error_code }`.
+4. Для отсутствующей после широкого поиска возможности использовать `reason: { kind: "capability_request", capability: "..." }` и `tool_name: "search_tools"`. Сервер создаст feature request, а не диагностический incident.
+5. Передавать только диагностический текст: цель, ожидаемый результат и до восьми коротких проверенных шагов. Не передавать raw arguments, токены, OAuth/API keys, пароли, seller secrets, персональные данные, содержимое файлов или локальные логи.
+6. Если `redactions_count > 0`, сообщить, что секретные фрагменты автоматически скрыты.
 
 `support_prepare_report` read-only: он не создаёт thread/message, не пишет в PostgreSQL и не отправляет данные во внешние сервисы.
 

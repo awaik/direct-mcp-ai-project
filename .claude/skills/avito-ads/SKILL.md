@@ -40,6 +40,10 @@ Money/access/legal/destructive actions always require explicit intent.
 - Warn when available account balance is below 5000 rubles.
 - Statistics requests are limited to 100 days per API call.
 
+## Not Available via API
+
+The Avito Ads API cannot create campaigns, ad groups, or creatives. These are created first in the Avito Ads interface. Through the API LidFly then reads them and their statistics and changes group budget and bid where manual bid control allows it. `create_advertiser` and `create_contract` are the only supported create operations here. So "Use for ... campaigns, groups ..." above means audit and management of existing entities, not their creation. Treat a request to create a campaign, group, or creative as this known API limitation: explain the interface-first workflow, and do not invent create-campaign tool names or open a support report for it.
+
 ## Workspace
 
 If a Пространство is selected or the account belongs to several projects, pass exact `workspace_project_id` and fail closed on ambiguity.

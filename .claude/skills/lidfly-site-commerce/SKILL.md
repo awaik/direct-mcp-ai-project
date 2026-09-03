@@ -29,6 +29,19 @@ For a managed site with `design_template_id="knowledge-base"`, route ingest, que
 4. Use `call_tool` for reads: sites, pages, assets, leads, analytics, stores, orders.
 5. Use `call_write_tool` for publishing, uploads, store/order changes, payment setup, and image generation.
 6. For paid image generation, show prompt, format, crop, and wait for explicit confirmation.
+7. Never run two write calls for the same site in parallel. Before a write to a known URL/site_id/subdomain/name, refresh the targeted `get_provider_context({ provider: "lidfly", query: "..." })`; use `lidfly_list_sites` only when the site is unknown. Continue only when `publication_write.status="idle"` and use its fresh `publication_revision`. If it is `busy`, wait for the named operation to finish, reread the same targeted scope, verify the previous write's actual state, and only then make at most one retry.
+
+For a new or substantially revised managed site, use the server-verifiable workflow from [MCP v3 compatibility methodology](references/methodology.md): declare the page and image scope, inspect compact snapshots, choose a blueprint, apply one acceptance-bound changeset, then verify the exact revision on desktop and mobile. A successful write means only that changes were applied. Say that the site is ready only after promised routes/assets and visual QA pass; disclose every visual warning explicitly.
+
+For several desired-state edits on one site, save them sequentially and publish once after all edits. In particular, multiple taxonomy node page overrides use `get_catalog_node_page → update_catalog_node_page` one node at a time, followed by one `preview_catalog_publish → publish_store` flow.
+
+### Privacy consent on managed sites
+
+- Privacy consent is a site-level managed capability, not CSS, arbitrary HTML, a custom checkbox field, or a Bitrix24-only setting.
+- Use `lidfly_get_site_privacy_consent` to read the current policy and exact revisions. Publish every referenced internal document route first, then call `lidfly_update_site_privacy_consent` with those exact revisions, and finish with a control read.
+- `form.required=true` adds one required unchecked checkbox to every standard managed lead form. Use distinct `consent_url` and `privacy_policy_url`; changing enabled text or links requires a new version.
+- `analytics.required=true` enables the site-wide accept/reject banner and keeps Yandex Metrika and optional tracking inert until acceptance. A new analytics version asks visitors again.
+- Verify submitted proof through `lidfly_get_leads`: `consent` must include acceptance time, current version, immutable text, both document URLs, and the submitting page URL. Do not claim compliance from visual presence alone.
 
 ## Progressive References
 
