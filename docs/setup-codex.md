@@ -1,74 +1,90 @@
-# Подключение direct-mcp к OpenAI Codex
+# Подключение LidFly к OpenAI Codex
 
-## 1. Настройка MCP-сервера (проектный конфиг)
+Основной desktop-путь — MCP-only плагин LidFly через персональный marketplace Codex. Плагин подключает `https://lidfly.ru/mcp/v3`; OAuth-токены остаются под управлением Codex, API-ключ вручную копировать не нужно.
 
-Создайте или проверьте файл `.codex/mcp.json` в корне проекта:
+## Приложение Codex без терминала
 
-```json
-{
-  "mcpServers": {
-    "lidfly": {
-      "url": "https://lidfly.ru/mcp/v3",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
-```
+1. Откройте на компьютере инструкцию LidFly и скачайте подписанный установщик для macOS или Windows:
+   - `https://lidfly.ru/downloads/codex-plugin/macos-universal.dmg`
+   - `https://lidfly.ru/downloads/codex-plugin/windows-x64-setup.exe`
+2. Нажмите «Установить». Установщик добавит только локальный marketplace LidFly и откроет карточку плагина в Codex.
+3. В Codex нажмите **Install** и пройдите OAuth LidFly по email.
+4. Полностью перезапустите Codex и откройте новый чат.
 
-Замените `YOUR_API_KEY` на ваш API-ключ из [личного кабинета direct-mcp](https://lidfly.ru).
+Установщик не изменяет внутренний cache, installed-state или OAuth-хранилище Codex. Если политика организации запрещает персональные marketplaces, обратитесь к администратору Workspace: установщик не обходит managed requirements.
 
-## 2. Альтернатива — глобальный конфиг через CLI
+В плагин v1 не входят skills, prompts или локальные API-ключи. Их source of truth остаётся в этом AI-проекте.
 
-Если проектный `.codex/mcp.json` не подхватывается (известная проблема в ранних версиях `codex-cli`), добавьте сервер глобально:
+Для проектной установки актуальный Codex обнаруживает skills в `.agents/skills/<name>/SKILL.md`. Каталог `.codex/skills` в шаблоне сохранён только для совместимости со старыми клиентами. UI-метаданные каждого skill лежат в `<skill>/agents/openai.yaml`.
+
+## Codex CLI и Linux
 
 ```bash
-codex mcp add lidfly -- \
-  npx -y mcp-remote https://lidfly.ru/mcp/v3 \
-  --header "Authorization: Bearer YOUR_API_KEY"
+codex plugin marketplace add awaik/lidfly-plugins
+codex plugin add lidfly@lidfly
 ```
 
-Проверка:
+После установки пройдите OAuth в Codex, полностью перезапустите клиент и откройте новый чат. Проверка:
 
 ```bash
-codex mcp list --json
-codex mcp get lidfly --json
+codex plugin list --json
 ```
 
-## 3. Запуск
+## Ручной MCP fallback
+
+Если плагин недоступен, Codex CLI, приложение Codex и расширение Codex в VS Code можно подключить напрямую через `.codex/config.toml`.
+
+Создайте или проверьте файл `.codex/config.toml` в корне проекта:
+
+```toml
+[mcp_servers.lidfly]
+url = "https://lidfly.ru/mcp/v3"
+startup_timeout_sec = 45
+tool_timeout_sec = 120
+```
+
+Не используйте проектный Codex JSON-конфиг и не смешивайте `command`/`args` с `url` в одном сервере. Установщик не удаляет и не изменяет прежние custom MCP записи: после проверки плагина отключите дублирующий сервер вручную.
+
+## Авторизация
+
+После сохранения выполните:
 
 ```bash
-codex -C /path/to/your/project
+codex mcp login lidfly
 ```
 
-Или откройте папку проекта в Codex App.
+Или нажмите `Login` / `Authenticate` рядом с сервером `lidfly` в UI Codex. Откроется браузерный вход LidFly по email. API-ключ вручную копировать не нужно.
 
-## 4. Проверка подключения
+Если Codex просит `resource`, укажите:
 
-В сессии напишите:
-
-```
-проверь MCP и покажи список tools
+```text
+https://lidfly.ru
 ```
 
-Ожидаемо:
-- Сервер `lidfly` виден
-- Доступны 6 meta-инструментов v3: `search_tools`, `get_tool_schema`, `call_tool`, `call_write_tool`, `get_methodology`, `subscription_status`
-- Провайдерский каталог (`get_campaigns`, `vk_get_campaigns`, `wordstat_top_requests`, `workspace_get_context` и др.) в списке не виден — AI находит инструменты через `search_tools` и вызывает через `call_tool` / `call_write_tool`
+## Проверка
 
-## 5. Инструкции для агента
+```bash
+codex mcp list
+```
 
-Codex читает `AGENTS.md` из корня проекта, который ссылается на `CLAUDE.md` с правилами работы с API.
+Для сервера `lidfly` должен быть URL `https://lidfly.ru/mcp/v3`.
 
-Ваши бизнес-настройки — в `PROJECTS.md`.
+В чате:
 
-## 6. Навыки (Skills)
+```text
+Покажи мои доступные Пространства и рекламные кабинеты.
+```
 
-В папке `.codex/skills/` лежат готовые навыки:
+Ожидаемо: Codex видит v3 meta-layer, начинает с `get_provider_context` для provider scope и не вызывает provider tools напрямую.
 
-| Навык | Описание |
-|-------|---------|
-| `seo-optimizer` | SEO-аудит и оптимизация страниц |
+## Legacy Bearer fallback
 
-Навыки активируются автоматически по контексту запроса.
+Если клиент не поддерживает remote MCP OAuth, используйте ручной Bearer header только локально и не коммитьте его:
+
+```toml
+[mcp_servers.lidfly]
+url = "https://lidfly.ru/mcp/v3"
+headers = { Authorization = "Bearer YOUR_API_KEY" }
+```
+
+Основной source of truth для публичных snippets - `public/js/guides.js` в основном репозитории LidFly.

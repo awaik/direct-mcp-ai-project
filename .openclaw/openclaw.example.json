@@ -1,21 +1,11 @@
 {
-  "skills": {
-    "entries": {
-      "yandex-direct": {
-        "enabled": true,
-        "env": {
-          "LIDFLY_TOKEN": "YOUR_API_KEY"
-        }
-      },
-      "article-writer": {
-        "enabled": true,
-        "env": {
-          "LIDFLY_TOKEN": "YOUR_API_KEY"
-        }
-      },
-      "ai-markers-remove": {
-        "enabled": true
-      }
+  "mcpServers": {
+    "lidfly": {
+      "type": "http",
+      "url": "https://lidfly.ru/mcp/v3"
     }
+  },
+  "skills": {
+    "directory": ".openclaw/skills"
   }
 }

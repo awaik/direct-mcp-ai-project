@@ -1,0 +1,12 @@
+interface:
+  display_name: "SEO/GEO-аудит"
+  short_description: "Приоритетный SEO/GEO-аудит страницы"
+  default_prompt: "Используй $seo-optimizer, чтобы провести доказательный SEO/GEO-аудит этой страницы."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Wordstat, Вебмастера и Пространств"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

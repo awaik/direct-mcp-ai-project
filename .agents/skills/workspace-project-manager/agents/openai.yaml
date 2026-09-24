@@ -1,0 +1,12 @@
+interface:
+  display_name: "Пространства LidFly"
+  short_description: "Проекты, память, задачи и AI-автозапуски"
+  default_prompt: "Используй $workspace-project-manager, чтобы безопасно прочитать или обновить проект, память, задачу либо AI-автозапуск."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Workspace"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

@@ -1,0 +1,12 @@
+interface:
+  display_name: "YouTube SEO"
+  short_description: "SEO-обвязка YouTube из видео или текста"
+  default_prompt: "Используй $youtube-video-seo, чтобы подготовить названия, описание, главы, теги и идеи обложки для этого видео."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для транскрипции и Wordstat"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

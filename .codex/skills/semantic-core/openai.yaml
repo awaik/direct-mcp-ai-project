@@ -1,7 +1,0 @@
-name: "semantic-core"
-description: "Создание семантического ядра как senior-директолог/SEO-специалист: Wordstat, Директ, Метрика, SEO-структура, кластеры, ключи и минус-слова."
-version: 1
-interface:
-  display_name: "Semantic Core"
-  short_description: "Семантика для Директа и SEO"
-  default_prompt: "Собери семантическое ядро для проекта: определи режим PPC/SEO/hybrid, задай нужные вопросы, используй Wordstat и подготовь структуру страниц или кампаний, кластеров, ключей и минус-слов."

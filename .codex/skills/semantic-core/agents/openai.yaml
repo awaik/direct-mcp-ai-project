@@ -1,0 +1,12 @@
+interface:
+  display_name: "Семантическое ядро"
+  short_description: "Семантическое ядро для SEO и рекламы"
+  default_prompt: "Используй $semantic-core, чтобы собрать и кластеризовать семантическое ядро для моего направления."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Wordstat и Пространств"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

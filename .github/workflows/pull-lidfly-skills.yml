@@ -1,0 +1,51 @@
+name: Pull verified LidFly skills
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pull-lidfly-skills
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Verify signed release and update generated source projection
+        run: |
+          node scripts/pull-lidfly-skills.mjs
+          node scripts/sync-skills.mjs
+          node scripts/test-skills.mjs
+          node scripts/sync-skills.mjs --check
+
+      - name: Create or update generated PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if git diff --quiet && test -z "$(git status --short)"; then exit 0; fi
+          branch=automation/pull-lidfly-skills
+          git config user.name "lidfly-skills-sync[bot]"
+          git config user.email "lidfly-skills-sync[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add skills-source .agents/skills .codex/skills .claude/skills .openclaw/skills
+          git commit -m "chore: pull verified LidFly skill release"
+          git push --force-with-lease origin "$branch"
+          existing="$(gh pr list --head "$branch" --base main --state open --json number --jq '.[0].number // empty')"
+          if test -n "$existing"; then
+            gh pr edit "$existing" --title "chore: pull verified LidFly skills" --body "Generated from the signed immutable LidFly skill registry release."
+          else
+            gh pr create --head "$branch" --base main --title "chore: pull verified LidFly skills" --body "Generated from the signed immutable LidFly skill registry release."
+          fi

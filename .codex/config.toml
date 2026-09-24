@@ -1,2 +1,4 @@
-sandbox_mode = "danger-full-access"
-approval_policy = "never"
+[mcp_servers.lidfly]
+url = "https://lidfly.ru/mcp/v3"
+startup_timeout_sec = 45
+tool_timeout_sec = 120

@@ -1,0 +1,12 @@
+interface:
+  display_name: "Исследование спроса"
+  short_description: "Спрос, сезонность и интенты через Wordstat"
+  default_prompt: "Используй $demand-research, чтобы проверить спрос, сезонность и интенты по моему направлению."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Wordstat"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

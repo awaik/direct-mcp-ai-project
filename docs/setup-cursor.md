@@ -1,60 +1,32 @@
-# Подключение direct-mcp к Cursor
+# Подключение LidFly MCP к Cursor
 
-## 1. Настройка MCP-сервера
+## Настройка
 
-В корне проекта уже есть файл `.cursor/mcp.json`:
+Файл `.cursor/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "lidfly": {
-      "type": "http",
-      "url": "https://lidfly.ru/mcp/v3",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
+      "url": "https://lidfly.ru/mcp/v3"
     }
   }
 }
 ```
 
-Замените `YOUR_API_KEY` на ваш API-ключ из [личного кабинета direct-mcp](https://lidfly.ru).
+Перезапустите Cursor и нажмите `Authenticate` / `Connect` для сервера `lidfly`, если клиент запросит вход. API-ключ вручную копировать не нужно.
 
-## 2. Открытие проекта
+## Проверка
 
-1. Откройте Cursor
-2. File → Open Folder → выберите папку проекта
-3. Cursor автоматически прочитает `.cursor/mcp.json`
-
-## 3. Проверка подключения
-
-Откройте чат (Cmd+L / Ctrl+L) и напишите:
-
-```
-покажи мои кампании
+```text
+Покажи мои доступные Пространства и рекламные кабинеты.
 ```
 
-Cursor должен обнаружить сервер `lidfly` (6 meta-инструментов v3) и через них показать ваши кампании.
+Если Cursor не подхватил файл, добавьте сервер через Settings -> MCP:
 
-## 4. Если MCP не подхватился
+```text
+Name: lidfly
+URL: https://lidfly.ru/mcp/v3
+```
 
-1. Перезапустите Cursor (Cmd+Shift+P → "Reload Window")
-2. Проверьте, что файл `.cursor/mcp.json` находится в корне открытого workspace
-3. Убедитесь, что API-ключ правильный
-
-## 5. Альтернативный способ — через настройки
-
-Если `.cursor/mcp.json` не работает, добавьте сервер через настройки Cursor:
-
-1. Cmd+Shift+P → "Cursor Settings"
-2. Найдите раздел MCP
-3. Добавьте сервер вручную:
-   - Name: `lidfly`
-   - URL: `https://lidfly.ru/mcp/v3`
-   - Header: `Authorization: Bearer YOUR_API_KEY`
-
-## 6. Инструкции для агента
-
-Cursor читает файл `CLAUDE.md` из корня проекта как системные инструкции. Там описаны правила работы с API Яндекс Директа — агент будет автоматически следовать им.
-
-Ваши бизнес-настройки (KPI, бюджеты, особенности) — в файле `PROJECTS.md`.
+Для write-действий требуйте план и текстовое подтверждение; они должны идти через `call_write_tool`.

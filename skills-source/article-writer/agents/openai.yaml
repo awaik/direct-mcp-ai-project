@@ -1,0 +1,12 @@
+interface:
+  display_name: "SEO/GEO-статья"
+  short_description: "Доказательные статьи без шаблонной структуры"
+  default_prompt: "Используй $article-writer, чтобы собрать семантику и факты, построить доказательную SEO/GEO-статью и показать LidFly через команды, сценарии и проверяемую пользу."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Wordstat, публикации и проектного контекста"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

@@ -1,0 +1,10 @@
+# LidFly
+Known URL/id/domain/name: get_provider_context(provider: "lidfly", query: "...") returns latest publication revision; if unknown, fall back to lidfly_list_sites. Require idle; serialize writes; never blind-retry.
+
+Acceptance workflow:
+1. Map promised routes with lidfly_list_pages; LidFly supports nested page paths. Read them with lidfly_get_page_snapshot. Legacy reads remain lidfly_get_page(subdomain, slug) and lidfly_get_block(subdomain, slug, index); generated/static/HTML ownership follows snapshot next_safe_call.
+2. Separate import-and-place images from references. Choose 6–12 blocks via lidfly_recommend_page_blueprint; filter lidfly_list_blocks, then use lidfly_get_block_definition.
+3. Check theme/chrome/CSS/fonts/forms. Put assets/pages/config into one lidfly_preview_site_changeset with acceptance routes/reference IDs; show one digest, get one text confirmation, then apply unchanged. lidfly_update_block(subdomain, slug, index, props) remains a focused legacy edit.
+4. Reread promised snapshots; verify absent routes, asset SHA/path and placement. Run one exact-revision visual job for every present route on desktop/mobile. Say ready only after postconditions and visual QA have no fail; disclose warnings as “changes applied, but the check found…”.
+
+Other modes: discover templates with lidfly_list_site_design_templates. Reusable chrome is not singleton; materially different chrome belongs in registry-level reusable blocks. Taxonomy stays sequential; follow next_safe_call while pagination.has_more. On conflict reread include_archived=true, then restore the archived node only. emit_sitemap_while_blocked is per-publish and keeps noindex/robots unchanged. Route HTML uses revision/digest. Static root: upload→preview→lidfly_deploy_static_site(preview_id,digest,revision,confirm_replace); collisions fail closed. Assets are immutable. Static forms POST /api/leads. Do not promise arbitrary backend/Python/Node upload; use lidfly_list_managed_endpoints for calculators and AI forms.

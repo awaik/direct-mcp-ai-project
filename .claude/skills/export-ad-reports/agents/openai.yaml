@@ -1,0 +1,12 @@
+interface:
+  display_name: "Экспорт рекламных отчётов"
+  short_description: "Проверенная выгрузка рекламы в Google-файлы"
+  default_prompt: "Используй $export-ad-reports, чтобы выгрузить рекламный отчёт в указанный Google-файл и проверить записанные данные."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для чтения рекламных отчётов"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

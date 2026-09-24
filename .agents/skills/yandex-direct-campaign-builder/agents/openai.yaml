@@ -1,0 +1,12 @@
+interface:
+  display_name: "Кампании Яндекс Директа"
+  short_description: "Создание, аудит и оптимизация Директа"
+  default_prompt: "Используй $yandex-direct-campaign-builder, чтобы безопасно создать, проверить или оптимизировать кампанию Яндекс Директа."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Яндекс Директа, Метрики и Wordstat"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

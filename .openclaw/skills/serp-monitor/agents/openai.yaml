@@ -1,0 +1,12 @@
+interface:
+  display_name: "Мониторинг позиций"
+  short_description: "Позиции, CTR и запросы через Вебмастер"
+  default_prompt: "Используй $serp-monitor, чтобы проверить динамику запросов, CTR и средних позиций моего сайта."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Яндекс Вебмастера и Пространств"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

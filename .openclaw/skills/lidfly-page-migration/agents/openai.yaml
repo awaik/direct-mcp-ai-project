@@ -1,0 +1,12 @@
+interface:
+  display_name: "Перенос страницы в LidFly"
+  short_description: "Перенос чужой страницы в LidFly 1:1"
+  default_prompt: "Используй $lidfly-page-migration, чтобы перенести мою страницу с другой платформы в LidFly один в один: все секции, дизайн и изображения."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для страниц, темы и загрузки изображений"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

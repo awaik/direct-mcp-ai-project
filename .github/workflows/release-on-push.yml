@@ -10,9 +10,22 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Validate skills and client archives
+        run: |
+          node scripts/test-skills.mjs
+          node scripts/test-export-ad-reports.mjs
+          node scripts/test-workspace-project-manager.mjs
+          node scripts/test-lidfly-support-escalation.mjs
+          node scripts/test-connection-doctor.mjs
+          node scripts/test-client-archives.mjs
 
       - name: Get next version
         id: version
@@ -30,13 +43,10 @@ jobs:
           echo "version=$NEXT" >> "$GITHUB_OUTPUT"
           echo "Next version: $NEXT"
 
-      - name: Create archive
+      - name: Create isolated client archives
         run: |
-          REPO_NAME="${{ github.event.repository.name }}"
-          VERSION="${{ steps.version.outputs.version }}"
           mkdir -p /tmp/archives
-          tar -czf "/tmp/archives/${REPO_NAME}-${VERSION}.tar.gz" --exclude='.git' .
-          zip -r "/tmp/archives/${REPO_NAME}-${VERSION}.zip" . -x '.git/*'
+          node scripts/build-client-archives.mjs --output /tmp/archives
 
       - name: Create release
         uses: softprops/action-gh-release@v2

@@ -1,0 +1,12 @@
+interface:
+  display_name: "LidFly Knowledge Maintainer"
+  short_description: "Поддерживает самообновляемую базу знаний"
+  default_prompt: "Используй $lidfly-knowledge-maintainer для безопасного ingest, query-to-wiki или lint базы знаний LidFly через MCP."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Workspace sources и атомарных knowledge changesets"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

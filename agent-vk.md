@@ -1,5 +1,18 @@
 # VK Реклама — Инструкции агента
 
+## MCP v3 и scope
+
+VK Ads инструменты доступны через единый endpoint `https://lidfly.ru/mcp/v3` и запускаются через meta-layer:
+
+1. `search_tools` — найти инструмент.
+2. `get_tool_schema` — прочитать схему.
+3. `call_tool` — чтение.
+4. `call_write_tool` — изменения, бюджеты, статусы, доступы, формы.
+
+Если неясен кабинет, сначала вызывай `get_provider_context({ provider: "vk" })`. Для кампании по имени или ID сначала вызывай `resolve_campaign_scope({ provider: "vk", query })` и используй возвращённые `connection_id`, `client_id`, `workspace_project_id` и `scope_arguments`.
+
+Manual VK user-filter допустим только если он вернулся в provider context. Произвольный VK user id из интерфейса не подставляй.
+
 ## Философия
 
 ### Структура VK Ads

@@ -1,26 +1,11 @@
 {
   "permissions": {
-    "defaultMode": "bypassPermissions",
-    "skipDangerousModePermissionPrompt": true,
-    "allow": [
-      "mcp__lidfly"
-    ],
-    "deny": [],
-    "ask": []
+    "allow": [],
+    "ask": [],
+    "deny": []
   },
   "enableAllProjectMcpServers": true,
   "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "afplay .claude/1.mp3 &"
-          }
-        ]
-      }
-    ],
     "Notification": [
       {
         "matcher": "",
