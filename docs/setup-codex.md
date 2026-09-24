@@ -77,14 +77,26 @@ codex mcp list
 
 Ожидаемо: Codex видит v3 meta-layer, начинает с `get_provider_context` для provider scope и не вызывает provider tools напрямую.
 
-## Legacy Bearer fallback
+## Подключение через API-ключ
 
-Если клиент не поддерживает remote MCP OAuth, используйте ручной Bearer header только локально и не коммитьте его:
+Если предпочитаете ручной ключ, сначала [задайте `LIDFLY_TOKEN`](setup-api-key.md). В своём `.codex/config.toml` добавьте `bearer_token_env_var` в существующий блок `mcp_servers.lidfly`:
 
 ```toml
 [mcp_servers.lidfly]
 url = "https://lidfly.ru/mcp/v3"
-headers = { Authorization = "Bearer YOUR_API_KEY" }
+bearer_token_env_var = "LIDFLY_TOKEN"
+startup_timeout_sec = 45
+tool_timeout_sec = 120
 ```
+
+Сохраните другие настройки конфига. `bearer_token_env_var` содержит имя переменной, а не сам ключ. Если LidFly уже подключён через плагин, отключите плагин на время использования отдельного ручного подключения, чтобы не было двух активных подключений.
+
+Запустите `codex` из терминала с заданной переменной. `codex mcp login lidfly` для этого режима не нужен. Для приложения Codex и расширения переменная должна быть доступна процессу приложения; см. пояснение о запуске в общей инструкции.
+
+Проверка: `codex mcp list`, затем запрос из раздела «Проверка». Список серверов подтверждает конфигурацию, а успешный read-запрос — работу подключения.
+
+Для возврата к OAuth удалите `bearer_token_env_var` из блока LidFly, перезапустите Codex и выполните `codex mcp login lidfly`. Если возвращаетесь к плагину, отключите отдельное ручное подключение и включите плагин.
+
+Формат поля описан в [официальной документации Codex MCP](https://developers.openai.com/codex/mcp#streamable-http-servers).
 
 Основной source of truth для публичных snippets - `public/js/guides.js` в основном репозитории LidFly.

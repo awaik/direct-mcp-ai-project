@@ -25,6 +25,28 @@ claude mcp add \
 
 После добавления откройте `/mcp`, выберите сервер `lidfly` и нажмите `Authenticate`. Вход идёт через браузер: email -> код из письма. API-ключ вручную копировать не нужно.
 
+## Подключение через API-ключ
+
+Для ручного режима Claude Code сначала [задайте `LIDFLY_TOKEN`](setup-api-key.md). В своём `.mcp.json` настройте блок `lidfly` так:
+
+```json
+{
+  "mcpServers": {
+    "lidfly": {
+      "type": "http",
+      "url": "https://lidfly.ru/mcp/v3",
+      "headers": {
+        "Authorization": "Bearer ${LIDFLY_TOKEN}"
+      }
+    }
+  }
+}
+```
+
+Сохраните другие серверы, если они уже есть в файле. Запустите `claude` из терминала с заданной переменной; `Authenticate` для этого режима не требуется. Не заменяйте `${LIDFLY_TOKEN}` самим ключом. Подстановка переменных в HTTP headers описана в [документации Claude Code](https://code.claude.com/docs/en/mcp#environment-variable-expansion-in-mcpjson).
+
+Для возврата к OAuth удалите только `headers.Authorization` из подключения LidFly, перезапустите Claude Code и выполните `Authenticate` через `/mcp`.
+
 ## Claude Desktop
 
 1. Откройте Claude Desktop -> Customize -> Connectors.

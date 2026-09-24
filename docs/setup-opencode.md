@@ -37,6 +37,30 @@ opencode mcp list
 
 OpenCode читает `AGENTS.md` и skills из `.agents/skills`. Для provider scope ожидается `get_provider_context`, затем поиск инструментов через `search_tools` и `get_tool_schema`. Read-вызовы идут через `call_tool`, записи — через `call_write_tool`.
 
+## Подключение через API-ключ
+
+Если предпочитаете ключ, сначала [задайте `LIDFLY_TOKEN`](setup-api-key.md). В своём `opencode.json` или `opencode.jsonc` настройте блок `mcp.lidfly`:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "lidfly": {
+      "type": "remote",
+      "url": "https://lidfly.ru/mcp/v3",
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {env:LIDFLY_TOKEN}"
+      }
+    }
+  }
+}
+```
+
+Сохраните остальные настройки файла. `oauth: false` явно выбирает режим API-ключа; `opencode mcp auth lidfly` в этом режиме не требуется. Запустите `opencode` из терминала с заданной переменной, проверьте `opencode mcp list` и выполните запрос из раздела «Проверка».
+
+Для возврата к OAuth удалите `headers.Authorization` и `oauth: false` из подключения LidFly, перезапустите OpenCode и выполните `opencode mcp auth lidfly`.
+
 ## Если подключение не работает
 
 ```bash
