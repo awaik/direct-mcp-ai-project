@@ -60,6 +60,7 @@ OAuth в браузере - основной путь для современн�
 | Windsurf | [docs/setup-windsurf.md](docs/setup-windsurf.md) |
 | Cline | [docs/setup-cline.md](docs/setup-cline.md) |
 | Gemini CLI | [docs/setup-gemini-cli.md](docs/setup-gemini-cli.md) |
+| OpenCode | [docs/setup-opencode.md](docs/setup-opencode.md) |
 | OpenClaw | [docs/setup-openclaw.md](docs/setup-openclaw.md) |
 
 Публичные snippets подключения в продукте генерируются из `public/js/guides.js` основного репозитория LidFly. Этот AI-project - клиентский шаблон; если snippets разошлись, синхронизируйте их с `public/js/guides.js`.
@@ -169,6 +170,7 @@ node scripts/sync-skills.mjs
 ├── .windsurf/mcp.json
 ├── .cline/mcp_settings.json
 ├── .gemini/settings.json
+├── opencode.json
 └── .openclaw/openclaw.example.json
 ```
 
