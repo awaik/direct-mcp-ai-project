@@ -21,13 +21,21 @@ Use for LidFly sites, landing pages, published pages, SEO and social metadata, S
 
 ## Workflow
 
+Choose blocks by observable interaction before appearance: whole-card navigation,
+image zoom, separate CTA, or opening a form. For focused edits read the current
+section snapshot; use blueprints for page composition. Compare filtered catalog
+description/purpose/visible_when and read the selected definition. Continue pagination
+or narrow filters if has_more; explain unsupported behavior without replacing a
+requested whole-card link with a separate button. After saving, disclose warnings
+and test clicks, target anchors, unwanted zoom, keyboard and mobile behavior.
+
 For a managed site with `design_template_id="knowledge-base"`, route ingest, query-to-wiki, provenance, relations, findings, changesets, and lint to `$lidfly-knowledge-maintainer`; do not emulate knowledge updates with sequential page writes.
 
 1. If the site, store, owner, or project is unclear, call the top-level `get_provider_context({ provider: "lidfly", query? })` and use only returned scope arguments.
 2. Find internal LidFly tools with `search_tools`.
 3. Read each internal tool schema with `get_tool_schema` before its first call.
-4. Use `call_tool` for reads: sites, pages, assets, leads, analytics, stores, orders.
-5. Use `call_write_tool` for publishing, uploads, store/order changes, payment setup, and image generation.
+4. Use `call_tool` for reads: sites, pages, assets, leads, analytics, stores, orders, and CRM delivery diagnostics.
+5. Use `call_write_tool` for publishing, uploads, store/order changes, payment setup, CRM profile/policy changes, delivery resolution, and image generation.
 6. For paid image generation, show prompt, format, crop, and wait for explicit confirmation.
 7. Never run two write calls for the same site in parallel. Before a write to a known URL/site_id/subdomain/name, refresh the targeted `get_provider_context({ provider: "lidfly", query: "..." })`; use `lidfly_list_sites` only when the site is unknown. Continue only when `publication_write.status="idle"` and use its fresh `publication_revision`. If it is `busy`, wait for the named operation to finish, reread the same targeted scope, verify the previous write's actual state, and only then make at most one retry.
 
@@ -51,6 +59,7 @@ Read only the reference needed for the current task:
 - [Site chrome](references/site-chrome.md) — inherited header/footer and design templates.
 - [Static sites](references/static-sites.md) — archive preview and full deployment.
 - [Commerce](references/commerce.md) — products, imports, add-ons and storefront feeds.
+- [Shared galleries](references/shared-galleries.md) — albums, category examples, preview/apply, operation status and Bitrix inventory.
 - [SEO and feeds](references/seo-feeds.md) — GEO readiness, Organization, articles and RSS.
 - [MCP v3 compatibility methodology](references/methodology.md) — compact legacy projection for `get_methodology`.
 

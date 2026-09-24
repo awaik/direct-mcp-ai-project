@@ -32,7 +32,7 @@ Ask only for missing essentials:
 4. Remove irrelevant intents and collect minus words.
 5. Cluster by user intent, not only lexical similarity.
 6. Produce SEO page structure and/or ad group structure.
-7. Save a document through Workspace only after project scope is resolved.
+7. Save only when requested, to the exact requested file, sheet or document using an available tool. For a Workspace destination, also resolve project scope; a connected Workspace does not imply permission to save there.
 
 Before clustering or formatting the final result, read the relevant bundled references:
 
@@ -41,5 +41,12 @@ Before clustering or formatting the final result, read the relevant bundled refe
 - `references/output-format.md` for the deliverable structure.
 
 ## Output
+
+Use measured numbers only with the exact source phrase, returned phrase, section,
+region, devices and observed period. In embedded chat use typed observations.
+Zero is a measurement; missing or failed data is N/A. YES/NO is not frequency.
+Keep unmeasured expansion ideas separate. Do not claim website analysis without
+reading it. Frequency alone does not prove conversion potential. List missing
+sources explicitly; advice on supplied data does not require a paid refresh.
 
 Return clusters, representative phrases, intent, recommended page/campaign, minus words, and validation notes. Mark estimates clearly when Wordstat data is unavailable.

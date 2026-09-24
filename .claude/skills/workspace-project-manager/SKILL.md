@@ -23,6 +23,7 @@ Before writing audits, documents, decisions, snapshots, settings, provider links
 3. If resolved, write with returned `workspace_project_id`.
 4. If ambiguous, show candidates and ask for exact `workspace_project_id`.
 5. If no project exists or no project matches, offer to create one with `workspace_create_project`; do not create "Основной проект" silently.
+6. A resolved project selects the destination, not permission to write. Persist only when the user requested it or a previously authorized memory workflow covers that exact operation; do not capture another client’s data, style or decisions.
 
 ## Provider Links
 

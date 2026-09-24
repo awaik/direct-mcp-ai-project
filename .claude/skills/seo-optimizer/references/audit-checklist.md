@@ -11,6 +11,7 @@ Use this checklist after obtaining the page content and any available live data.
 ## Technical And Indexing
 
 - HTTP/indexability/canonical/robots/sitemap status when available.
+- Establish whether the owner intentionally closed the site from indexing. Expected noindex/robots restrictions and missing generated feeds on a closed site are not defects; recommend opening indexing only for an explicitly requested launch-readiness check or an already-public indexing requirement.
 - Yandex Webmaster diagnostics, indexed pages, query data, and crawl issues.
 - Mobile readability, performance risks, broken links, and structured data visible in the supplied page or tools.
 

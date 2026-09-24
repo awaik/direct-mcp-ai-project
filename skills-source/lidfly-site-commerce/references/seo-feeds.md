@@ -18,6 +18,8 @@ The default content policy for an open platform-managed site is `search=yes, ai-
 
 Use the exact `subdomain` from the latest read. Change source fields through LidFly tools and let the platform rebuild canonical URLs, JSON-LD, social meta, RSS, feeds, and managed HTML. After every write, reread the same source object; do not treat a successful tool call as verification by itself.
 
+Product-feed profiles are Commerce data, not editable XML files. Use the list → preview → confirmed set → health sequence and preserve the returned source-bound `preview_hash`. A `.xml` extension does not define a schema: ordinary Yandex Direct product feeds use `yandex_direct_yml`, while industry formats require dedicated models. Registering the resulting URL in Direct is a separate Workspace-scoped provider write and requires its own confirmation.
+
 ### Organization And Local Business Schema
 
 1. Find `lidfly_get_site_seo_profile` and `lidfly_update_site_seo_profile` with `search_tools`, then read each schema with `get_tool_schema` before its first call.

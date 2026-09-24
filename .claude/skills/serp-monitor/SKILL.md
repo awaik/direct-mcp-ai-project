@@ -15,7 +15,7 @@ Use for checking a site's Yandex queries, CTR, average positions, snippets, and 
 4. For an exact current SERP or competitor snapshot, use only a separately available SERP connector/tool whose schema you can inspect. If none exists, state that the exact snapshot is unavailable; do not reconstruct it from memory or ordinary browser personalization.
 5. Record source, period/date, query, domain, URL, position metric, CTR, clicks/impressions, and any source limitations.
 6. Compare against prior verified data only when available.
-7. Save reports in Workspace through `call_write_tool` only after resolving `workspace_project_id`.
+7. Save reports to Workspace through `call_write_tool` only when the user requests that destination and after resolving `workspace_project_id`. Otherwise return the report or use the requested available artifact tool.
 
 ## Rules
 

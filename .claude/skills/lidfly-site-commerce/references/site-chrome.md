@@ -28,6 +28,28 @@ For an inherited `premium-header` or `commerce-header`, change the image logo si
 
 The `large` preset keeps separate desktop, mobile, and compact scrolled sizes. Do not use page-level CSS or edit published HTML artifacts for inherited site chrome.
 
+### Change Footer Social Button Style
+
+When the user wants calmer, grey, outlined, smaller or larger social buttons in an inherited `site-footer` or `gallery-footer`, use the typed `socialStyle` prop instead of custom CSS, a different theme `accentColor`, another footer `variant`, or replacing SVG icons with backgrounds:
+
+1. Call `lidfly_get_site_chrome` through `call_tool`; `capabilities.footer.social_appearances` and `social_sizes` list the closed values, and `effective.footer.socialStyle` shows the resolved current look (a light `site-footer` without an override is `accent`/`large`, dark `default`/`editorial` footers are `neutral`/`regular`, `gallery-footer` is `outline`/`regular`).
+2. Choose `appearance`: `neutral` for a quiet grey backing without a coloured fill, border or glow; `outline` for a transparent button with a hairline border like header socials; `accent` for the theme accent fill. Choose `size`: `compact` 40 px, `regular` 44 px, `large` 48 px.
+3. Call `lidfly_update_site_chrome` through `call_write_tool` with `change.operation: "set"`, the exact current footer type, `props: { socialStyle: { appearance, size } }`, and the exact `expected_updated_at` plus `expected_publication_revision` from the read. `set` is a shallow merge, so neighbouring footer props and the `socials` list stay untouched.
+4. Call `lidfly_get_site_chrome` again and verify `effective.footer.socialStyle`.
+
+The setting does not change CTA buttons, theme colours, the order, labels or URLs of social links, and `colorMode=original` SVG icons keep their original colours. On narrow screens a row shrinks its buttons to a shared width only while each keeps a 40 px tap target; otherwise the buttons keep the preset size and wrap. `change.operation: "reset"` with `footer: ["socialStyle"]` restores the surface default.
+
+### Add Or Reorder Footer Social Links
+
+`site-footer` and `gallery-footer` accept up to 12 `socials`. Legacy header `socials` accept up to 6; header social links belong in `topStrip.items` (maximum 16 items of all kinds).
+
+1. Call `lidfly_get_site_chrome` through `call_tool` and copy the complete current `effective.footer.socials` array. Keep every existing link unless the user asked to remove it.
+2. Insert or move the link at the requested position. To reuse a header link, copy `label`, `url` and `icon` from its `effective.header.topStrip.items` entry and rename `network` to `type`; keep the managed SVG path and `colorMode` unchanged.
+3. Call `lidfly_update_site_chrome` through `call_write_tool` with `change.operation: "set"`, the exact current footer type, `props: { socials }`, and the exact `expected_updated_at` plus `expected_publication_revision` from the read. `set` replaces only the `socials` array; `socialStyle` and other footer props stay untouched.
+4. Call `lidfly_get_site_chrome` again and verify labels, URLs, order and icons.
+
+In `lidfly_preview_site_changeset`, `set_site_chrome` replaces the whole footer override: send the complete current `overrides.footer` with the new `socials`, never `socials` alone. Rows wrap instead of overflowing, so more links never require custom CSS, local footer blocks or edits of published HTML.
+
 ### Change Site Design Template
 
 For an existing site, use the shared read → write → reread workflow:
@@ -52,3 +74,6 @@ The knowledge maintainer reads the current context, prepares one declarative cha
 Entries may use optional `navigation_order`; ordered entries come first, then unordered entries by title. Use standalone `##` and `###` paragraphs for stable server-generated headings and TOC. Drafts remain reachable by their exact URL with `noindex` but must not be described as authenticated or private: they are excluded from sidebar, homepage, previous/next, sitemap, and search. Site-wide indexing off is also not reader authentication.
 
 Automatic template upgrades may rebuild only the managed shell and derived artifacts. Never use an upgrade as permission to alter types, fields, sections, entries, drafts, images, charter, theme/chrome overrides, custom CSS, or user blocks. `inherit_site_design=false` is an explicit opt-out for that page and should be reported as an update exclusion.
+
+
+Общие CTA и workflow описаны в references/managed-pages.md: сначала definition и list_site_forms, затем полный action с рабочим fallback, CAS и проверка operation_id. Шапки сохраняют ctaAction/secondaryCtaAction, footer использует buttonAction. Контентные блоки описывают пути через action_controls. Общая форма поддерживает image/imageAlt и работает независимо от inheritSiteDesign. При update формы сохраняй весь актуальный props.

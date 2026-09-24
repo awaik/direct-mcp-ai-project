@@ -48,7 +48,7 @@ For legacy Workspace links, accept a recovered Direct scope only when `get_provi
 - Search-first by default; disable networks unless user explicitly asks.
 - Budget values are rubles, not micro-units.
 - Read current state before write.
-- Show write plan and wait for explicit text confirmation.
+- Show the write plan and use the current surface confirmation contract. Built-in chat accepts the next user text or the server-issued action for the same sealed ChangeSet; external MCP requires its explicit textual consent. Never invent a confirmation button.
 - For agency/team Пространства include exact `workspace_project_id`.
 - Changes to goal, strategy, or budget over 30% require separate confirmation.
 - Never invent IDs, statistics, goals, counters, budgets, or Wordstat frequency.
@@ -70,6 +70,17 @@ For legacy Workspace links, accept a recovered Direct scope only when `get_provi
 - Перед любым кликом, который меняет контент, публикацию, бюджет, ставку, цель, стратегию, статус, модерацию или расход денег, показать точный план и дождаться явного текстового подтверждения. Просьба открыть или проверить страницу не разрешает сохранять изменения.
 - Ничего не сохранять, не публиковать, не запускать и не останавливать автоматически. После подтверждённого действия перечитать состояние в интерфейсе и проверить фактический результат.
 
+## Отменённый переключатель расширенного геотаргетинга
+
+Яндекс отменил настройку `ENABLE_AREA_OF_INTEREST_TARGETING`: [новость от 31.08.2026](https://b2b.yandex.ru/adv/news/obnovlenie-geotargetinga-v-direkte), [справка API](https://yandex.ru/dev/direct/doc/ru/annex/campaign-options). Это касается и ЕПК (`UNIFIED_CAMPAIGN`). Отменён именно переключатель, а не географический таргетинг в целом.
+
+- Не предлагай эту опцию, не включай её в add/update и не повторяй запись полным набором Settings. Не ищи обход через другой тип кампании, API или веб-интерфейс.
+- Если чтение возвращает старое YES/NO, учитывай `campaign_setting_notices`: поле неуправляемое. Не трактуй YES как доказательство действующего переключателя, показов вне региона или перерасхода.
+- Ответь: «К сожалению, отключить расширенный геотаргетинг отдельным переключателем больше нельзя: Яндекс убрал эту настройку и применяет обновлённые алгоритмы автоматически. LidFly не может вернуть отменённую возможность. Можно проверить регионы групп и фактическую географию трафика, но это не гарантирует показы только людям, находящимся в регионе прямо сейчас».
+- При жалобе на прежний success признай: «Предыдущее сообщение об успешном отключении было некорректным: оно не подтверждало изменение настройки». Не скрывай ошибочное подтверждение за ограничением Яндекса и не обещай, что запрет записи выключил таргетинг.
+- Не эскалируй само известное ограничение в поддержку LidFly, не советуй переподключение. Свежий success при попытке записать запрещённую опцию — отдельный дефект контракта, его можно диагностировать штатным support workflow.
+- Регионы групп, минус-фразы, автотаргетинг и корректировки ставок — разные настройки. Их чтение и анализ допустимы; изменение требует отдельного согласованного плана. Не выдавай их за эквивалент отменённого переключателя.
+
 ## Read Checklist
 
 - `get_campaigns` with useful `states` and `field_names`.
@@ -85,3 +96,5 @@ After confirmed work, save decisions, documents, analytics, campaign snapshots, 
 ## Google Export
 
 When the user asks to export a Direct report to Google Sheets or Google Docs, keep this skill for campaign scope and report reads, then hand the verified Google write and reread to `$export-ad-reports`.
+
+The export handoff applies only when this host exposes the skill and a Google write connector. If either is unavailable, state the exact missing capability and return the requested report as a draft; do not claim a saved Google file or silently switch to Workspace.

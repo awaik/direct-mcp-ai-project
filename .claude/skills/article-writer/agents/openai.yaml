@@ -1,7 +1,7 @@
 interface:
   display_name: "SEO/GEO-статья"
   short_description: "Доказательные статьи без шаблонной структуры"
-  default_prompt: "Используй $article-writer, чтобы собрать семантику и факты, построить доказательную SEO/GEO-статью и показать LidFly через команды, сценарии и проверяемую пользу."
+  default_prompt: "Используй $article-writer, чтобы подготовить доказательную SEO/GEO-статью по брифу, бренду и голосу моего проекта."
 
 dependencies:
   tools:

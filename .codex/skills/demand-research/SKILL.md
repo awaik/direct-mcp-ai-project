@@ -23,8 +23,16 @@ Use for demand checks, seasonality, missed demand, keyword cannibalization, regi
 4. Use `wordstat_top_requests`, `wordstat_dynamics`, and `wordstat_regions` as needed.
 5. Classify intent: commercial, informational, comparison, branded, competitor, support.
 6. Identify missed demand, seasonality, and cannibalization risk.
-7. Save the final document in a resolved Workspace project when requested or when the result affects future work.
+7. Return the research in the requested format. Save to Workspace only when the user asked to save there and the exact project scope is resolved; usefulness for future work is not permission to persist it.
 
 ## Output
 
-Give clusters with intent, frequency notes, negative themes, recommended landing pages/campaigns, and what was saved to Пространство.
+Bind every number to its exact phrase, section, regions, devices and observation
+time. Use typed observations in embedded chat. Top/regions cover the last 30 days;
+do not invent calendar boundaries. Dynamics uses the actual normalized interval.
+Show unknown/failed values as N/A, preserve measured zero, and never turn YES/NO
+into frequency. Separate unmeasured ideas from measured phrases. Report unread
+sites and missing sources, and never infer conversion quality from frequency alone.
+Advice based on supplied data does not automatically require paid Wordstat reads.
+
+Give clusters with intent, frequency notes, negative themes, recommended landing pages/campaigns, and the actual saved artifact only if a save was requested and verified.

@@ -8,6 +8,26 @@ Prepare a usable publishing package without claiming guaranteed ranking.
 - Do not invent chapters or timestamps. If time-aligned data is unavailable, provide an ordered outline instead.
 - Mark unverified promotional or regulated claims.
 
+## Media Preparation
+
+A supplied transcript needs no upload. For media, inspect the available host's
+attachment/file, upload and HTTP capabilities and the current transcription schemas.
+Check both file size and duration against the returned limits. If splitting is
+needed and local media tools exist, create ordered chunks in a unique authorized
+run directory, preserve originals and keep chunk offsets for global timestamps.
+Otherwise request a transcript or supported smaller attachment; do not assume a shell.
+
+For a local file use `search_tools` → `get_tool_schema` → `call_write_tool` for
+`request_upload_audio`, then PUT bytes immediately to its returned private
+`upload_url`. For a public direct media URL use `transcribe_audio_url` through
+`call_write_tool`; a normal YouTube page is not a direct media URL. Never log or
+persist bearer upload URLs. Read each returned `transcription_id` with
+`get_transcription` through `call_tool`, following the returned polling interval.
+Do not repeat an uncertain paid write blindly; check its existing result first.
+Keep raw outputs and verified timing separate from edited copy; report missing
+chunks instead of reconstructing speech. Save or clean up artifacts only under
+the user's requested destination and host retention rules.
+
 ## Deliverable
 
 Provide:

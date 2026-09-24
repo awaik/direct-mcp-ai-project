@@ -2,7 +2,11 @@
 
 ### Commerce Schema And Feeds
 
-The Commerce source of truth is products, variants, taxonomy, inventory, and store settings in PostgreSQL-backed tools. Read and update those records, use preview tools when the chosen operation exposes them, then call `lidfly_publish_store`. Publication generates Product or ProductGroup, visible-catalog OfferCatalog, `/yandex-market.yml`, and `/google-merchant.xml` from valid active physical products and variants. It may exclude invalid offers, including variants without a usable HTTPS image; report the returned feed counts and warnings.
+The Commerce source of truth is products, variants, taxonomy, inventory, store settings, and product-feed profiles in PostgreSQL-backed tools. Read and update those records, use preview tools when the chosen operation exposes them, then call `lidfly_publish_store`. Publication generates Product or ProductGroup, visible-catalog OfferCatalog, and keeps the compatible `/yandex-market.yml` and `/google-merchant.xml` projections. It may exclude invalid offers, including variants without a usable HTTPS image; report the returned feed counts and warnings.
+
+For configurable advertising feeds use `lidfly_list_product_feeds` → `lidfly_preview_product_feed` → one confirmed `lidfly_set_product_feed` with the exact `preview_hash` and `expected_publication_revision` → `lidfly_get_product_feed_health`. YML is an XML schema and may use `.xml` or `.yml`; do not describe arbitrary XML as YML. `yandex_direct_yml` supports ordinary goods/services, sale/rental selection, catalog subtrees, explicit include/exclude IDs and allowlisted typed attributes. Do not emulate realty, automobile or another industry schema. Publishing while `crawler_indexing_blocked=true` requires the profile override and explicit confirmation, and does not change robots, sitemap or page noindex.
+
+Registration in Yandex Direct is a second provider workflow: resolve the exact Workspace-scoped Direct cabinet, call read-only `inspect_feed_usage` by URL, request a separate confirmation for `add_feed` or `update_feed`, then repeat `inspect_feed_usage`. Never copy a Direct token into the feed profile or import Yandex transport into Commerce.
 
 #### Private Product Import
 
@@ -31,7 +35,7 @@ The former `lidfly_manage_addon_presets(action: "list")` contract is intentional
 
 An upsert fully replaces preset contents, preserves item IDs by preset + code, and reactivates an archived key. Archive preserves product links but removes the preset from effective add-ons. Assigned active presets expand in `addon_presets[]` order; duplicate codes across assigned presets are rejected. A product-local `addons[]` row overrides the same code in place, and unique local rows follow preset items. Do not copy `effective_addons` back into local `addons`: management reads intentionally distinguish local `addons`, assigned `addon_presets`, and diagnostic `effective_addons`, while storefront DTOs keep the effective result under the existing `addons` field. Quote and order creation revalidate current effective IDs and prices server-side.
 
-YML generation in LidFly and feed registration in Yandex Webmaster are separate workflows. Use the Yandex Webmaster skill only when the user explicitly asks to register or update the ready feed URL: start with `webmaster_get_hosts`, use the exact `host_id` without `client_login`, inspect the target host and feed state, and perform registration as a separate confirmed write.
+YML generation in LidFly, feed registration in Yandex Direct, and sitemap/feed submission in Yandex Webmaster are separate workflows. Use the Yandex Webmaster skill only when the user explicitly asks to submit or update the ready feed in Webmaster: start with `webmaster_get_hosts`, use the exact `host_id` without `client_login`, inspect the target host and feed state, and perform registration as a separate confirmed write.
 
 When `crawler_indexing_blocked=true`, missing sitemap, `/rss.xml`, and generated feeds are expected privacy behavior and not an SEO defect. Do not recommend enabling indexing unless the user explicitly asks for launch readiness or says the site should already be indexable.
 
@@ -58,3 +62,13 @@ For Bitrix24 profile changes use this exact flow:
 5. Call `lidfly_apply_crm_profile_change` with the unchanged normalized change, revisions and hash, then reread profiles.
 
 Keep `title_template` separate from `field_mapping`; Bitrix24 `TITLE` is adapter-managed. Useful Commerce templates are `Заказ с сайта — {order.item_titles}` and `{order.reference_code} — {order.brand_model_summary} — {order.item_titles}`. `order.item_titles` contains only immutable product-line titles in `line_position` order, without variants, quantities, SKU, prices or totals.
+
+### amoCRM delivery and Calltouch ordering
+
+amoCRM OAuth is completed only by the user in the LidFly cabinet. Read `lidfly_get_amocrm_integration` and give the returned `setup_url` when it is not connected or requires reauthorization. Never ask for or accept `client_id`, `client_secret`, access tokens, or refresh tokens in chat or MCP tool arguments.
+
+For a profile change use `lidfly_search_amocrm_schema → lidfly_preview_amocrm_profile_change → explicit confirmation → lidfly_apply_amocrm_profile_change → lidfly_list_amocrm_profiles`. Use only discovered pipeline, field, enum, and tag IDs. The selected pipeline must have Unsorted enabled. Do not request Users or Sources, do not map status or assignee, and do not invent or create CRM fields, pipelines, statuses, enums, or tags. An exact form binding is allowed only for a stable managed form without a definition conflict; otherwise use a verified scenario/default rule or stop.
+
+For routing use `lidfly_preview_amocrm_delivery_policy → explicit confirmation → lidfly_apply_amocrm_delivery_policy`. `amocrm_primary_after_calltouch` creates amoCRM Unsorted first and releases the dependent Calltouch request after a successful or reconciled delivery. Fallback is permitted only after a proven `failed_not_created`; it is never an automatic response to a timeout or malformed success.
+
+Treat `unknown` as terminal until reconciliation. Call `lidfly_preview_amocrm_reconciliation`, show its PII-free evidence, and use `lidfly_resolve_amocrm_delivery` only after explicit confirmation with the unchanged `preview_hash`. Never call `lidfly_retry_amocrm_delivery` for `unknown`; ordinary retry is restricted to a delivery whose server ledger proves `failed_not_created`.

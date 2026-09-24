@@ -214,6 +214,7 @@ workspace_project_id
 
 ### LidFly Sites And Commerce
 
+- Для создания страницы или существенного редизайна используй [lidfly-site-commerce](skills-source/lidfly-site-commerce/SKILL.md) и его четыре visual guides по этапу: creative-page-direction → frontend-page-craft → visual-assets (если нужны медиа) → visual-qa. Сначала задай композицию, типографику, плотность и мобильное представление; после записи посмотри реальные desktop/mobile изображения и проверь взаимодействия. Technical pass не подтверждает визуальное качество. Для точечной правки сохраняй существующий стиль и проверяй затронутую область.
 - "Тема оформления" - визуальные tokens: цвета, шрифты, радиусы.
 - "Шаблон сайта" - persistent site-level design system: header, footer, карточки, checkout, page blueprints.
 - Перед первой записью в существующий сайт с `design_template_id` вызывай `lidfly_audit_site_design_template`; по умолчанию сохраняй inheritance, starter-блоки и site-level chrome. `confirm_template_deviation=true` допустим только после показа конкретных последствий и явного текстового согласия пользователя, никогда автоматически или из-за auto-approve.
@@ -255,6 +256,7 @@ workspace_project_id
 - Юридические ограничения публичного контента: `LEGAL.md`
 - Canonical authoring skills: `direct-mcp/skills-source` in the main LidFly repository. Local `skills-source/` is a generated signed-release projection; do not edit it manually.
 - Verified pull: `node scripts/pull-lidfly-skills.mjs`; client layout sync: `node scripts/sync-skills.mjs`
+- Обновление не происходит автоматически при правке основного `direct-mcp/skills-source`: сначала нужен подписанный выпуск, затем ручной pull и sync в этом репозитории. Workflow `pull-lidfly-skills.yml` запускается через `workflow_dispatch`, расписания нет. Pull проверяет подпись и lock, sync обновляет четыре клиентских каталога; ручные расхождения нельзя перезаписывать. `AGENTS.md` и `CLAUDE.md` этими командами не генерируются.
 - Codex plugin export: `node scripts/sync-skills.mjs --plugin-target ../lidfly-plugins/plugins/lidfly/skills`
 
 При изменении общих правил обновляй `AGENTS.md` и `CLAUDE.md` парой.

@@ -1,11 +1,11 @@
 ---
 name: yandex-metrika
-description: "Анализировать Яндекс Метрику и безопасно создавать цели через LidFly MCP v3. Использовать для счётчиков, целей, UTM, CPA, конверсий, страниц и сравнений с точным counter_id и без client_login."
+description: "Анализировать Яндекс Метрику и безопасно управлять целями через LidFly MCP v3. Использовать для счётчиков, целей, UTM, CPA, конверсий, страниц и сравнений с точным counter_id и без client_login."
 ---
 
 # Yandex Metrika
 
-Use for counters, goal reads and safe goal creation, traffic sources, UTM, Direct reports, CPA, conversion health, popular pages, ecommerce, and period comparisons.
+Use for counters, goal reads and safe goal create/update/delete, traffic sources, UTM, Direct reports, CPA, conversion health, popular pages, ecommerce, and period comparisons.
 
 ## Scope
 
@@ -36,14 +36,15 @@ Use for counters, goal reads and safe goal creation, traffic sources, UTM, Direc
 ## Goal Workflow
 
 - Read one goal with `metrika_get_goal`; read the list with `metrika_get_goals`.
-- The first write increment supports `metrika_create_goal` only. Do not imply that update or delete tools exist.
-- Before creation, resolve the exact `workspace_project_id` and counter, then call `get_tool_schema` for `metrika_create_goal`. The schema has 13 goal variants and type-specific fields; do not invent provider JSON.
+- Goal writes are `metrika_create_goal`, `metrika_update_goal`, and `metrika_delete_goal`. Before a write, resolve the exact `workspace_project_id` and counter, then call `get_tool_schema` for the selected tool.
+- Create has 13 goal variants. Update accepts only a partial `changes` object, reads the full current goal internally, and preserves unspecified fields; do not reconstruct a whole goal from prose. For type-specific changes, pass `settings.type` matching the stored goal type.
+- Delete is destructive. State the exact counter, goal id, and current goal name before confirmation.
 - State the counter, goal name, type, type-specific conditions or steps, price/favorite fields, and broad effects such as “all files” before confirmation.
-- Execute only through `call_write_tool`. In built-in chat, wait for the user's next textual confirmation; do not add buttons or claim success before the tool result.
+- Execute only through `call_write_tool`. In built-in chat, the exact sealed ChangeSet is confirmed by the user's next text or its server-issued confirmation action. Do not generate confirmation buttons yourself. External MCP uses its existing explicit-confirmation workflow. Never claim success before the tool result.
 - If preflight returns `reconnect_required`, stop the write and ask the user to reconnect Yandex. Read tools remain available.
-- Treat `operation_id` and `outcome` as authoritative. `deduplicated=true` means the exact goal already existed and no POST was sent.
-- After `unknown` or `ambiguous`, never create the same goal again. Call top-level `get_write_operation_status({ operation_id })`; if ambiguity remains, require manual verification.
-- A successful create must include `goal_id`; reread it with `metrika_get_goal` when subsequent work depends on the exact saved state.
+- Treat `operation_id` and `outcome` as authoritative. `deduplicated=true` means the exact goal already existed and no POST was sent; `updated=false` means the requested values already matched and no PUT was sent.
+- After `unknown` or `ambiguous`, never repeat the same goal write. Call top-level `get_write_operation_status({ operation_id })`; if ambiguity remains, require manual verification.
+- Successful create/update results include `goal_id`; reread it with `metrika_get_goal` when subsequent work depends on the exact saved state. After delete, reread `metrika_get_goals` if later work depends on absence.
 
 ## Analysis
 
@@ -59,3 +60,5 @@ Save analytics snapshots, documents, or decisions only with resolved `workspace_
 ## Google Export
 
 When the user asks to export a Metrika report to Google Sheets or Google Docs, keep this skill for counter scope and report reads, then hand the verified Google write and reread to `$export-ad-reports`.
+
+The export handoff applies only when this host exposes the skill and a Google write connector. If either is unavailable, state the exact missing capability and return the requested report as a draft; do not claim a saved Google file or silently switch to Workspace.

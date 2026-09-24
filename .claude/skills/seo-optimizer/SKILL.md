@@ -14,7 +14,7 @@ Use for SEO audits, GEO/AI-search visibility, page optimization, metadata, inter
 3. Use Yandex Webmaster if site access is available; start with `webmaster_get_hosts`.
 4. Inspect page content and search intent.
 5. Produce prioritized fixes: technical blockers, intent gaps, title/meta/H1, headings, content, internal links, conversion elements.
-6. Save the audit only with resolved `workspace_project_id`.
+6. Return the audit in the requested format. Save to Workspace only when requested and with resolved `workspace_project_id`; do not require Workspace for a response or local artifact.
 
 Read `references/audit-checklist.md` before producing the final priority list. If the page content cannot be opened through an available browser, connector, or supplied file, ask for the text/HTML and do not pretend to have inspected the page.
 
