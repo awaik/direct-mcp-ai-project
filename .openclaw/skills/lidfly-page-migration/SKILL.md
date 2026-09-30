@@ -9,6 +9,14 @@ Use when the user asks to migrate, copy, or recreate an existing page from anoth
 
 ## Workflow
 
+For visual analysis and final review, use the creative-page-direction,
+frontend-page-craft, visual-assets and visual-qa references of
+`lidfly-site-commerce` (load that skill, then the needed get_skill_resource paths).
+Compare desktop and mobile renders of the whole source and target. During a
+faithful transfer these guides refine implementation and expose defects; they do
+not authorize new content, a different composition or an unrequested redesign.
+Keep the inventory and template-deviation rules below.
+
 1. Fetch the original page HTML and its CSS files. Identify the platform (WordPress/Elementor, Tilda, Bitrix) to pick the right section markers: Elementor top-level containers use `e-parent`, Tilda uses `t-rec` records.
 2. Build a section inventory before writing anything: one line per section, top to bottom, with heading, body summary, image count, button labels, and forms. Number the sections.
 3. Extract design tokens from the CSS: background, text, card, and accent colors by frequency; heading and body font families; card border radius. Note whether the heading font differs from the body font. This is a comparison input, not permission to change the whole site's theme.

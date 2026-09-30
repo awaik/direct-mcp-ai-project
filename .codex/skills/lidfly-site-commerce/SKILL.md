@@ -1,6 +1,6 @@
 ---
 name: lidfly-site-commerce
-description: "Работать с сайтами, базами знаний и Commerce LidFly через MCP v3: страницы, content catalog, Agent/GEO readiness, SEO/social metadata, Schema.org, RSS/YML feeds, файлы, лиды, аналитика, публикация, товары, остатки, заказы и платежи. Использовать для операций с сайтом или магазином с точным scope и защитой секретов YooKassa."
+description: "Создавать, оформлять и проверять сайты LidFly через MCP v3: визуальная концепция, шаблоны, блоки, изображения, адаптивность и visual QA. Также страницы, базы знаний, SEO/GEO, feeds, файлы, лиды, публикация, товары, остатки, заказы и платежи с точным scope и защитой секретов YooKassa."
 ---
 
 # LidFly Site Commerce
@@ -20,6 +20,33 @@ Use for LidFly sites, landing pages, published pages, SEO and social metadata, S
 - YooKassa seller secrets are never shown, echoed, or saved in user-visible docs.
 
 ## Workflow
+
+### Visual work
+
+For a new page or substantial redesign, complete this cycle in the authorized
+scope. For a local correction, preserve the direction and check the affected area;
+an order, inventory or SEO-metadata operation does not require a redesign.
+
+1. Read the current site and references. State one concrete visual direction:
+   audience/task, hierarchy, typography, palette, grid, spacing and image treatment.
+   Read [Creative page direction](references/creative-page-direction.md).
+2. Map the content to native templates and blocks, with an intentional mobile
+   arrangement. Read [Frontend page craft](references/frontend-page-craft.md).
+   A blueprint is a starting point, not a section quota. Knowledge pages need
+   readable structure; do not force a sales hero or repeated oversized cards.
+3. When media is needed, read [Visual assets](references/visual-assets.md): plan
+   roles/crops, inspect actual images and verify their asset bindings. Preserve
+   supplied content; do not invent evidence or require paid generation.
+4. Read [Visual QA](references/visual-qa.md). After applying changes, inspect actual
+   desktop/mobile screenshots and interactions against the brief; fix visible
+   defects and recheck the new revision. Technical pass or successful publication
+   alone is not aesthetic approval. If viewing is unavailable, say QA is incomplete.
+
+In MCP/chat, load these relevant references with get_skill_resource using
+name="lidfly-site-commerce" and the exact path above; installed clients read the
+local files. Load them by stage, not every operational reference at once.
+
+### Native operations
 
 Choose blocks by observable interaction before appearance: whole-card navigation,
 image zoom, separate CTA, or opening a form. For focused edits read the current
@@ -55,13 +82,14 @@ For several desired-state edits on one site, save them sequentially and publish 
 
 Read only the reference needed for the current task:
 
+- The four visual guides above — required by stage for page creation/redesign, proportional to a focused correction.
 - [Managed pages](references/managed-pages.md) — native widgets, page metadata and video blocks.
 - [Site chrome](references/site-chrome.md) — inherited header/footer and design templates.
 - [Static sites](references/static-sites.md) — archive preview and full deployment.
 - [Commerce](references/commerce.md) — products, imports, add-ons and storefront feeds.
 - [Shared galleries](references/shared-galleries.md) — albums, category examples, preview/apply, operation status and Bitrix inventory.
 - [SEO and feeds](references/seo-feeds.md) — GEO readiness, Organization, articles and RSS.
-- [MCP v3 compatibility methodology](references/methodology.md) — compact legacy projection for `get_methodology`.
+- [MCP v3 compatibility methodology](references/methodology.md) — mandatory compact workflow in initial chat activation and the legacy `get_methodology` projection.
 
 ## Workspace
 

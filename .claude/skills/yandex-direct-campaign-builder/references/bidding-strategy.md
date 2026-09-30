@@ -1,5 +1,11 @@
 # Bidding Strategy And Learning
 
+## Maximum Clicks: UI and API
+
+- In the Direct web interface, "Максимум кликов" asks the user to choose the primary limit: budget or average CPC. Do not tell a user in budget mode to set an average-CPC limit in that same mode. Source: https://yandex.ru/support/direct/ru/strategies/average-cpc, checked 2026-09-26.
+- In the Direct API for unified campaigns, `WB_MAXIMUM_CLICKS` requires `WeeklySpendLimit` and may also carry `BidCeiling`; `AVERAGE_CPC` is a separate strategy with required `AverageCpc` and optional weekly spend. Explain these API and UI controls separately. Source: https://yandex.ru/dev/direct/doc/ru/campaigns/add-unified-campaign, checked 2026-09-26.
+- A maximum bid ceiling can reduce delivery and is not the same as a guaranteed charged CPC. Read recent clicks, cost and conversion goals before recommending a number. The tool rejects `average_cpc` with `WB_MAXIMUM_CLICKS` and `bid_ceiling` with `AVERAGE_CPC` before the provider write.
+
 ## Strategy Learning
 
 - For one named campaign pass its exact `campaign_ids` to `get_strategy_learning_status`.

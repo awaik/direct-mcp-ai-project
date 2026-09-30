@@ -41,6 +41,7 @@ For legacy Workspace links, accept a recovered Direct scope only when `get_provi
 
 - For a new ЕПК campaign read [campaign creation](references/campaign-creation-workflow.md).
 - For bidding, goals and learning status read [bidding strategy](references/bidding-strategy.md).
+- For customer bases, Look-alike, geo segments and retargeting by Yandex Audience segments read [audiences](references/audiences.md).
 - `get_methodology(topic: "yandex")` uses the compact [compatibility methodology](references/methodology.md).
 
 ## Guardrails
@@ -98,3 +99,17 @@ After confirmed work, save decisions, documents, analytics, campaign snapshots, 
 When the user asks to export a Direct report to Google Sheets or Google Docs, keep this skill for campaign scope and report reads, then hand the verified Google write and reread to `$export-ad-reports`.
 
 The export handoff applies only when this host exposes the skill and a Google write connector. If either is unavailable, state the exact missing capability and return the requested report as a draft; do not claim a saved Google file or silently switch to Workspace.
+
+
+## Проверяемая оптимизация и память
+
+- Перед новой оптимизацией прочитай журнал исполненных действий и решения клиента. Не предлагай повторно выполненную чистку без нового основания; отменённые решения не применяй.
+- В точном выбранном проекте храни `metadata.primary_conversion_goal_id`: числовой ID цели заявки. Если его нет, один раз уточни основную цель, проверь ID через `metrika_get_goals`, затем предложи сохранить в `workspace_update_project`, сохранив остальные поля metadata. Не подменяй ID названием `lead_sent`.
+- Для заявок/CPA вызывай `get_campaign_stats` с `goals=[primary_conversion_goal_id]`. Агрегат без goals описывай как достижения всех целей, включая микроцели. Не добавляй микроцели в стратегию без отдельного согласия и объяснения последствий.
+- Ссылки и факты о компании бери из проверенных страниц, брифа или явных сообщений клиента. Не придумывай URL, партнёрство, опыт, сроки, скидки и гарантии. Неподтверждённые факты явно перечисляй для подтверждения.
+- Утверждать применение или сохранение разрешено только по серверному ledger. Подготовленный пакет не означает, что кабинет или Проекты изменены.
+- Для прогноза CPC/CR/сроков/объёма укажи источник: AuctionBids из `get_keyword_bids`, историю кампании или прогноз бюджета. Без данных обозначь «оценка без данных» и диапазон; не обещай срок заявки. Недельный лимит не равен фиксированному дневному бюджету: деление на семь — арифметическая средняя, не правило расходования площадкой.
+
+### Операторы минус-фраз
+
+По [справке Директа](https://yandex.ru/support/direct/ru/keywords/negative-keywords), проверенной 26.09.2026: минус-фраза исключает запросы со всеми её словами; полное пересечение с ключевой фразой обычно отменяет её действие. `[]` закрепляет порядок, `!` — словоформу, `+` — обязательность слова, кавычки — запрос только из указанных слов. Кавычки действуют и при полном совпадении с ключом. Для одного бренда используй `"битрикс"`, если нужно исключить только запрос из него: `[битрикс]` такого ограничения не задаёт. `![битрикс]` не исправляй догадкой — уточни намерение. Сочетание `серый +в !яблоках` допустимо. Для автотаргетинга не обещай исключение полного пересечения: проверь реальные Query/MatchedKeyword/CriterionType. Предпросмотр без морфологии — только нижняя оценка по прочитанным строкам.

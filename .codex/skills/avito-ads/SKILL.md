@@ -1,55 +1,44 @@
 ---
 name: avito-ads
-description: "Работать с Авито Рекламой через LidFly MCP v3: кабинеты, кампании, группы, бюджеты, статистика, доступы и юридические операции. Использовать для аудита или управления Avito Ads с проверкой 9-значного account_id и безопасным write workflow."
+description: "Работать с Авито Рекламой через LidFly MCP v3: кабинеты, кампании, группы, бюджеты, статистика, доступы, аудитории и разметка. Использовать для аудита, консультаций и поддержанных API изменений Avito Ads с точным account_id и проверкой исхода записи."
 ---
 
-# Avito Ads
+# Авито Реклама
 
-Use for Авито Реклама accounts, campaigns, groups, budgets, statistics, balances, access, agency operations, advertisers, contracts, and legal/money operations.
+## Scope и вызовы
 
-## Scope
+1. Если кабинет не определён, вызови `get_provider_context({ provider: "avito_ads", query? })`.
+2. Используй возвращённые `connection_id` и `account_id`. Это 9-значный ID рекламного аккаунта, не Avito ID профиля. Для названной кампании — `resolve_campaign_scope({ provider: "avito_ads", query, workspace_project_id? })`.
+3. При выбранном проекте передавай точный `workspace_project_id`; неоднозначность или недоступность связей останавливает работу.
+4. `search_tools` → `get_tool_schema` → `call_tool` для чтений; `call_write_tool` для записей. Методы scope/skills вызываются напрямую.
 
-1. `get_provider_context({ provider: "avito_ads", query? })` when account is unclear.
-2. Use returned `connection_id` and/or `account_id`.
-3. `account_id` must be a 9-digit advertising account id from Avito Ads.
-4. For named campaigns use `resolve_campaign_scope({ provider: "avito_ads", query, workspace_project_id? })`.
+Контракт API: [Авито Ads API](https://www.avito.ru/developers/api-catalog/ads/documentation), проверено 26.09.2026. Правила scope и подтверждения — контракт LidFly.
 
-## Call Pattern
+## Порядок записи
 
-- `search_tools` -> `get_tool_schema` -> `call_tool` for reads.
-- `search_tools` -> `get_tool_schema` -> `call_write_tool` for writes.
+1. Прочитай текущее состояние именно выбранного аккаунта.
+2. Перед снижением бюджета покажи известный расход за весь срок. LidFly требует бюджет строго выше этого расхода: равенство может остановить группу и завершить последнюю активную кампанию. Если полного расхода нет, снижение остановится. Повышение не требует статистики.
+3. Перед переводом денег или бонусов прочитай баланс и активные кампании родителя. Если после перевода сумма денег и бонусов будет меньше 5000 ₽ и есть активные кампании, до подтверждения предупреди: возможна приостановка на 72 часа, затем завершение без пополнения. Это предупреждение, не запрет; участие бонусов в пороге справка не уточняет.
+4. Покажи конкретные изменения и получи явное подтверждение; денежные, юридические операции и доступы требуют явного намерения.
+5. Выполни запись через `call_write_tool`, проверь типизированный исход и перечитанное состояние. HTTP 200 само по себе не означает применения.
+6. Для `unknown`/`ambiguous`/`pending` с `operation_id` используй `get_write_operation_status`. Не повторяй перевод или создание и не меняй аргументы ради обхода блокировки. Неразрешённый исход требует ручной проверки.
+7. Для установки бюджета, ставки или доступа используй `applied` и `chat_result_status`: `true/success`, `false/failure`, `null/unclassified`. `retry_safe: true` означает идемпотентность установки значения, а не подтверждённый успех или разрешение повторять без запроса пользователя.
 
-## Write Guardrails
+Источники: [бюджет, кабинет](https://ads-help.avito.com/group/bidding), [статусы, кабинет](https://ads-help.avito.com/ads/status), [API](https://www.avito.ru/developers/api-catalog/ads/documentation); проверено 26.09.2026. Строгое сравнение с расходом и журнал — защитная политика LidFly Р1–Р4.
 
-Every write must:
+## Ограничения
 
-1. Read current state.
-2. Preflight constraints.
-3. Show plan and get explicit confirmation.
-4. Execute via `call_write_tool`.
-5. Reread and return before/after summary.
+- **API:** бюджет группы — целые рубли с НДС от 1; цена — целые рубли. **Кабинет:** порог запуска относится к сумме бюджетов групп кампании, не к каждой группе. В справке есть пример двух групп по 2500 ₽; страница запуска требует сумму больше 5000 ₽. LidFly при сумме ≤5000 ₽ предупреждает именно о возможном отказе **запуска**, но не запрещает изменение. Не называй это риском приостановки работающей кампании: последствие снижения суммы бюджетов для уже запущенной кампании справкой не установлено. Приостановка на 72 часа относится к остатку денег на аккаунте, а не к сумме бюджетов групп. [Бюджет](https://ads-help.avito.com/group/bidding), [запуск](https://ads-help.avito.com/ads/launch), [API](https://www.avito.ru/developers/api-catalog/ads/documentation), 26.09.2026.
+- **API:** `change-budget`/`change-price` поддерживают только ручную стратегию. Достоверного поля режима в `Group` нет: проверяет API, затем LidFly сравнивает результат с целью. Стратегию после запуска в кабинете менять нельзя. [API](https://www.avito.ru/developers/api-catalog/ads/documentation), [кабинет](https://ads-help.avito.com/group/bidding), 26.09.2026.
+- **API:** 1..100 дней статистики за запрос по справочнику и SDK. В обзорной [справке кабинета](https://ads-help.avito.com/external/api) указано 90; для API выбран подтверждённый лимит 100. [API](https://www.avito.ru/developers/api-catalog/ads/documentation), 26.09.2026.
+- **API:** cannot create campaigns, ad groups, or creatives. Создание кампаний, групп, креативов и аудиторий выполняется в кабинете; не выдумывай инструменты для этих действий. API поддерживает создание рекламодателя, договора и дочернего аккаунта. Это известная граница возможностей, не повод автоматически отправлять обращение в поддержку. [API](https://www.avito.ru/developers/api-catalog/ads/documentation), 26.09.2026.
 
-Money/access/legal/destructive actions always require explicit intent.
+## Приложения
 
-## Product Constraints
+- Аудит, экономия баллов и чтение исходов: `references/methodology.md`.
+- Подбор аудитории, CRM, ключевые слова, LAL, ретаргетинг: `references/audiences.md`.
+- Форматы, UTM, AppsFlyer, Smartis, Adserving: `references/creatives-and-tracking.md`.
 
-- Budget and price are integer rubles.
-- Group budget minimum is 5000 rubles with VAT.
-- Group budget must not be below known spent amount.
-- Budget and price changes work only where manual bid control allows it.
-- Warn when available account balance is below 5000 rubles.
-- Statistics requests are limited to 100 days per API call.
+## Экспорт
 
-## Not Available via API
-
-The Avito Ads API cannot create campaigns, ad groups, or creatives. These are created first in the Avito Ads interface. Through the API LidFly then reads them and their statistics and changes group budget and bid where manual bid control allows it. `create_advertiser` and `create_contract` are the only supported create operations here. So "Use for ... campaigns, groups ..." above means audit and management of existing entities, not their creation. Treat a request to create a campaign, group, or creative as this known API limitation: explain the interface-first workflow, and do not invent create-campaign tool names or open a support report for it.
-
-## Workspace
-
-If a Пространство is selected or the account belongs to several projects, pass exact `workspace_project_id` and fail closed on ambiguity.
-
-## Google Export
-
-When the user asks to export an Avito Ads report to Google Sheets or Google Docs, keep this skill for account/campaign scope and report reads, then hand the verified Google write and reread to `$export-ad-reports`.
-
-The export handoff applies only when this host exposes the skill and a Google write connector. If either is unavailable, state the exact missing capability and return the requested report as a draft; do not claim a saved Google file or silently switch to Workspace.
+Для отчёта в Google Sheets/Docs сохрани этот скилл для scope и чтений, затем используй `$export-ad-reports` для подтверждённой записи и перечитывания файла. Если скилл или Google-коннектор недоступен, назови недостающую возможность и верни черновик; не заявляй о сохранённом файле и не подменяй назначение Проектами.

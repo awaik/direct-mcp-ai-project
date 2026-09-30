@@ -1,8 +1,24 @@
-# Avito Ads methodology
+# Методика аудита Авито Рекламы
 
-Use avito_ads_status first when several account_id connections may exist; pass connection_id or account_id explicitly.
-Read current account, balance, campaigns, groups, creatives and statistics before writes.
-Statistics requests are limited to 1..100 days; use day/week/month granularity and keep entity lists compact.
-Use call_tool only for READ-ONLY tools and call_write_tool for WRITE tools. Group budget and price writes always perform read, preflight, write and reread.
-Money, bonus transfers, user access, child accounts, advertisers and contracts are destructive agency-level writes; require explicit user intent and call_write_tool.
-When Workspace project scope is selected, only linked avito_ads account_id values may be used.
+Проверено 26.09.2026. Контракт LidFly: выбери точный connection_id/account_id;
+при выбранном проекте нужен workspace_project_id. Чтения — call_tool, записи —
+call_write_tool после явного подтверждения. Полные пороги и защита записи — в SKILL.md.
+
+1. Уточни цель, период и кампанию. **API:** начни с статистики campaign — ответ
+уже содержит группы и креативы. Отдельные отчёты нужны только при нехватке данных.
+Сравни расход, показы, клики и бизнес-результат, учитывая модель оплаты и период.
+2. **API:** учитывай api_point_balance. Статистика кампании стоит 10 баллов,
+групп — 5, креативов — 1; children-with-balances — 5; изменение бюджета/ставки — 3;
+изменение доступа пользователя — 5. Восстановление — понедельник 00:00 UTC.
+Общий лимит 500 запросов/мин не отменяет лимитов методов. Завершённые кампании
+не перечитывай часто. [API](https://www.avito.ru/developers/api-catalog/ads/documentation),
+[обзор](https://ads-help.avito.com/external/api), 26.09.2026.
+3. **LidFly:** читай metric_notes: cpc/cpm — рубли, ctr/vtr — проценты.
+q25/q50/q75 не складываются; при неподтверждённой формуле их нет в недельных и
+месячных точках. Живая проверка CPC/CPM/CTR — 26.09.2026; видео не проверено.
+4. **Методика LidFly:** отделяй наблюдение, гипотезу и изменение. После записи
+покажи before/after и типизированный исход; unknown не означает успех. При
+operation_id используй get_write_operation_status, а не повтор перевода/создания.
+5. **Кабинет:** создание сегментов и загрузка CRM выполняются пользователем;
+не запрашивай базу в чат. Сценарии и источники — references/audiences.md;
+форматы и разметка — references/creatives-and-tracking.md (26.09.2026).
