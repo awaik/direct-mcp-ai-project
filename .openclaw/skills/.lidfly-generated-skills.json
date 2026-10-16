@@ -6,7 +6,7 @@
       "agents/openai.yaml": "e7f4c0c7cb12533b2855f83a10fc8bfa7e0109e5504d50dc2670813585f79cff"
     },
     "article-reviser": {
-      "SKILL.md": "8fc80864e42c3145834134b0f56dc6ad286142b32b1c166f9badd19f81e443fc",
+      "SKILL.md": "07dfb0d6fe3a35d28b1a45dbc60a7eb63ae5d8b8e40070190218b066807d04f9",
       "agents/openai.yaml": "d35975e0dca19a697005392d08a5e682e3ceced721ddfeefb156f12baa3bff67"
     },
     "article-writer": {
@@ -22,7 +22,7 @@
       "references/methodology.md": "d6cc00f1d7545539ca196f289e24f473afb19ec671cc3ded9cbf43ed839fc751"
     },
     "avito-business": {
-      "SKILL.md": "65164d34373fbb252a43b20dad7be2ac6cd49a81304d3bda76265827202736e7",
+      "SKILL.md": "bb79a58f12bf983507a748f9de525f76d19e779a4ef5c92f0e73a371520c5829",
       "agents/openai.yaml": "5369a5af63f518eca55800e6099ebb2ee98f42707b144c23fdd90c8251638bc1",
       "references/methodology.md": "5d696eab65b748fbcca178ddf711f8716b8a65be25c5f25f3c3c2a513c5845d3"
     },
@@ -40,7 +40,7 @@
       "references/russian-patterns.md": "62db0207de0987f0bd6a60127247590fe81451afbd5a6768c8ae0a2c65e34401"
     },
     "lidfly-connection-doctor": {
-      "SKILL.md": "48c89112a4ef24ba6250551ee9709919bdc43688cc898820609c7af0800a25e1",
+      "SKILL.md": "e90613ab1f25387245931f4eb14217809a38a6c9001db56eaf83b5e97b63a6bc",
       "agents/openai.yaml": "0c122a44d7f8094be46f36aa15503db5698be801c1e1e2697c8aa1079ebb11ca"
     },
     "lidfly-knowledge-maintainer": {
@@ -49,18 +49,19 @@
       "references/contracts.md": "ad6192541b582a566f46ae0521e650e4ed2898c7017e0577e5808962c668c82b"
     },
     "lidfly-page-migration": {
-      "SKILL.md": "32220d90cc218907b2369a317d5f9dbad24cb5f3586f0aa4bd857d3a20429602",
+      "SKILL.md": "7a11d295c6709b16c3408768be2687d6a480dd0c3575b6a4460bdb9f25b8ab52",
       "agents/openai.yaml": "fc2411979ebcb472d11acfd3de9a1c22b0ca2c3b5c06c73a080e99cd0df2e923"
     },
     "lidfly-site-commerce": {
-      "SKILL.md": "276992c9c7c201084ff3ca4175a25d2348330226ed8e8fb8a9c44e51b3e151d7",
+      "SKILL.md": "11ac06d446130474534fe909b7e0a7429699f47b05d3c38cebf4301219607cbe",
       "agents/openai.yaml": "956b538749795c2c0f2adedf4af1f0c9b62ba48d1b82ab80ea4299087d4c811a",
       "references/commerce.md": "9983247c18188ed0b9ef674188eb356ab120e151b7ad602a6d03743c923aa3aa",
       "references/creative-page-direction.md": "a44f48ee8853bbf5fa9d90f383fcc30a4948aa3506f87ce5fdebd9eb70f5b49b",
+      "references/design-system.md": "786a1147c0060acf2738137c5336d176456dcc5b329f6c0b0a9dda4beca1f297",
       "references/frontend-page-craft.md": "f0e05bf702d7736bdfbcd61ccf0cb75a3306aa1edb38606196b2173bc29dee15",
       "references/managed-pages.md": "3a5d80fff2d93af7baa4318b5aaf010caaf203cb4d6f964bfc1f4d9f5dfdcf5b",
-      "references/methodology.md": "ef141b54d12a919456bae7feca57f7a331f0b71a1de0856f8612bb86d5c7b402",
-      "references/seo-feeds.md": "b4c0eb121c41286b4f7cea4386303d6bab73fb6e9c261fe9828faf3586a9720e",
+      "references/methodology.md": "25ca6ac9775b05da990901d539bc19b89941fd8e179d1821abdb7d187bfe8516",
+      "references/seo-feeds.md": "fac868c56097dd4bd5eb324dc4e8994c502c1d793b1f06588e3c181163cc05b6",
       "references/shared-galleries.md": "6dedbfc4affaf920f7e85301373a013c74c3aab332c24e83fd890ae060aaeef3",
       "references/site-chrome.md": "f1b2a1ba7a93f53ce0fa53d8264559ca3785afb33efedb201c9387e72919559e",
       "references/static-sites.md": "9b6c208ac2a2c399559cdefb6779184f0c0baa3470af9d300fb5f7bf393e49f9",
@@ -72,7 +73,7 @@
       "agents/openai.yaml": "1bdcb2f9939b2ddef56ca1d8b98242d92296e3a13704ffca815faaad8e5e23ba"
     },
     "mcp-v3-provider-context": {
-      "SKILL.md": "2b9a2795f03fae18b50ae792293643f85c1a3a178bd98d06f9f10f289673fb77",
+      "SKILL.md": "5addea23e7bc48d89dcdd2739ad8deb21f646e0f9db6f320c9b1dbc2e71e572c",
       "agents/openai.yaml": "a434eefccb4a06abe645aa604c56c875ef7b36db5ee555172611d63d7e7905c0"
     },
     "restaurant-yandex": {
@@ -95,6 +96,10 @@
       "SKILL.md": "10985756374d0817f8825c9846fc85a90179ab5208a65ea2596c2c4e1b7c2e1e",
       "agents/openai.yaml": "9d55a40b9999bfa1405f5269fd42c4e1554533c8ad629e0e093b15ccf61e1ed1"
     },
+    "telegram-posting": {
+      "SKILL.md": "f96da3f6e8774c8d62329d1cb778f01afa61e61c7d41bc68fa7c0cf1246054dd",
+      "agents/openai.yaml": "eae2aeb8f5493ea89a8c178465092aa1e3a4713fe36dfe95ab2ee30372f8c67d"
+    },
     "video-article-writer": {
       "SKILL.md": "fe55a7435526957f102ed5f5d5ac499cd757c2b619491205029ebf1f88df28fd",
       "agents/openai.yaml": "ce6dc5ba1cc2b551fad5ae13a0072bcea2114559a6d06f83fe679dfa4878da39",
@@ -108,20 +113,22 @@
       "references/methodology.md": "e19afc11d490cf0a8b6d4c7edd2a3360048bef6e793cd273cc45657c8c7b3dfa"
     },
     "workspace-project-manager": {
-      "SKILL.md": "4a9dd6a8d50e1ae505ea0e5c74e3506e4f31574da39ae2962775b36eede7ec77",
+      "SKILL.md": "1b90c27694829fbd6cead04c8692509c8ae809639499541b35fec1be8ae83a52",
       "agents/openai.yaml": "9778d6c5f249e406d862ecb095de9b7e86df795274f59f7159fbaa43c5abbdbf",
-      "references/methodology.md": "d1f78eee4199ccadc3be10109bb0627334f68d8337f51c9255f35d8d134213a6"
+      "references/business-brief.md": "1f21c9ed06d3e50aba7990c1f40ab1dbcf806bd310bbfc1e709e695685463c30",
+      "references/methodology.md": "8d4bf6e612658d4820080b9a8ededb7ec459d8d627307a41955330cec7f1974b"
     },
     "yandex-direct-campaign-builder": {
-      "SKILL.md": "dfe3d6dd6430a4ff8712b4ca0b7514c3982c5470c827cd18c5079453d7bd0944",
+      "SKILL.md": "3c3999a0bd1e56b31965991f51730ba0d1a370d570ce0c1ea084946bda64fe04",
       "agents/openai.yaml": "839127223c9ba2f88a465a94f99060a717cb7f9dd25697904883548023d29bde",
-      "references/audiences.md": "8ccba09e0ddc49b3db58529e32dfe7765fb44f0a33485a785bad7eb1ed4a079c",
-      "references/bidding-strategy.md": "db3eaeaf9a24d70987c42d6ad15349017c518900f513ff4eb03aa76cb60008ba",
-      "references/campaign-creation-workflow.md": "74010e26c201ec7a02b47deaa94b8c9db57b6202aa4feecf942b57aee61a4698",
-      "references/methodology.md": "fef4ed4b268ad1b97240ac2efbccfc7c6ac9606ffd5de80406e78f1169ee329f"
+      "references/audiences.md": "72b21ee1409b9409a43a8f35addd3c59e845ad3b13a4f25ffc144bc622bf8484",
+      "references/bidding-strategy.md": "a9b3cbc42780e6a096f5037d94dc6c920a143e4c8dd3c160e3e40555f10ee164",
+      "references/campaign-creation-workflow.md": "09ce0bcdf42ce533cb94d9fafad20a266e2e653d3fb3cf29e5f7dc45fae8883d",
+      "references/methodology.md": "783fbb7334ffc50bae1c1079ff01e6e8432e6d163fc099316c7457996e17795a",
+      "references/serving-budget-competitors.md": "7a101c6531a0c7ad4ce96c1a54c184b94cc87cdf14aae666bbe6c53fe673604a"
     },
     "yandex-metrika": {
-      "SKILL.md": "921a4b74d2fcd57d37665ef0aa96ca2babdcc324c52aad6f0709a1baff49f494",
+      "SKILL.md": "520baf22077cc4bf78b84ed4edae95803bf20845d07a55aab85098e0d5b8ea2a",
       "agents/openai.yaml": "7d59929e5869fb198bfe623b0693326e22ace5d20d9d4c85cefdd2052b52c855",
       "references/appmetrica.md": "507c881280ad00d698468c9f5bca426509f3ef64f15200a23e49920be331e1e0"
     },

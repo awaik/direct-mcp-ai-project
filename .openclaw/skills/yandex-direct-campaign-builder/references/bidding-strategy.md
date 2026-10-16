@@ -13,3 +13,9 @@
 - Treat the result as a Reports API estimate, not the native learning status: the public Direct API does not expose the status shown in the UI. If the tool and the Direct panel disagree, trust the Direct panel and explain the limitation.
 - Never turn `status not determined` into “learning is normal”. Multi-goal sums, package strategies, engaged sessions (`GoalId=12`), incomplete goals, and unavailable reports may be intentionally indeterminate.
 - Manual `goals` overrides the automatically derived targets for the calculation and may not match the campaign strategy; say so explicitly.
+
+## Goals And Values Before A Conversion Strategy
+
+- Do not choose `priority_goals[].value` silently. Ask the user for the value of each goal or take it from the project memory, and name the values in the text before confirmation.
+- The strategy goals must match what was discussed. If a goal the conversation proposed (for example, calls) is not in the package, say so before confirmation.
+- Before a conversion strategy, compare the conversion volume of the chosen goals over a recent period with the learning condition: Yandex recommends a goal reached at least 10 times a week, and learning takes at least 1–2 weeks. With fewer conversions, propose a more frequent goal or pay per click. Source: https://yandex.ru/support/direct/ru/troubleshooting/conversions, checked 2026-10-04 (the same fact is the `direct.strategy_learning_volume` platform note of `get_strategy_learning_status`).

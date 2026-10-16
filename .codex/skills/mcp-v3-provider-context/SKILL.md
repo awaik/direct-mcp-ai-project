@@ -44,3 +44,5 @@ Call `search_tools`, `get_tool_schema`, `get_provider_context`, and `resolve_cam
 ## Output
 
 Tell the user which scope was selected in human terms and include the exact id only when useful for audit: `workspace_project_id`, provider account, campaign id. Do not expose tokens or secrets.
+
+At the end of provider work distinguish what was read/verified, the project/provider scope, what was prepared versus executed, what was actually saved in project memory, and writes still awaiting confirmation. Report only successful tool-backed persistence; do not reveal internal model/provider routing. This reporting method preserves the client-template audit trail (reviewed 2026-10-09) without requiring local template files.

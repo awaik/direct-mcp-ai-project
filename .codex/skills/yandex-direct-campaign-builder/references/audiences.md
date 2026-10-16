@@ -33,3 +33,13 @@ Sources checked 2026-09-28: Direct course «Директ. Продвинутый
 ## Privacy
 
 Files contain customers' personal data. LidFly normalizes phones/e-mails, hashes them with SHA-256, sends only hashes and deletes the file after upload. Remind the user that consent of the customers is required; never paste raw contacts into chat or tool arguments — only the uploaded file.
+
+## Reuse a saved Metrika segment
+
+Resolve Metrika counter/connection independently from the Direct client/campaign. For a known ID read `metrika_get_segment`; otherwise use `metrika_get_segments` and `metrika_find_segments`, then read the selected ID. Verify expression, source and ambiguity; a name alone does not establish the intended audience. Do not create a new segment because an API-only or partial list was empty. Do not compare an expression with `expression_complete=false`.
+
+Read `get_retargeting_lists` and `get_bid_modifiers` first. Reuse a matching condition with verified Rules/ExternalId, Type, IsAvailable and Scope. If necessary, create the **Direct condition**, using the confirmed safe `goal_id`, through the normal confirmed write. Warning 10164 with an ID means an existing condition was reused; its name/description were not changed. A duplicate error becomes success only after the tool verifies a unique existing condition. Other errors and ambiguous readback remain failures; do not retry blindly.
+
+For −100% use modifier=0. Reuse an existing modifier instead of duplicating it, and read back the condition/campaign/group IDs, Enabled, Accessible and coefficient. A Metrika `is_retargeting=0` flag alone does not prove that the segment cannot be used. Never claim improved performance from the exclusion without subsequent evidence.
+
+Sources checked 2026-10-02: [segment GET](https://yandex.ru/dev/metrika/ru/management/openapi/segment/getSegment), [RetargetingLists.add](https://yandex.ru/dev/direct/doc/ru/retargetinglists/add), [condition types](https://yandex.ru/dev/direct/doc/ru/objects/retargeting-list). Discovery limitations are delivered by the shared tool catalog.

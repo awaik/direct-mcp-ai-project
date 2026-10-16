@@ -22,3 +22,14 @@ Never derive client_login from external_entity_key or Direct ClientId. If tool_a
 Respect scope_issues: automatically execute only a read-only next_action with may_execute_automatically=true. Never guess around manual_scope_review, ambiguity, conflict, directory outage, or login-not-found.
 If a selected Workspace has no Direct link, get_provider_context may return provider_link_candidates. They are verified personal scopes but not executable in the project yet. Choose the exact candidate and use only its prepared next_action through call_write_tool after user intent/confirmation; never invent client_login or escalate a missing link to support.
 For campaign writes, pass workspace_project_id and scope_arguments from resolve_campaign_scope. call_write_tool has a safety preflight for campaign_id/ids, but if it cannot infer one Workspace/provider scope it will ask you to resolve first.
+
+
+## Evidence for audit recommendations (checked 2026-10-02)
+
+Apply the main skill's «Основания для выводов при аудите» table to each recommendation. Registration/payment CPA requires an explicit named goal, dates and attribution; discover priority goal IDs in get_campaigns even without a Workspace project, then read registration and payment separately before the final audit when those reads are available. Conversions without goals counts target visits across all goals, not registrations, payments or the sum of goal achievements. Keep primary_conversion_goal_id as the primary lead goal.
+
+Compare like periods, cost flags and calendar coverage. A clipped first/last week is not a full week. Compare spend to the applicable limit before recommending a budget increase; first explain underspend. Underspend does not establish a budget bottleneck: do not call the limit too narrow or imply it should grow without evidence of actually reaching it. Before changing a bid ceiling, inspect strategy, placement, observed statistics and available AuctionBids (null for autotargeting); explain expensive-click risk if removing it. Current auction estimates cannot establish historical causation. A general traffic-drop audit includes account balance; settings-change categories from check_campaign_changes are not historical values. Missing history leaves causes as hypotheses.
+
+For negatives inspect actual queries, sample coverage, operator syntax and concrete keyword intersections. Quotes fix word count, not word order; removing quotes can expand exclusions. Zero measured goals with live traffic calls for checking events and goal setup before asserting broken analytics. Read ad-group and ad detail including DisplayUrlPath when relevant.
+
+Sources: https://yandex.ru/dev/direct/doc/ru/report-format ; https://yandex.ru/dev/direct/doc/ru/keywordbids/get ; https://yandex.ru/dev/direct/doc/ru/changes/checkCampaigns ; https://yandex.ru/support/direct/ru/keywords/negative-keywords . These are reasoning requirements, not evidence of this customer's settings or results.

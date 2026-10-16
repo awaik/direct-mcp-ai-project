@@ -34,6 +34,16 @@ Use for counters, goal reads and safe goal create/update/delete, traffic sources
 - Metrika and Direct use separate attribution enums. Compare effective models using the server methodology, never copy enum keys across APIs. Current Direct models are FCCD, LC, LSCCD and AUTO. Legacy Direct FC/LSC/LYDC/LYDCCD are normalized by the tool with an explicit requested → sent notice. Metrika keeps its own compatibility contract. Direct has no direct analogue for Metrika cross_device_last. Source: https://yandex.ru/dev/direct/doc/ru/spec (checked 2026-09-26).
 - To compare with Direct, call the existing `get_custom_report` with the same dates, timezone, goals, revenue metric, and matching Direct attribution. Direct supports `Revenue`, `PurchaseRevenue`, `Profit`, `GoalsRoi`, purchase variants, and `LSCCD`. `Profit` stays aggregate even when `goals` is supplied; calculate goal-specific profit from that goal's `Revenue - Cost`. Purchase metrics use the separate `purchase_goals` filter, not `goals`. If a configured report omits a field, do not replace it with zero or claim the API cannot return revenue.
 
+## Existing saved segments
+
+For an existing segment, resolve the counter and connection first. Use `metrika_get_segments` for API-created segments, `metrika_find_segments` for a name search across verified API/UI candidates, and `metrika_get_segment` immediately when the ID is known. Read the real expression and source; a matching name alone is insufficient. If `expression_complete=false`, do not claim equivalent conditions.
+
+Honor `coverage`, `limitation_code` and `retryable`. An empty API-only list or partial discovery never authorizes creating a replacement. Narrow `query` after a search limit; resolve access errors without trying another account or browser cookies. Interface GET support depends on the provider; native agency discovery may require a login unavailable in Metrika scope, while exact list/get remain usable.
+
+A saved Metrika segment, an Audience segment and a Direct retargeting condition are different objects. Use only a safe `goal_id` returned by the tool for legacy Direct writes; do not convert an unsafe string ID to a number. `is_retargeting=0` alone does not prevent reuse. Counter membership does not prove availability in a particular Direct account: read its condition's IsAvailable/Scope and verify the final setting.
+
+Sources checked 2026-10-02: [API list](https://yandex.ru/dev/metrika/ru/management/openapi/segment/getSegmentsForCounter), [exact GET](https://yandex.ru/dev/metrika/ru/management/openapi/segment/getSegment), [Live4 candidates](https://yandex.ru/dev/direct/doc/dg-v4/ru/live/GetRetargetingGoals). Interface GET and unscoped managed-login responses were observed in the dated repository investigation; they are not universal provider guarantees.
+
 ## Goal Workflow
 
 - Read one goal with `metrika_get_goal`; read the list with `metrika_get_goals`.

@@ -1,0 +1,11 @@
+interface:
+  display_name: "Постинг в Telegram"
+  short_description: "Посты и расписание в каналах и группах Telegram"
+  default_prompt: "Используй $telegram-posting, чтобы подготовить и опубликовать мой пост в подключённом чате Telegram."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для публикаций Telegram"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

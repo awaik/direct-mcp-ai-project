@@ -1,0 +1,7 @@
+# Business Brief And Campaign Memory
+
+Read the selected project's brief, settings, documents and decisions before proposing campaign work. Keep product, verified site URLs, positioning, geography, seasonality, approved exclusions, naming/UTM conventions, legal restrictions and budget/CPA thresholds there. Missing values are questions, not defaults borrowed from another business. Counter/goal IDs and the conversion funnel describe the client's intent; verify access and the actual goal through provider reads before use. A saved brief never grants provider scope.
+
+For an authorized memory update, use `workspace_save_document` for the brief, `workspace_upsert_campaign` for current campaign settings and landing page, `workspace_record_decision` / `workspace_update_decision_effect` for changes, reasons and measured outcomes, and `workspace_save_analytics_snapshot` for comparable periods. Record observed dates, goal IDs, units and report attribution separately from campaign settings. Preserve superseded/reverted decisions and their reasons; a prepared action is not an executed change. Use reminders or approved AI autostarts below for follow-up checks. Discover each tool and schema before use; do not invent a local campaign journal.
+
+Source: the client-template business brief and campaign-memory migration, reviewed against Workspace tools on 2026-10-09. Project thresholds and preferences are customer facts, not universal advertising rules.

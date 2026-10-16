@@ -5,8 +5,6 @@ description: "Создавать, оформлять и проверять са�
 
 # LidFly Site Commerce
 
-Use for LidFly sites, landing pages, published pages, SEO and social metadata, Schema.org, RSS/YML feeds, assets/uploads, leads, analytics, stores, offers, variants, inventory, orders, fulfillments, payments, and Commerce setup.
-
 ## Terminology
 
 - "Тема оформления" means visual tokens: colors, fonts, radius, renderer choices.
@@ -27,8 +25,11 @@ For a new page or substantial redesign, complete this cycle in the authorized
 scope. For a local correction, preserve the direction and check the affected area;
 an order, inventory or SEO-metadata operation does not require a redesign.
 
-1. Read the current site and references. State one concrete visual direction:
-   audience/task, hierarchy, typography, palette, grid, spacing and image treatment.
+1. Read the current site and references. Check `design_system` in
+   lidfly_get_site_theme and read [Design system v2](references/design-system.md):
+   on v2 the platform owns rhythm and type, you choose the style and composition.
+   State one concrete visual direction: audience/task, hierarchy, typography,
+   palette, grid, spacing and image treatment.
    Read [Creative page direction](references/creative-page-direction.md).
 2. Map the content to native templates and blocks, with an intentional mobile
    arrangement. Read [Frontend page craft](references/frontend-page-craft.md).
@@ -42,21 +43,21 @@ an order, inventory or SEO-metadata operation does not require a redesign.
    defects and recheck the new revision. Technical pass or successful publication
    alone is not aesthetic approval. If viewing is unavailable, say QA is incomplete.
 
-In MCP/chat, load these relevant references with get_skill_resource using
-name="lidfly-site-commerce" and the exact path above; installed clients read the
-local files. Load them by stage, not every operational reference at once.
+MCP/chat: use get_skill_resource with name="lidfly-site-commerce" and these paths;
+installed clients read local files. Load references by stage.
 
 ### Native operations
 
-Choose blocks by observable interaction before appearance: whole-card navigation,
-image zoom, separate CTA, or opening a form. For focused edits read the current
-section snapshot; use blueprints for page composition. Compare filtered catalog
-description/purpose/visible_when and read the selected definition. Continue pagination
-or narrow filters if has_more; explain unsupported behavior without replacing a
-requested whole-card link with a separate button. After saving, disclose warnings
-and test clicks, target anchors, unwanted zoom, keyboard and mobile behavior.
+Choose blocks by interaction: whole-card navigation, zoom, CTA or form. For focused
+edits read the section snapshot; for composition use blueprints. Filter the catalog
+by description/purpose/visible_when and read the selected definition; paginate or
+narrow filters while has_more. Explain unsupported behavior; never substitute a
+button for a requested whole-card link. After saving, disclose warnings and test
+clicks, anchors, unwanted zoom, keyboard and mobile behavior.
 
-For a managed site with `design_template_id="knowledge-base"`, route ingest, query-to-wiki, provenance, relations, findings, changesets, and lint to `$lidfly-knowledge-maintainer`; do not emulate knowledge updates with sequential page writes.
+For `design_template_id="knowledge-base"`, use `$lidfly-knowledge-maintainer` for
+ingest, query-to-wiki, provenance, relations, findings, changesets and lint;
+never emulate knowledge updates with sequential page writes.
 
 1. If the site, store, owner, or project is unclear, call the top-level `get_provider_context({ provider: "lidfly", query? })` and use only returned scope arguments.
 2. Find internal LidFly tools with `search_tools`.
@@ -64,11 +65,21 @@ For a managed site with `design_template_id="knowledge-base"`, route ingest, que
 4. Use `call_tool` for reads: sites, pages, assets, leads, analytics, stores, orders, and CRM delivery diagnostics.
 5. Use `call_write_tool` for publishing, uploads, store/order changes, payment setup, CRM profile/policy changes, delivery resolution, and image generation.
 6. For paid image generation, show prompt, format, crop, and wait for explicit confirmation.
-7. Never run two write calls for the same site in parallel. Before a write to a known URL/site_id/subdomain/name, refresh the targeted `get_provider_context({ provider: "lidfly", query: "..." })`; use `lidfly_list_sites` only when the site is unknown. Continue only when `publication_write.status="idle"` and use its fresh `publication_revision`. If it is `busy`, wait for the named operation to finish, reread the same targeted scope, verify the previous write's actual state, and only then make at most one retry.
+7. Serialize same-site writes. Before each write to a known URL/site_id/subdomain/name,
+   refresh `get_provider_context({ provider: "lidfly", query: "..." })`; use `lidfly_list_sites`
+   only if unknown. Require `publication_write.status="idle"` and its fresh
+   `publication_revision`. If busy, wait for that operation, reread the targeted
+   scope and verify the previous write before at most one retry.
 
-For a new or substantially revised managed site, use the server-verifiable workflow from [MCP v3 compatibility methodology](references/methodology.md): declare the page and image scope, inspect compact snapshots, choose a blueprint, apply one acceptance-bound changeset, then verify the exact revision on desktop and mobile. A successful write means only that changes were applied. Say that the site is ready only after promised routes/assets and visual QA pass; disclose every visual warning explicitly.
+For new or substantially revised managed sites, follow [MCP v3 methodology](references/methodology.md):
+declare page/image scope, inspect compact snapshots, choose a blueprint, apply one
+acceptance-bound changeset, then check that exact revision on desktop/mobile.
+A write only proves application; claim readiness after promised routes/assets and
+visual QA pass, disclosing all visual warnings.
 
-For several desired-state edits on one site, save them sequentially and publish once after all edits. In particular, multiple taxonomy node page overrides use `get_catalog_node_page → update_catalog_node_page` one node at a time, followed by one `preview_catalog_publish → publish_store` flow.
+Save same-site desired-state edits sequentially, then publish once. For multiple
+taxonomy overrides: `get_catalog_node_page → update_catalog_node_page` per node,
+then one `preview_catalog_publish → publish_store`.
 
 ### Privacy consent on managed sites
 
@@ -78,10 +89,25 @@ For several desired-state edits on one site, save them sequentially and publish 
 - `analytics.required=true` enables the site-wide accept/reject banner and keeps Yandex Metrika and optional tracking inert until acceptance. A new analytics version asks visitors again.
 - Verify submitted proof through `lidfly_get_leads`: `consent` must include acceptance time, current version, immutable text, both document URLs, and the submitting page URL. Do not claim compliance from visual presence alone.
 
+### Виджет Битрикс24 и B242YA
+
+Передайте полный `widget_code` и опциональный `b242ya_code` с точным поддоменом
+в `lidfly_prepare_bitrix24_widget`; сами URL не извлекайте, блоки не заменяйте.
+Покажите портал, origins, компоненты, охват и конфликты. При `ready=true` передайте
+согласованные `normalized_arguments` в `lidfly_apply_bitrix24_widget`. Конфликт:
+новая подготовка и согласование, без подмены CAS. `disable` сохраняет настройку,
+`reset` удаляет. После pending/потери ответа читайте журнал операции.
+Виджет независим от серверных форм, webhook не нужен. Установка не доказывает
+передачу ClientID; ссылка t.me не становится B242YA-каналом. Реальные CRM/Telegram
+обращения — только по отдельному поручению.
+Источники: [Битрикс24](https://helpdesk.bitrix24.ru/open/25268342/),
+[B242YA](https://b242ya.ru/), проверено 08.10.2026.
+
 ## Progressive References
 
 Read only the reference needed for the current task:
 
+- [Design system v2](references/design-system.md) — site styles, 12 composition rules with numbers, anti-patterns and reference compositions.
 - The four visual guides above — required by stage for page creation/redesign, proportional to a focused correction.
 - [Managed pages](references/managed-pages.md) — native widgets, page metadata and video blocks.
 - [Site chrome](references/site-chrome.md) — inherited header/footer and design templates.

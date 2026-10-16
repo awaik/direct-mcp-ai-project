@@ -17,7 +17,7 @@ faithful transfer these guides refine implementation and expose defects; they do
 not authorize new content, a different composition or an unrequested redesign.
 Keep the inventory and template-deviation rules below.
 
-1. Fetch the original page HTML and its CSS files. Identify the platform (WordPress/Elementor, Tilda, Bitrix) to pick the right section markers: Elementor top-level containers use `e-parent`, Tilda uses `t-rec` records.
+1. Fetch the original page HTML and its CSS files (in the built-in LidFly chat, read the source as described in the next section). Identify the platform (WordPress/Elementor, Tilda, Bitrix) to pick the right section markers: Elementor top-level containers use `e-parent`, Tilda uses `t-rec` records.
 2. Build a section inventory before writing anything: one line per section, top to bottom, with heading, body summary, image count, button labels, and forms. Number the sections.
 3. Extract design tokens from the CSS: background, text, card, and accent colors by frequency; heading and body font families; card border radius. Note whether the heading font differs from the body font. This is a comparison input, not permission to change the whole site's theme.
 4. Resolve the target with `get_provider_context({ provider: "lidfly", query })` and copy only returned `tool_args`. Before the first write, call `lidfly_list_pages`. If the target page exists, read it with `lidfly_get_page`, call `lidfly_get_block` for every saved block index, and keep the complete page state plus the exact latest `publication_revision` from that read. If the page is new, use the current site state and creation contract returned by the read tools and current schema; do not invent replacement fields or a revision. Stop if the target is a static artifact, generated Commerce route, or otherwise not editable through managed page tools.
@@ -30,6 +30,19 @@ Keep the inventory and template-deviation rules below.
 11. Custom CSS is a separate operation with its own tools; never rewrite a page through `lidfly_update_page` to change styles. Read the effective CSS of both levels with `lidfly_get_css`, edit one page with `lidfly_update_page_css`, and put rules shared by several pages into `lidfly_update_site_css` instead of copying them per page. Pass `expected_custom_css_sha256` from the same read so a parallel edit is not overwritten silently. The cascade is site theme tokens → platform block CSS → site CSS → page CSS; an empty string clears a level; the limit is 64 KiB per level and `</style` is rejected. On a templated site a non-empty CSS write still needs explicit user consent and `confirm_template_deviation: true`, and it reports the deviation as CSS only.
 12. Write CSS against the declared anchors, never against generated scope classes (`ossk4dv8j-*`) or class substrings (`[class*='-card']`): those break silently when block markup changes. Every section carries `data-lf-block`, `data-lf-block-index`, and `data-lf-block-id` when an anchor id is set; internal elements carry the `data-lf-part` values the block declares in `lidfly_list_blocks`. Example: `[data-lf-block="messenger-lead-band"] [data-lf-part="item"]{width:56px}`. Before reaching for CSS at all, check whether the block already exposes a typed style prop for the same thing.
 13. Reread the page after the write and compare it section by section with the inventory from step 2. After structural, theme, chrome, storefront-route, or homepage changes, rerun `lidfly_audit_site_design_template`. Report the mapping table, effective page fields, and any remaining deliberate deviations.
+
+## In The Built-In LidFly Chat
+
+The chat cannot fetch HTML or CSS. Replace the source reading of steps 1 and 3 and keep the rest of the workflow:
+
+- Without a source address, ask once for the URL of the page to migrate. Propose the site name and subdomain yourself from the read source instead of asking for them first.
+- Read the source with `read_website` (`max_pages` = pages to migrate, 1–5) and continue a long page with `read_website_page`. When a page has a `details` summary, call `read_website_page` with `part: "details"` and follow `next_offset` until `end_of_images`: it returns image URLs with `alt` and the nearest section heading, header and footer Markdown with links, and forms with their fields.
+- Without `details`, say that texts and section order will be transferred and the images must be attached to the chat.
+- Styles are unavailable. Take the visual direction from the closest LidFly design template or theme and say that colors and fonts are approximate unless the user attaches screenshots of the source.
+- Work in stages, each prepared as one confirmable change package, and continue only after its result: an account without sites first gets `lidfly_prepare_create_site` → `lidfly_create_site`; then images; then pages; then header, footer and forms. Tell the user this plan before the first stage.
+- Images: one `lidfly_upload_images_batch` for the chosen `details` URLs with meaningful filenames; images attached to the chat go through `lidfly_upload_image` with `chat_attachment_id`. After the upload read `lidfly_list_assets` and use the returned `canonical_path` values in block props.
+- Pages: build the inventory (step 2) from the text and the `details` sections, map blocks (step 6), show the mapping (step 7), then prepare the page write (steps 9–10). Transfer the header menu and footer requisites through `lidfly_get_site_chrome` → `lidfly_update_site_chrome`, and forms through `lidfly_list_site_forms` → `lidfly_manage_site_forms`.
+- After the page write, compare it with the inventory (step 13). If the user attached screenshots of the source, offer `lidfly_inspect_site_visual` with them as `reference_attachment_ids`.
 
 ## Block Mapping Hints
 
@@ -44,7 +57,7 @@ Keep the inventory and template-deviation rules below.
 
 ## Rules
 
-- Follow MCP v3 order: `search_tools`, then `get_tool_schema`, then `call_tool` for reads and `call_write_tool` for writes.
+- MCP clients follow MCP v3 order: `search_tools`, then `get_tool_schema`, then `call_tool` for reads and `call_write_tool` for writes.
 - Page and site updates, uploads, and publication are writes and must use `call_write_tool`; all prerequisite reads use `call_tool`.
 - Keep the original wording. Fix only obvious typos, and tell the user about each fix.
 - Respect legal blocks: transfer privacy policy links, offer links, and footer requisites as they are.

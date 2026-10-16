@@ -1,6 +1,6 @@
 ---
 name: lidfly-connection-doctor
-description: "Диагностировать подключение LidFly MCP v3 в Claude Code, Claude Desktop, Codex, Cursor, OpenCode и VS Code: неверный config, timeout транспорта, незавершённый или слетающий MCP OAuth, конфликт статического Authorization с OAuth, отсутствие provider-подключения и устаревшие skills. Использовать при Failed, Authenticate/Login, Authentication failed, requires OAuth reauthentication, SSE 405 и недоступных инструментах."
+description: "Диагностировать подключение LidFly MCP v3 в Claude Code, Claude Desktop, Codex, ChatGPT, Cursor, OpenCode и VS Code: неверный config, timeout транспорта, незавершённый или слетающий MCP OAuth, конфликт статического Authorization с OAuth, отсутствие provider-подключения, устаревший снимок инструментов ChatGPT и устаревшие skills. Использовать при Failed, Authenticate/Login, Authentication failed, requires OAuth reauthentication, SSE 405 и недоступных инструментах."
 ---
 
 # LidFly Connection Doctor
@@ -14,6 +14,7 @@ description: "Диагностировать подключение LidFly MCP v
 - Claude Code: команда `claude`, проектный `.mcp.json`, `CLAUDE.md`, `.claude/`.
 - Claude Desktop: интерфейс Connectors/Integrations и кнопки `Authenticate`/`Login`.
 - Codex CLI/app/extension: `AGENTS.md`, `.codex/config.toml`, `.agents/skills/`.
+- ChatGPT (и Codex через ChatGPT-приложение, клиент `openai-mcp`): MCP-приложение в разделе «Плагины» chatgpt.com.
 - Cursor: `.cursor/mcp.json`, `AGENTS.md`, `.agents/skills/`.
 - OpenCode: `opencode.json`/`opencode.jsonc`, команда `opencode`, `AGENTS.md`, сгенерированные этим репозиторием `.agents/skills/`; `.opencode/skills/` проверяй только при явно подтверждённой ручной установке.
 - VS Code: только оболочка. Сначала определи, работает внутри Claude Code или Codex, и применяй инструкцию этого клиента.
@@ -23,10 +24,12 @@ description: "Диагностировать подключение LidFly MCP v
 ## Диагностируй по порядку
 
 1. Проверь, настроен ли удалённый Streamable HTTP endpoint `https://lidfly.ru/mcp/v3` в формате текущего клиента.
-2. Проверь состояние MCP OAuth.
-3. Только после успешного MCP OAuth проверь доступность верхнеуровневых LidFly tools.
+2. Определи выбранный способ авторизации: OAuth по email или API-ключ аккаунта в заголовке `Authorization: Bearer <account_key>`. Проверь состояние именно этого способа.
+3. Только после успешной авторизации MCP проверь доступность верхнеуровневых LidFly tools.
 4. Только после успешного MCP соединения проверяй provider-подключения через `get_provider_context`.
 5. После рабочего MCP проверь наличие и свежесть skills.
+
+Оба способа поддерживаются для агентов и новых интеграций на `/mcp/v3`. API-ключ не является устаревшим способом или вариантом только для клиентов без OAuth. Ключ доступен в личном кабинете: Настройки → API-ключ → «Скопировать ключ». Не запрашивай значение ключа в чате и не показывай его в диагностике. В одном подключении выбирай один способ: статический `Authorization` может перекрыть OAuth-токен. При рабочем API-ключе не требуй перехода на OAuth. Источник: решение владельца от 03.10.2026 и `src/core/mcp-oauth.ts`, `resolveMcpBearerPrincipal`, ветка `api_key`.
 
 Не привязывай исправность к фиксированному числу tools или meta-tools.
 
@@ -54,6 +57,14 @@ codex mcp list
 При локальной диагностике credentials проверяй только наличие поля issuer и безопасные сроки. Никогда не показывай access/refresh token, authorization code, PKCE verifier, `state` или значения из Keychain. После миграции проверь read-only MCP-вызов, автоматический refresh после истечения 15-минутного access token и два параллельных актуальных процесса Codex без нового `/authorize`.
 
 В обычной клиентской диагностике обновляй навыки штатным установщиком текущего клиента; не предполагай наличие репозитория разработчика. Только при явной задаче на поддержку исходников в репозитории меняй канонический `skills-source`; generated-копии обновляются только через проверенный подписанный release, не вручную.
+
+### ChatGPT: устаревший снимок инструментов
+
+ChatGPT хранит снимок списка инструментов и схем своего MCP-приложения и сам его не перечитывает; так же ведёт себя Codex, подключённый через ChatGPT-приложение. Если ChatGPT не видит новых инструментов LidFly или получает ошибку параметров (`Required at …`, `INVALID_ARGUMENT`, отклонённое поле), выдай одно действие:
+
+> Откройте chatgpt.com → Настройки → Плагины → LidFly → «Обновить инструменты» (Refresh) и начните новый чат.
+
+Адрес приложения должен быть `https://lidfly.ru/mcp/v3`. Адрес существующего приложения не редактируется: для перехода со старого `/mcp/lite` создай новое приложение через Плагины → Добавить → «Создать MCP-приложение» (нужен режим разработчика: Настройки → Безопасность и вход), войди и удали старое.
 
 ### Ожидается MCP OAuth
 
@@ -89,7 +100,7 @@ codex mcp list
 
 Если OpenCode после завершённого входа пишет `Authentication failed`, затем `SSE error: Non-200 status code (405)`, не делай вывод, что LidFly требует SSE. OpenCode сначала пробует Streamable HTTP, а SSE запускает как fallback после ошибки первого транспорта; `405` в этой последовательности вторичен.
 
-Классифицируй сбой как `config`, когда подтверждено хотя бы одно из следующего:
+Для выбранного OAuth-режима классифицируй сбой как `config`, когда подтверждено хотя бы одно из следующего:
 
 - в блоке LidFly в `opencode.json`/`opencode.jsonc` есть `headers.Authorization` или другой статический Bearer API key;
 - в блоке LidFly стоит `"oauth": false`: этот флаг отключает OAuth, поэтому `logout`/`auth` не восстановят OAuth-доступ, пока флаг не удалён или не изменён;

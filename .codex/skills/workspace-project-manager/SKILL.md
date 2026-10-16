@@ -5,7 +5,7 @@ description: "Управлять Пространствами LidFly и project-
 
 # Workspace Project Manager
 
-Use this skill when the user asks about projects, clients, memory, decisions, documents, settings, saved campaign context, tasks, reminders, or scheduled AI checks.
+Use for projects, clients, memory, decisions, documents, settings, saved campaign context, tasks, reminders and scheduled AI checks.
 
 ## Model
 
@@ -16,14 +16,16 @@ Use this skill when the user asks about projects, clients, memory, decisions, do
 
 ## Project Scope
 
-Before writing audits, documents, decisions, snapshots, settings, provider links, campaign links, or provider-scoped tasks:
+Before writing audits, documents, decisions, snapshots, settings, provider/campaign links or provider-scoped tasks:
 
 1. If exact `workspace_project_id` is known, use it.
 2. Otherwise call `workspace_prepare_project_scope` with all known selectors: `project_name`, `provider`, `external_entity_key`, `external_campaign_id`, `client_login`, `vk_client_id`, `account_id`, `metrika_counter_id`, `lidfly_subdomain`, `host_id`, `campaign_name`.
 3. If resolved, write with returned `workspace_project_id`.
 4. If ambiguous, show candidates and ask for exact `workspace_project_id`.
-5. If no project exists or no project matches, offer to create one with `workspace_create_project`; do not create "Основной проект" silently.
-6. A resolved project selects the destination, not permission to write. Persist only when the user requested it or a previously authorized memory workflow covers that exact operation; do not capture another client’s data, style or decisions.
+5. If no project matches, offer `workspace_create_project`; never silently create "Основной проект".
+6. Project resolution selects a destination, not write permission. Write only on the user’s request or under a memory workflow authorized for this exact operation. Never capture another client’s data, style or decisions.
+
+For a business brief or campaign history, read [this guide](references/business-brief.md).
 
 ## Provider Links
 
@@ -36,7 +38,7 @@ Before writing audits, documents, decisions, snapshots, settings, provider links
 
 ## Tools To Prefer
 
-Find every internal Workspace tool with `search_tools({ provider: "workspace", ... })` and read its schema with `get_tool_schema` before the first call.
+Find Workspace tools with `search_tools({ provider: "workspace", ... })`; read each schema with `get_tool_schema` before its first call.
 
 Read through `call_tool`:
 
@@ -86,4 +88,4 @@ For `workspace_schedule_ai_task`:
 
 ## Output
 
-Return a short human summary: project selected, which type was created, whether it runs automatically, what the user must do next, and what remains unconfirmed.
+Summarize the selected project, created object type, whether it runs automatically, next user action and unconfirmed details.
