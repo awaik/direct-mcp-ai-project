@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "key_id": "lidfly-skills-2026-01",
-  "release_version": "2026.10.16.2",
-  "registry_digest": "sha256:f4721dade0514ead2ab416b1c9e8c540abfeb75235cb38b5843b7e5d856fbda9",
-  "manifest_digest": "sha256:992f81e10c7b1766fddddd0fabcb83bf3b0b2d7ea443279e1c34b588b6e19e08",
+  "release_version": "2026.10.17.1",
+  "registry_digest": "sha256:3188080be98946f9fcc983a1fcb4e0c38e1ce424972964f92b6ed38a76392e8c",
+  "manifest_digest": "sha256:be81d825b5ae36ea067643cbe918c5f3a0972aad26b0ef28ff19a8e97cfe46f8",
   "files": {
     "ai-markers-remove/agents/openai.yaml": "sha256:e7f4c0c7cb12533b2855f83a10fc8bfa7e0109e5504d50dc2670813585f79cff",
     "ai-markers-remove/SKILL.md": "sha256:266931aa924feebf8afa414d9e350daf792ad09b2f1010cb4b222a1802011c4c",
@@ -41,7 +41,7 @@
     "lidfly-site-commerce/references/frontend-page-craft.md": "sha256:f0e05bf702d7736bdfbcd61ccf0cb75a3306aa1edb38606196b2173bc29dee15",
     "lidfly-site-commerce/references/managed-pages.md": "sha256:3a5d80fff2d93af7baa4318b5aaf010caaf203cb4d6f964bfc1f4d9f5dfdcf5b",
     "lidfly-site-commerce/references/methodology.md": "sha256:25ca6ac9775b05da990901d539bc19b89941fd8e179d1821abdb7d187bfe8516",
-    "lidfly-site-commerce/references/seo-feeds.md": "sha256:fac868c56097dd4bd5eb324dc4e8994c502c1d793b1f06588e3c181163cc05b6",
+    "lidfly-site-commerce/references/seo-feeds.md": "sha256:0932263c9d5b47ad9f4154c30e50f0bf36ff974be9e33c69e25c199e2d6f70b3",
     "lidfly-site-commerce/references/shared-galleries.md": "sha256:6dedbfc4affaf920f7e85301373a013c74c3aab332c24e83fd890ae060aaeef3",
     "lidfly-site-commerce/references/site-chrome.md": "sha256:f1b2a1ba7a93f53ce0fa53d8264559ca3785afb33efedb201c9387e72919559e",
     "lidfly-site-commerce/references/static-sites.md": "sha256:9b6c208ac2a2c399559cdefb6779184f0c0baa3470af9d300fb5f7bf393e49f9",

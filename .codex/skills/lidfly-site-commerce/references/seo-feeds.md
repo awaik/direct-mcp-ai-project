@@ -32,3 +32,12 @@ Use only public, factual contacts, address/geo, opening hours, `sameAs`, service
 ### Articles And RSS
 
 Publish or update an article through `lidfly_publish_blog_article`; LidFly generates Article JSON-LD, Open Graph, Twitter Cards, and the marker-owned `/rss.xml`. There is no separate RSS write tool. A user-owned `/rss.xml` is preserved and reported as a warning rather than overwritten.
+
+
+### Specialist Profiles And Article Author Type
+
+Read `lidfly_get_page` and the relevant `lidfly_get_block` values first; use only visible names, photos and roles. Read `lidfly_get_site_seo_profile` to verify the organization. Discover `lidfly_update_page_seo` for one page or preview one changeset with `set_page_seo` for several pages. Present its metadata diff and scope for confirmation, apply with fresh CAS/digest, then reread `page_seo` and the exact public graph. Poll pending operations; never repeat an unknown write.
+
+Profile data belongs to a default page; the article author type belongs to blog_article. A profile patch replaces the whole profile, null removes it, and omission preserves it. For an organization author use `article_author_type:"site_organization"`; for a person use `"person"`. Publishing an article accepts `author_type`; explicitly supply it when changing the author. Missing site organization produces a warning and no dangling graph reference. Preserve the visible byline and design; never patch raw JSON-LD or infer identity from a name. Split more than 100 operations into separately confirmed batches with a fresh revision; there is no cross-batch atomicity.
+
+Sources checked 2026-10-16: [Google Article](https://developers.google.com/search/docs/appearance/structured-data/article), [Google ProfilePage](https://developers.google.com/search/docs/appearance/structured-data/profile-page). Eligibility does not guarantee a rich result. Server validation and `page_seo` effective values are authoritative.
