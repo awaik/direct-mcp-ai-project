@@ -21,55 +21,27 @@ description: "Создавать, оформлять и проверять са�
 
 ### Visual work
 
-For a new page or substantial redesign, complete this cycle in the authorized
-scope. For a local correction, preserve the direction and check the affected area;
-an order, inventory or SEO-metadata operation does not require a redesign.
+For page creation/redesign, follow this cycle within authorized scope. For local corrections preserve direction and inspect the affected area; order/inventory/SEO edits need no redesign.
 
-1. Read the current site and references. Check `design_system` in
-   lidfly_get_site_theme and read [Design system v2](references/design-system.md):
-   on v2 the platform owns rhythm and type, you choose the style and composition.
-   State one concrete visual direction: audience/task, hierarchy, typography,
-   palette, grid, spacing and image treatment.
-   Read [Creative page direction](references/creative-page-direction.md).
-2. Map the content to native templates and blocks, with an intentional mobile
-   arrangement. Read [Frontend page craft](references/frontend-page-craft.md).
-   A blueprint is a starting point, not a section quota. Knowledge pages need
-   readable structure; do not force a sales hero or repeated oversized cards.
-3. When media is needed, read [Visual assets](references/visual-assets.md): plan
-   roles/crops, inspect actual images and verify their asset bindings. Preserve
-   supplied content; do not invent evidence or require paid generation.
-4. Read [Visual QA](references/visual-qa.md). After applying changes, inspect actual
-   desktop/mobile screenshots and interactions against the brief; fix visible
-   defects and recheck the new revision. Technical pass or successful publication
-   alone is not aesthetic approval. If viewing is unavailable, say QA is incomplete.
+1. Read site/references and `design_system` from lidfly_get_site_theme. On v2 the platform owns rhythm/type; choose style/composition. Define audience, hierarchy, type, palette, grid, spacing and image treatment. Read [Design system](references/design-system.md) and [Creative direction](references/creative-page-direction.md).
+2. Map content to native blocks with deliberate mobile order. Read [Frontend craft](references/frontend-page-craft.md). Blueprints are starting points, not section quotas; knowledge pages need readable structure, not forced sales heroes/oversized cards.
+3. When media is needed, read [Visual assets](references/visual-assets.md), plan crops/roles, inspect images and verify bindings. Preserve supplied content; never invent evidence or require paid generation.
+4. Read [Visual QA](references/visual-qa.md); inspect actual desktop/mobile screenshots and interactions, fix defects and recheck the revision. Publication/technical pass alone is not aesthetic approval. Report unavailable viewing as incomplete QA.
 
-MCP/chat: use get_skill_resource with name="lidfly-site-commerce" and these paths;
-installed clients read local files. Load references by stage.
+Load references by stage using get_skill_resource(name="lidfly-site-commerce", path=...) in MCP/chat, or local files in installed clients.
 
 ### Native operations
 
-Choose blocks by interaction: whole-card navigation, zoom, CTA or form. For focused
-edits read the section snapshot; for composition use blueprints. Filter the catalog
-by description/purpose/visible_when and read the selected definition; paginate or
-narrow filters while has_more. Explain unsupported behavior; never substitute a
-button for a requested whole-card link. After saving, disclose warnings and test
-clicks, anchors, unwanted zoom, keyboard and mobile behavior.
+Choose whole-card navigation/zoom/CTA/form explicitly. Read section snapshots for focused edits, blueprints for composition. Filter catalog by description/purpose/visible_when; read definitions and paginate/narrow while has_more. Explain unsupported interactions; never substitute a button for whole-card navigation. After saving disclose warnings and test clicks, anchors, unwanted zoom, keyboard and mobile.
 
 For `design_template_id="knowledge-base"`, use `$lidfly-knowledge-maintainer` for
 ingest, query-to-wiki, provenance, relations, findings, changesets and lint;
 never emulate knowledge updates with sequential page writes.
 
-1. If the site, store, owner, or project is unclear, call the top-level `get_provider_context({ provider: "lidfly", query? })` and use only returned scope arguments.
-2. Find internal LidFly tools with `search_tools`.
-3. Read each internal tool schema with `get_tool_schema` before its first call.
-4. Use `call_tool` for reads: sites, pages, assets, leads, analytics, stores, orders, and CRM delivery diagnostics.
-5. Use `call_write_tool` for publishing, uploads, store/order changes, payment setup, CRM profile/policy changes, delivery resolution, and image generation.
-6. For paid image generation, show prompt, format, crop, and wait for explicit confirmation.
-7. Serialize same-site writes. Before each write to a known URL/site_id/subdomain/name,
-   refresh `get_provider_context({ provider: "lidfly", query: "..." })`; use `lidfly_list_sites`
-   only if unknown. Require `publication_write.status="idle"` and its fresh
-   `publication_revision`. If busy, wait for that operation, reread the targeted
-   scope and verify the previous write before at most one retry.
+1. Resolve unclear site/store/owner/project through top-level `get_provider_context({provider:"lidfly",query?})`; use returned scope only.
+2. Discover via `search_tools`; read `get_tool_schema` before first use. `call_tool` reads; `call_write_tool` publishes/uploads, changes stores/orders/payment/CRM policy, resolves delivery and generates images.
+3. Paid image generation requires explicit confirmation of prompt, format and crop.
+4. Serialize same-site writes. Refresh `get_provider_context` for known URL/id/domain/name; use `lidfly_list_sites` only if unknown. Require fresh `publication_revision` and `publication_write.status="idle"`. If busy, await operation, reread targeted scope and verify the previous write before at most one retry.
 
 For new or substantially revised managed sites, follow [MCP v3 methodology](references/methodology.md):
 declare page/image scope, inspect compact snapshots, choose a blueprint, apply one
@@ -81,13 +53,13 @@ Save same-site desired-state edits sequentially, then publish once. For multiple
 taxonomy overrides: `get_catalog_node_page → update_catalog_node_page` per node,
 then one `preview_catalog_publish → publish_store`.
 
-### Privacy consent on managed sites
+### Privacy consent
 
-- Privacy consent is a site-level managed capability, not CSS, arbitrary HTML, a custom checkbox field, or a Bitrix24-only setting.
-- Use `lidfly_get_site_privacy_consent` to read the current policy and exact revisions. Publish every referenced internal document route first, then call `lidfly_update_site_privacy_consent` with those exact revisions, and finish with a control read.
-- `form.required=true` adds one required unchecked checkbox to every standard managed lead form. Use distinct `consent_url` and `privacy_policy_url`; changing enabled text or links requires a new version.
-- `analytics.required=true` enables the site-wide accept/reject banner and keeps Yandex Metrika and optional tracking inert until acceptance. A new analytics version asks visitors again.
-- Verify submitted proof through `lidfly_get_leads`: `consent` must include acceptance time, current version, immutable text, both document URLs, and the submitting page URL. Do not claim compliance from visual presence alone.
+Site-level managed capability; never emulate with CSS/HTML/custom fields or Bitrix24 settings. Read `lidfly_get_site_privacy_consent`, publish referenced internal document routes, then `lidfly_update_site_privacy_consent` with exact revisions and control-read.
+
+`form.required=true`: one required unchecked checkbox per standard lead form; distinct consent_url/privacy_policy_url. Changed enabled text/links need a new version. `analytics.required=true`: accept/reject banner blocks Metrika/optional tracking until acceptance; new version asks again.
+
+Verify lead `consent` via `lidfly_get_leads`: time, current version, immutable text, both document URLs and submitting page URL. Visual presence alone proves no compliance.
 
 ### Виджет Битрикс24 и B242YA
 
@@ -105,18 +77,25 @@ then one `preview_catalog_publish → publish_store`.
 
 ## Progressive References
 
-Read only the reference needed for the current task:
+Load only task-relevant references; the four visual guides above are required by stage for creation/redesign, proportionally for corrections.
 
-- [Design system v2](references/design-system.md) — site styles, 12 composition rules with numbers, anti-patterns and reference compositions.
-- The four visual guides above — required by stage for page creation/redesign, proportional to a focused correction.
-- [Managed pages](references/managed-pages.md) — native widgets, page metadata and video blocks.
-- [Site chrome](references/site-chrome.md) — inherited header/footer and design templates.
-- [Static sites](references/static-sites.md) — archive preview and full deployment.
-- [Commerce](references/commerce.md) — products, imports, add-ons and storefront feeds.
-- [Shared galleries](references/shared-galleries.md) — albums, category examples, preview/apply, operation status and Bitrix inventory.
-- [SEO and feeds](references/seo-feeds.md) — GEO readiness, Organization, articles and RSS.
-- [MCP v3 compatibility methodology](references/methodology.md) — mandatory compact workflow in initial chat activation and the legacy `get_methodology` projection.
+- [Design system v2](references/design-system.md): styles/composition.
+- [Managed pages](references/managed-pages.md): widgets/metadata/video.
+- [Site chrome](references/site-chrome.md): header/footer/templates.
+- [Static sites](references/static-sites.md): archive preview/deploy.
+- [Commerce](references/commerce.md): products/imports/add-ons/feeds.
+- [Galleries](references/shared-galleries.md): albums/preview/apply/Bitrix.
+- [SEO/feeds](references/seo-feeds.md): GEO/Organization/articles/RSS.
+- [Methodology](references/methodology.md): mandatory initial chat workflow and legacy get_methodology projection.
 
 ## Workspace
 
 If work belongs to a business/client, resolve `workspace_project_id` before saving decisions, documents, or scheduled follow-ups.
+
+## Client materials and evidence
+
+Treat client stories as editorial content, not testimonials. Never invent ratings, stars, customer counts, results, certificates or quotes. Require supplied facts and sources; record file/message/URL provenance in task/project notes. Label edits as edits, not verbatim quotes. List missing photos/testimonials/proof as remaining work. Focused edits preserve other blocks, asset paths and design.
+
+For pages with new logos/images, use one `lidfly_preview_site_changeset` → `lidfly_apply_site_changeset` package: `import_image` (key + chat_attachment_id or image_url), `upsert_page`, and `@asset:key` references. Confirm returned normalized arguments, digest and effects together. Separate uploads suit a standalone asset library. `patch_theme`, `set_site_chrome`, `set_site_css` change theme, shared chrome and CSS respectively. Never replace `site_style` with page `themePreset`; if the changeset schema lacks site_style, read the style tool schema and prepare a separate agreed action. For legacy uploads lacking canonical_path/public_url, reread the exact site's `lidfly_list_assets`; never infer paths from filenames.
+
+Source: chat-site-flow audit, owner decisions and `lidfly-site-changeset-schema.ts`, verified 2026-10-18.

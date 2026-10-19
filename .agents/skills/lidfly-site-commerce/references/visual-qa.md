@@ -12,6 +12,14 @@ lidfly_get_visual_inspection; do not start another job just because it is
 pending. Desktop 1440×900 and mobile 390×844 checks cover technical defects and
 produce screenshots. Follow the current tool schema and returned artifact links.
 
+Read design_metrics first: every finding names the metric, its threshold, the
+blocks (block_index from lidfly_get_page) and a props-level hint. Page writes and
+site changesets also return composition warnings («Композиция «route»: … → …»);
+apply the replacement before judging screenshots. Preview URLs open only in the
+owner's session, so a client that can view images passes include_images=true
+(and image_route) to lidfly_get_visual_inspection: it receives the desktop and
+mobile first screens and a whole-page overview of one route.
+
 Inspect the actual screenshots, including lower sections, not only their URLs
 or the JSON status. Compare with the declared direction and any reference images.
 reference_comparison.status=pending_model_comparison is unfinished comparison.

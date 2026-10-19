@@ -39,8 +39,8 @@ The chat cannot fetch HTML or CSS. Replace the source reading of steps 1 and 3 a
 - Read the source with `read_website` (`max_pages` = pages to migrate, 1–5) and continue a long page with `read_website_page`. When a page has a `details` summary, call `read_website_page` with `part: "details"` and follow `next_offset` until `end_of_images`: it returns image URLs with `alt` and the nearest section heading, header and footer Markdown with links, and forms with their fields.
 - Without `details`, say that texts and section order will be transferred and the images must be attached to the chat.
 - Styles are unavailable. Take the visual direction from the closest LidFly design template or theme and say that colors and fonts are approximate unless the user attaches screenshots of the source.
-- Work in stages, each prepared as one confirmable change package, and continue only after its result: an account without sites first gets `lidfly_prepare_create_site` → `lidfly_create_site`; then images; then pages; then header, footer and forms. Tell the user this plan before the first stage.
-- Images: one `lidfly_upload_images_batch` for the chosen `details` URLs with meaningful filenames; images attached to the chat go through `lidfly_upload_image` with `chat_attachment_id`. After the upload read `lidfly_list_assets` and use the returned `canonical_path` values in block props.
+- An account without sites first gets `lidfly_prepare_create_site` → `lidfly_create_site`. After creation, prefer one `lidfly_preview_site_changeset` → `lidfly_apply_site_changeset` package for pages with their images and supported shared chrome/forms; describe its exact scope before confirmation. Split only when the supported operations or size limits require it.
+- Images needed by a page: include `import_image` and `upsert_page` operations in the same site package, using exact `@asset:key` references. Independent asset-library imports may use `lidfly_upload_images_batch` or `lidfly_upload_image`. Preserve returned canonical paths; recover a legacy result with `lidfly_list_assets` in the exact site scope, never by guessing the filename URL.
 - Pages: build the inventory (step 2) from the text and the `details` sections, map blocks (step 6), show the mapping (step 7), then prepare the page write (steps 9–10). Transfer the header menu and footer requisites through `lidfly_get_site_chrome` → `lidfly_update_site_chrome`, and forms through `lidfly_list_site_forms` → `lidfly_manage_site_forms`.
 - After the page write, compare it with the inventory (step 13). If the user attached screenshots of the source, offer `lidfly_inspect_site_visual` with them as `reference_attachment_ids`.
 
@@ -66,3 +66,16 @@ The chat cannot fetch HTML or CSS. Replace the source reading of steps 1 and 3 a
 ### Перенос popup-форм
 
 Для существующих CTA сначала прочитай action_controls выбранного блока и lidfly_list_site_forms; переноси popup заявки в общую форму, затем назначай site_form_modal с прочитанным formRef и рабочим fallbackUrl. Вложенные массивы сохраняй целиком. Формы доступны при inheritSiteDesign:false, поддерживают image/imageAlt; не переноси произвольный JS модалки. modal-form создаёт отдельную кнопку и локальную форму, buttonId не связывает его с чужой CTA. Создание формы/загрузка изображения требует нового чтения ревизии; update заменяет props целиком. При pending/unknown проверь operation_id перед повторной записью. Открытие окна и доставку заявки проверяй отдельно.
+
+## Материалы и доказательства клиента — 18.10.2026
+
+История клиента или авторский рассказ — редакционный блок, не выдуманный отзыв.
+Не добавляй звёзды, оценки, число клиентов, результаты, сертификаты или цитаты,
+если клиент не дал эти данные и источник. Сохраняй происхождение предоставленного
+текста в заметке задачи/проекте: файл, сообщение или URL; не выдавай редактуру за
+дословную цитату. Недостающие фотографии, отзывы и подтверждения перечисляй как
+оставшуюся работу, не заполняй их вымышленными доказательствами. При точечной
+правке сохраняй остальные блоки, адреса файлов и выбранное оформление.
+
+Источник: аудит chat-site-flow 18.10.2026; решения владельца и контракт
+`lidfly-site-changeset-schema.ts` проверены 18.10.2026.

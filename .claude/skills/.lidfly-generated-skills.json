@@ -15,14 +15,14 @@
       "references/article-architecture.md": "f88bb23dafbc2b02b8caddb73a44c7470771120aa3912eeee312d8ba4961236a"
     },
     "avito-ads": {
-      "SKILL.md": "0dfaea7a21a4c379c35100f442253089d7b32a16014787fd1e6d8ca30163f482",
+      "SKILL.md": "6c41c665a9f5ffba1761401f9444b6c9c6caf93d73c10c088e8a22ebe100373c",
       "agents/openai.yaml": "2e20daa9bd78e2d2c0fd26d32618c9964fbacd8175c21c77bf5e14866210864f",
       "references/audiences.md": "a649c9797d4db696213ca379e0291eb1905bbe73cb4d9afe28ea911ce71cc13a",
-      "references/creatives-and-tracking.md": "ebcd525f9f50fd1643a7079139fd9402582f9b976b0fc4bf242a5b96dd3c421f",
-      "references/methodology.md": "d6cc00f1d7545539ca196f289e24f473afb19ec671cc3ded9cbf43ed839fc751"
+      "references/creatives-and-tracking.md": "2911646eb771d88c963493cfe3243443d7c835a1353d5e7c30a3b8148a9b9ea8",
+      "references/methodology.md": "eb79a42cb989576e05b9e178aba059163f81b92ece322082a501eaee5a7ed5f4"
     },
     "avito-business": {
-      "SKILL.md": "bb79a58f12bf983507a748f9de525f76d19e779a4ef5c92f0e73a371520c5829",
+      "SKILL.md": "ee128edee85a96f9f0ed0cb593e26946a158152d86fdd27b92163c01509f3db4",
       "agents/openai.yaml": "5369a5af63f518eca55800e6099ebb2ee98f42707b144c23fdd90c8251638bc1",
       "references/methodology.md": "5d696eab65b748fbcca178ddf711f8716b8a65be25c5f25f3c3c2a513c5845d3"
     },
@@ -35,7 +35,7 @@
       "agents/openai.yaml": "755bf4d827ada5e21953bcf51430a8ecda8e8acd6eeb341bce1459f6acc5377f"
     },
     "human-editorial-polish": {
-      "SKILL.md": "c3e4e0ee43f187e33ecd61321bd1b4963ebed515a6afd9da9204375d9db22cf6",
+      "SKILL.md": "41e1585e75ec2a826063999dc4c8bb6083fa127cb40b6e99de1671e37a28eec2",
       "agents/openai.yaml": "b06de192df088888b245c7d6fea38ac541b7be80c03ddf80c9b0b50b0a710c3a",
       "references/russian-patterns.md": "62db0207de0987f0bd6a60127247590fe81451afbd5a6768c8ae0a2c65e34401"
     },
@@ -49,24 +49,24 @@
       "references/contracts.md": "ad6192541b582a566f46ae0521e650e4ed2898c7017e0577e5808962c668c82b"
     },
     "lidfly-page-migration": {
-      "SKILL.md": "7a11d295c6709b16c3408768be2687d6a480dd0c3575b6a4460bdb9f25b8ab52",
+      "SKILL.md": "af2e94ce791f779537ff6e84d396942f71e125b50e0e9097a1b30728ab504d3b",
       "agents/openai.yaml": "fc2411979ebcb472d11acfd3de9a1c22b0ca2c3b5c06c73a080e99cd0df2e923"
     },
     "lidfly-site-commerce": {
-      "SKILL.md": "11ac06d446130474534fe909b7e0a7429699f47b05d3c38cebf4301219607cbe",
+      "SKILL.md": "fe4fccf4b050553fe430ceefd028220a24a22bedc56cdfa1ac661e2464f544d1",
       "agents/openai.yaml": "956b538749795c2c0f2adedf4af1f0c9b62ba48d1b82ab80ea4299087d4c811a",
       "references/commerce.md": "9983247c18188ed0b9ef674188eb356ab120e151b7ad602a6d03743c923aa3aa",
       "references/creative-page-direction.md": "a44f48ee8853bbf5fa9d90f383fcc30a4948aa3506f87ce5fdebd9eb70f5b49b",
       "references/design-system.md": "786a1147c0060acf2738137c5336d176456dcc5b329f6c0b0a9dda4beca1f297",
       "references/frontend-page-craft.md": "f0e05bf702d7736bdfbcd61ccf0cb75a3306aa1edb38606196b2173bc29dee15",
       "references/managed-pages.md": "3a5d80fff2d93af7baa4318b5aaf010caaf203cb4d6f964bfc1f4d9f5dfdcf5b",
-      "references/methodology.md": "25ca6ac9775b05da990901d539bc19b89941fd8e179d1821abdb7d187bfe8516",
+      "references/methodology.md": "1bfe0fec74a862009312ebeeff67d25165004eb789d93d78ef08ef297d15d89d",
       "references/seo-feeds.md": "0932263c9d5b47ad9f4154c30e50f0bf36ff974be9e33c69e25c199e2d6f70b3",
       "references/shared-galleries.md": "6dedbfc4affaf920f7e85301373a013c74c3aab332c24e83fd890ae060aaeef3",
       "references/site-chrome.md": "f1b2a1ba7a93f53ce0fa53d8264559ca3785afb33efedb201c9387e72919559e",
       "references/static-sites.md": "9b6c208ac2a2c399559cdefb6779184f0c0baa3470af9d300fb5f7bf393e49f9",
       "references/visual-assets.md": "305d1f968e889d59162e9ddf1f9b25584d09cf078bd3e1d257ca19f997c124cd",
-      "references/visual-qa.md": "16526e1f1b1afcf72cc91290aca7ffe4fdf0283399fd7d1941ac600fc8489ef3"
+      "references/visual-qa.md": "e1663a3944d443f5170ad497308f777e9897f95b8aa8234e34ca59f17e267dfb"
     },
     "lidfly-support-escalation": {
       "SKILL.md": "30aafb8d823f65161a6498694f722a9349ab63473910389b25d76576825e1c69",
@@ -97,7 +97,7 @@
       "agents/openai.yaml": "9d55a40b9999bfa1405f5269fd42c4e1554533c8ad629e0e093b15ccf61e1ed1"
     },
     "telegram-posting": {
-      "SKILL.md": "f96da3f6e8774c8d62329d1cb778f01afa61e61c7d41bc68fa7c0cf1246054dd",
+      "SKILL.md": "d5de62d60cb116369f906dee8f2d6e270cda050dddedf06faa4d86a1b4e54bb2",
       "agents/openai.yaml": "eae2aeb8f5493ea89a8c178465092aa1e3a4713fe36dfe95ab2ee30372f8c67d"
     },
     "video-article-writer": {
