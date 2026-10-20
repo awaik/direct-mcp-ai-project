@@ -30,6 +30,10 @@ Before any campaign or ad-group write, read [VK goal mode and write safety](refe
 
 The compact legacy provider projection is [methodology](references/methodology.md).
 
+## MAX Messenger
+
+For «реклама в MAX», «канал MAX» or MAX messenger ads, read [MAX placements and API limits](references/max-messenger.md). Distinguish ads inside MAX from a MAX channel promoted in the VK feed.
+
 ## Analytics
 
 Before evaluating statistics, CPA, reach, budget distribution, missing impressions or a reach forecast, read [VK Ads analytics](references/analytics.md). Tool descriptions carry no evaluation thresholds; judgment comes from that reference and the client's goals in project memory.

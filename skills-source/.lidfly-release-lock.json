@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "key_id": "lidfly-skills-2026-01",
-  "release_version": "2026.10.19.1",
-  "registry_digest": "sha256:51778eb2cf6bb26c3f4dcbdd44fa5b8427b7f60548c4c550d300f4d710e6f23e",
-  "manifest_digest": "sha256:f0363483bc23636727c980974277ab1c46e390d4630d1bd8660ed4bc1c893c3c",
+  "release_version": "2026.10.20.1",
+  "registry_digest": "sha256:3fd4a67101c5a009c1de833c564015f0e3220d76d6c48e5e36d2f2748f5a1759",
+  "manifest_digest": "sha256:cbd331913e0368f1240a63c7de4a5d4ed3f00a6f47335063499a55edbfeaeb9e",
   "files": {
     "ai-markers-remove/agents/openai.yaml": "sha256:e7f4c0c7cb12533b2855f83a10fc8bfa7e0109e5504d50dc2670813585f79cff",
     "ai-markers-remove/SKILL.md": "sha256:266931aa924feebf8afa414d9e350daf792ad09b2f1010cb4b222a1802011c4c",
@@ -72,8 +72,9 @@
     "vk-ads-campaign-builder/agents/openai.yaml": "sha256:ddc725a75e49fdd27c47f0083fcf27477e29979730eba293110083f4ed219617",
     "vk-ads-campaign-builder/references/analytics.md": "sha256:5b478b8c914fb5694ac810640e4885c8f62a6c91b3d40194ef611b857c1072da",
     "vk-ads-campaign-builder/references/goal-mode.md": "sha256:212a2cdc69f41bca9c88f693d88efbae1db858367f180694405a968cf00b0d47",
+    "vk-ads-campaign-builder/references/max-messenger.md": "sha256:60757828176ccac712a60b5df1dc448e4872f94a5cd571733d66224ce429ee10",
     "vk-ads-campaign-builder/references/methodology.md": "sha256:e19afc11d490cf0a8b6d4c7edd2a3360048bef6e793cd273cc45657c8c7b3dfa",
-    "vk-ads-campaign-builder/SKILL.md": "sha256:93b15cf9cd5ed4fc483ac12e18628628c56192cdd81bca804da8b04d5729fb66",
+    "vk-ads-campaign-builder/SKILL.md": "sha256:e1082e4449a703b705f3a22414f3ce0e6393817504a8df78b3a226212f76ddbb",
     "workspace-project-manager/agents/openai.yaml": "sha256:9778d6c5f249e406d862ecb095de9b7e86df795274f59f7159fbaa43c5abbdbf",
     "workspace-project-manager/references/business-brief.md": "sha256:1f21c9ed06d3e50aba7990c1f40ab1dbcf806bd310bbfc1e709e695685463c30",
     "workspace-project-manager/references/methodology.md": "sha256:8d4bf6e612658d4820080b9a8ededb7ec459d8d627307a41955330cec7f1974b",

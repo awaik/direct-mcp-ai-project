@@ -106,10 +106,11 @@
       "references/transcription-workflow.md": "bdcfa671f750d5fcfb144f1fc8ecbdf402d1d710cd22a601c9047f90475d9e4b"
     },
     "vk-ads-campaign-builder": {
-      "SKILL.md": "93b15cf9cd5ed4fc483ac12e18628628c56192cdd81bca804da8b04d5729fb66",
+      "SKILL.md": "e1082e4449a703b705f3a22414f3ce0e6393817504a8df78b3a226212f76ddbb",
       "agents/openai.yaml": "ddc725a75e49fdd27c47f0083fcf27477e29979730eba293110083f4ed219617",
       "references/analytics.md": "5b478b8c914fb5694ac810640e4885c8f62a6c91b3d40194ef611b857c1072da",
       "references/goal-mode.md": "212a2cdc69f41bca9c88f693d88efbae1db858367f180694405a968cf00b0d47",
+      "references/max-messenger.md": "60757828176ccac712a60b5df1dc448e4872f94a5cd571733d66224ce429ee10",
       "references/methodology.md": "e19afc11d490cf0a8b6d4c7edd2a3360048bef6e793cd273cc45657c8c7b3dfa"
     },
     "workspace-project-manager": {
