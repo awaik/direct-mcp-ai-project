@@ -24,7 +24,7 @@ description: "Создавать, оформлять и проверять са�
 For page creation/redesign, follow this cycle within authorized scope. For local corrections preserve direction and inspect the affected area; order/inventory/SEO edits need no redesign.
 
 1. Read site/references and `design_system` from lidfly_get_site_theme. On v2 the platform owns rhythm/type; choose style/composition. Define audience, hierarchy, type, palette, grid, spacing and image treatment. Read [Design system](references/design-system.md) and [Creative direction](references/creative-page-direction.md).
-2. Map content to native blocks with deliberate mobile order. Read [Frontend craft](references/frontend-page-craft.md). Blueprints are starting points, not section quotas; knowledge pages need readable structure, not forced sales heroes/oversized cards.
+2. Map content to native blocks with deliberate mobile order. Read [Frontend craft](references/frontend-page-craft.md). Blueprints and reference compositions are starting points, not section quotas; knowledge pages need readable structure, not forced sales heroes/oversized cards.
 3. When media is needed, read [Visual assets](references/visual-assets.md), plan crops/roles, inspect images and verify bindings. Preserve supplied content; never invent evidence or require paid generation.
 4. Read [Visual QA](references/visual-qa.md); inspect actual desktop/mobile screenshots and interactions, fix defects and recheck the revision. Publication/technical pass alone is not aesthetic approval. Report unavailable viewing as incomplete QA.
 

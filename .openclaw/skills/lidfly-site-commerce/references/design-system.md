@@ -15,7 +15,9 @@ Call `lidfly_get_site_theme` and read `design_system`:
   rhythm with `density` (compact / comfortable / airy). Do not set font sizes,
   weights, paddings or widths in custom CSS, and do not add `spacing` to blocks.
 - `version: 1` — an existing site keeps its geometry byte for byte. Moving it to
-  v2 is manual and only at the site owner's request; never do it on your own.
+  v2 only at the owner's request: preview with `lidfly_inspect_site_visual`
+  `design_preview` (before/after, metrics, custom CSS risks), then
+  `lidfly_update_site_theme` `design_system: "v2"`; `"v1"` rolls back.
 
 ## Choose one style (v2)
 
@@ -67,18 +69,20 @@ only; never invent them to fill a section.
 
 ## Reference compositions
 
-Get the full list from `lidfly_recommend_page_blueprint`; it returns `key_props`,
-`tone` and `content_limits` per section. The two approved references:
+`lidfly_get_reference_composition` returns one approved page per scenario:
+block JSON with props, the template and `site_style`, desktop/phone screenshots
+(`include_images: true` attaches them) and the decisions behind each section.
+Scenarios: local-services, expert, blog-home, blog-article, store, product,
+portfolio, event, restaurant, b2b, agency, workshop. Each passes the composition
+lint and the design metrics with zero findings. Copy the structure, variants and
+key props, not the demo texts, photos or numbers. `lidfly_recommend_page_blueprint`
+names the matching scenarios in `reference_scenarios`. Personal blogs and guides
+use the `personal-blog` template.
 
-- Blog home: `navbar-simple` → `page-header` (eyebrow, tags) →
-  `blog-article-list` layout `editorial` without heading (featured) →
-  `blog-article-list` layout `grid` + `source: auto` + `eyebrow` (+ one `promo`
-  card) → `stats-counter` with `text` (about the author) → `footer-simple`.
-- Article (`page_kind: blog_article`): breadcrumbs → `blog-article-header`
-  (tags become the eyebrow, date shows as “4 октября 2026”) → `text-content`
-  `variant: article` per subsection → one `blog-editorial-cta` → `blog-article-list`
-  `grid` with `background: surface` (“Читайте также”). Only the first article
-  block gets a lead paragraph; set `lead: true/false` to override.
+An article (`page_kind: blog_article`) is `text-content` `variant: article` per
+subsection, one `blog-editorial-cta` and a `blog-article-list` `grid` with
+`background: surface`; the template adds breadcrumbs and the article header.
+Only the first article block gets a lead paragraph (`lead: true/false` overrides).
 
 ```json
 { "type": "text-content", "props": { "variant": "article", "heading": "Что лежит в тазах",
@@ -89,10 +93,6 @@ Get the full list from `lidfly_recommend_page_blueprint`; it returns `key_props`
     { "type": "callout", "label": "Как заказать", "text": "«Không đá» — без льда." }
   ] } }
 ```
-
-- Restaurant: header → `hero-split` → `restaurant-menu` → `gallery-grid`
-  (4:3) → `stats-counter` `background: none` → `cta-banner` → `faq-accordion`
-  → `contact-card` → footer.
 
 ## Check the result
 

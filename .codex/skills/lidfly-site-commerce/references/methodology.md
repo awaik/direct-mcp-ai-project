@@ -1,7 +1,7 @@
 # LidFly
 Known URL/id/domain/name: get_provider_context(provider: "lidfly", query: "...") returns latest publication revision; if unknown, fall back to lidfly_list_sites. Require idle; serialize writes; never blind-retry.
 
-Visual: lidfly_get_site_theme → design_system → lidfly_recommend_page_blueprint. Read design-system.md and visual guides by stage. Preserve content/template; prefer typed props to CSS. No section quota; keep knowledge pages compact. Verify desktop/mobile and interactions; fix defects, recheck revision; disclose warnings/incomplete QA. Never invent client evidence; preserve provenance (SKILL.md, verified 2026-10-18).
+Visual: lidfly_get_site_theme → design_system → lidfly_recommend_page_blueprint → lidfly_get_reference_composition. Read design-system.md, visual guides by stage. Preserve content/template; prefer typed props to CSS. Keep knowledge pages compact. Verify desktop/mobile and interactions; fix defects, recheck revision; disclose warnings/incomplete QA. Never invent client evidence; keep provenance (SKILL.md, verified 2026-10-20).
 
 1. Map nested page paths with lidfly_list_pages; read lidfly_get_page_snapshot and follow ownership. Legacy: lidfly_get_page(subdomain, slug), lidfly_get_block(subdomain, slug, index).
 2. Define card link/zoom/CTA/form. Use section snapshots or lidfly_recommend_page_blueprint, filtered lidfly_list_blocks and lidfly_get_block_definition; paginate while has_more. Read purpose/visible_when/actions. Do not substitute a button for whole-card navigation.
