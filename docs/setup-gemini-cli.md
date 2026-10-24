@@ -8,7 +8,7 @@ Gemini CLI использует `~/.gemini/settings.json`. В проекте л�
 {
   "mcpServers": {
     "lidfly": {
-      "httpUrl": "https://lidfly.ru/mcp/v3"
+      "url": "https://lidfly.ru/mcp/v3"
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "lidfly": {
-      "httpUrl": "https://lidfly.ru/mcp/v3"
+      "url": "https://lidfly.ru/mcp/v3"
     }
   }
 }
