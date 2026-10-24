@@ -23,7 +23,9 @@ LidFly MCP объединяет Яндекс Директ, Яндекс Метр
 частотности — `query: "wordstat"`; для постинга и работы с Telegram, сообществами ВКонтакте или
 MAX — `query: "telegram"`, `query: "vk_social"` или `query: "max"`; для профиля Авито —
 `query: "avito"`; для базы знаний ИИ-консультанта и договоров — `query: "ermiy"` или
-`query: "business_docs"`. Это относится и к запросам без названия LidFly или сервиса.
+`query: "business_docs"`; для бесплатной расшифровки аудио и видео — `query: "audio"`
+(`request_upload_audio`, `transcribe_audio_url`, `get_transcription`). Это относится и к запросам
+без названия LidFly или сервиса.
 
 Отсутствие профильного инструмента в `tools/list` не означает отсутствие возможности:
 сначала выполни поиск, получи `get_tool_schema`, затем используй нужный read/write wrapper.
@@ -251,6 +253,23 @@ workspace_project_id
 
 `wordstat_*` работают через серверный Yandex Search API LidFly. Не передавай `client_login`, `connection_id` или рекламный account scope. Все Wordstat calls read-only и идут через `call_tool`.
 
+## Статьи, Видео В Статью, YouTube SEO И Редактура (Гуманизация)
+
+Продвинутые контентные skills внутри проекта должны включаться **автоматически** по задаче пользователя, даже если он не назвал имя skill:
+
+- **Статья из видео или аудио (включая тяжёлые файлы 1 ГБ+ и многочасовые записи)** — автоматически используй [video-article-writer](skills-source/video-article-writer/SKILL.md) и его [transcription-workflow.md](skills-source/video-article-writer/references/transcription-workflow.md):
+  1. Проверь длительность и размер (`ffprobe`). Если видео или аудио превышает лимит 200 MiB или 4 часа (либо это видеофайл `.mp4`/`.mov`/`.mkv`/`.webm`/`.avi`), автоматически извлеки аудиодорожку и нарежь её локально через `ffmpeg` на компактные mono MP3-чанки (`-vn -ac 1 -ar 16000 -b:a 96k -f segment -segment_time 14340 -reset_timestamps 1`) в отдельную рабочую папку запуска.
+  2. Отправь чанки на бесплатную расшифровку в LidFly через `request_upload_audio` (`call_write_tool`) + HTTP `PUT` на одноразовый `upload_url`, затем получи точный текст через `get_transcription` (`call_tool`) и склей чанки по порядку без выдумывания пропущенных слов.
+  3. Собери статью строго по фактам из расшифровки и автоматически проведи её через финальную цепочку ревью: `video-article-writer` → [article-reviser](skills-source/article-reviser/SKILL.md) → [human-editorial-polish](skills-source/human-editorial-polish/SKILL.md).
+- **Упаковка видео для YouTube (названия, описание, таймкоды, теги, обложка)** — автоматически используй [youtube-video-seo](skills-source/youtube-video-seo/SKILL.md) и [output-contract.md](skills-source/youtube-video-seo/references/output-contract.md): используй ту же бесплатную расшифровку видео/аудио и проверку спроса в Wordstat, чтобы подготовить 3–5 вариантов цепляющих названий с разных углов, полное описание, выверенные таймкоды (главы), теги, закреплённый комментарий и 3–5 идей текста на обложку.
+- **Написание новой статьи (на Хабр, VC.ru, в блог или на сайт)** — автоматически используй [article-writer](skills-source/article-writer/SKILL.md) и [article-architecture.md](skills-source/article-writer/references/article-architecture.md):
+  1. Если статья пишется для Хабра, VC.ru или в авторском голосе проекта — сверяйся с профилем площадки и редстандартами в `.styles/*.md` (например, [.styles/awaik.md](.styles/awaik.md): режимы «Разбор» с проверкой гипотез и «Нарратив», числовая дисциплина, градация уверенности выводов, отсутствие воды и эмодзи).
+  2. Сформируй внутренний реестр фактов, при необходимости проверь спрос через Wordstat, построй карту H2 и напиши черновик.
+  3. Обязательно и автоматически запусти независимый проход [article-reviser](skills-source/article-reviser/SKILL.md), который включает финальную языковую полировку (гуманизацию) через [human-editorial-polish](skills-source/human-editorial-polish/SKILL.md).
+- **Редактура, «очеловечивание» (гуманизация) и чистка готового текста** — автоматически используй [human-editorial-polish](skills-source/human-editorial-polish/SKILL.md) (или [article-reviser](skills-source/article-reviser/SKILL.md) для целой статьи/HTML) и каталог [russian-patterns.md](skills-source/human-editorial-polish/references/russian-patterns.md):
+  - Диагностируй и вычищай пустые вступления («в современном мире», «давайте разберёмся»), искусственное завышение значимости («играет ключевую роль»), рекламную инфляцию («инновационный», «бесшовный»), ссылки на безымянных «экспертов», фрактальные резюме и симметричные шаблонные списки.
+  - Сохраняй 100% проверенных фактов, цифр, имён, цитат, кода, ссылок и таблиц; не имитируй «человечность» искусственными ошибками или выдуманными историями и не занимайся обходом AI-детекторов.
+
 ## Экспорт Рекламных Отчётов
 
 - Агрегированная рекламная статистика, расходы, показы, клики, конверсии, provider IDs, тексты объявлений и публичные URL креативов сами по себе не являются причиной отказа в выгрузке в подключённые Google Docs или Google Sheets.
@@ -275,6 +294,7 @@ workspace_project_id
 - Яндекс Директ и Wordstat: `agent-direct_wordstat.md`, `METRIKA-ADS-RULES.md`
 - VK Ads: `agent-vk.md`, `VK-ADS-RULES.md`
 - Бизнес-настройки: `PROJECTS.md`
+- Редакционные стили для статей (Хабр, VC.ru, блог): `.styles/*.md` (например, `.styles/awaik.md`)
 - Юридические ограничения публичного контента: `LEGAL.md`
 - Canonical authoring skills: `direct-mcp/skills-source` in the main LidFly repository. Local `skills-source/` is a generated signed-release projection; do not edit it manually.
 - Verified pull: `node scripts/pull-lidfly-skills.mjs`; client layout sync: `node scripts/sync-skills.mjs`
