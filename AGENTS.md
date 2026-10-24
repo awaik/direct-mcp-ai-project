@@ -2,20 +2,28 @@
 
 ## Контекст
 
-Этот репозиторий - клиентский шаблон инструкций и skills для работы с LidFly MCP из внешних AI-клиентов: Codex, Claude Code, Claude Desktop, ChatGPT, Cursor, OpenCode, VS Code, Windsurf, Gemini, Cline и OpenClaw.
+Этот репозиторий — официальный клиентский шаблон инструкций, конфигов и skills, созданный и поддерживаемый командой **[LidFly](https://lidfly.ru/)** (`https://lidfly.ru/`) для работы с LidFly MCP из внешних AI-клиентов: Codex, Claude Code, Claude Desktop, ChatGPT, Cursor, OpenCode, VS Code, Windsurf, Gemini, Cline и OpenClaw.
 
 Публичные setup snippets в продукте поддерживаются в основном репозитории LidFly в `public/js/guides.js`. Если локальная инструкция клиента и `public/js/guides.js` расходятся, актуальным считается `public/js/guides.js`, а этот шаблон нужно синхронизировать.
 
 ## Возможности LidFly и поиск инструментов
 
-LidFly MCP объединяет Яндекс Директ, Яндекс Метрику (Metrika), Яндекс Вебмастер
-(Webmaster), Wordstat, VK Ads, обычное Авито и Авито Рекламу; сайты, базы знаний,
-Commerce; Пространства с памятью, документами и задачами; изображения и
-распознавание аудио.
+LidFly MCP объединяет Яндекс Директ, Яндекс Метрику (Metrika), Яндекс Аудитории
+(Audience), AppMetrica, Яндекс Вебмастер (Webmaster), Wordstat, VK Ads, сообщества
+ВКонтакте (`vk_social`), обычное Авито (`avito`) и Авито Рекламу (`avito_ads`),
+публикации и ведение каналов/групп в Telegram (`telegram`) и мессенджере MAX (`max`);
+сайты, базы знаний, Commerce, ИИ-помощника (`ermiy_*`) и генерацию документов по
+образцам (`business_docs_*`); Пространства с памятью, документами и задачами;
+изображения, распознавание аудио и отдельный MCP бухгалтерии УСН «Доходы»
+(`https://lidfly.ru/mcp/accounting`, `accounting_*`).
 
 Для задачи о посещаемости, целях или конверсиях сначала ищи `search_tools({ query: "metrika" })`;
-для SEO, индексации и запросов сайта — `query: "webmaster"`; для спроса и частотности —
-`query: "wordstat"`. Это относится и к запросам без названия LidFly или сервиса.
+для мобильных приложений и установок — `query: "appmetrica"`; для сегментов и баз клиентов —
+`query: "audience"`; для SEO, индексации и запросов сайта — `query: "webmaster"`; для спроса и
+частотности — `query: "wordstat"`; для постинга и работы с Telegram, сообществами ВКонтакте или
+MAX — `query: "telegram"`, `query: "vk_social"` или `query: "max"`; для профиля Авито —
+`query: "avito"`; для базы знаний ИИ-консультанта и договоров — `query: "ermiy"` или
+`query: "business_docs"`. Это относится и к запросам без названия LidFly или сервиса.
 
 Отсутствие профильного инструмента в `tools/list` не означает отсутствие возможности:
 сначала выполни поиск, получи `get_tool_schema`, затем используй нужный read/write wrapper.
@@ -87,7 +95,7 @@ subscription_status
 Для рекламных и provider-задач при неизвестном кабинете, клиенте, подключении или Пространстве сначала вызывай:
 
 ```js
-get_provider_context({ provider: "yandex" | "vk" | "avito" | "avito_ads" | "lidfly" | "workspace", query?, client_login? })
+get_provider_context({ provider: "yandex" | "vk" | "vk_social" | "telegram" | "max" | "avito" | "avito_ads" | "lidfly" | "workspace", query?, client_login? })
 ```
 
 Если пользователь назвал кампанию или часть названия кампании, сначала вызывай:
@@ -117,7 +125,11 @@ workspace_project_id
 Внешние provider entities не являются Workspace-идентификаторами:
 
 - Yandex Direct `client_login`;
+- Yandex Audience `audience_connection_id`;
 - VK Ads `vk_client_id` или `client_id`;
+- ВКонтакте (сообщества) `group_id`;
+- Telegram (каналы и группы) `chat_binding_id`;
+- Мессенджер MAX (каналы) `chat_binding_id`;
 - Авито `avito_user_id`;
 - Avito Ads `account_id`;
 - Metrika `counter_id`;
@@ -169,6 +181,8 @@ workspace_project_id
 - Новые управляемые объявления по умолчанию: `add_unified_campaign` -> `add_adgroup` с `UNIFIED_AD_GROUP` -> `add_keywords_batch` -> `add_responsive_ad`. `add_adgroups` создаёт только legacy `TEXT_AD_GROUP` и не используется для `UNIFIED_AD_GROUP`.
 - `add_campaign`, `add_ad`, `add_ads` - только legacy/compatibility для старых текстовых сценариев.
 - Бюджеты Директа передавай в рублях обычным числом; не конвертируй в микроюниты.
+- Для Яндекс Аудиторий (`audience_*`) используй `audience_connection_id` или точный `workspace_project_id`; для загрузки CSV с контактами клиентов сначала вызывай `audience_request_csv_upload`, а создание/изменение/удаление сегментов и выдачу доступов выполняй через `call_write_tool`.
+- Для AppMetrica (`appmetrica_*`) начинай с `appmetrica_list_applications`, затем передавай точный `application_id` через `call_tool` без `client_login`.
 
 ### VK Ads
 
@@ -205,6 +219,13 @@ workspace_project_id
 - PII, резюме, записи звонков, коды доставки и приватные файлы требуют project access `admin`; signed artifact URL не сохраняй и не экспортируй.
 - Не настраивай автоматические AI-ответы на сообщения.
 
+### Сообщества ВКонтакте (vk_social), Telegram И MAX
+
+- Ведение сообществ ВКонтакте — отдельный `provider: "vk_social"` (`vk_social_*`), не подменяй его рекламным кабинетом `provider: "vk"` (VK Ads). Сначала резолви `connection_id` и `group_id` через `get_provider_context({ provider: "vk_social" })` или `vk_social_list_groups`.
+- Для каналов и групп Telegram (`provider: "telegram"`, `telegram_*`) и каналов в мессенджере MAX (`provider: "max"`, `max_*`) сначала получай `connection_id` и `chat_binding_id` через `get_provider_context` либо `telegram_list_chats` / `max_list_chats`. Не подставляй произвольный `chat_id` или `@username` без привязки в LidFly.
+- Перед публикацией или планированием поста в Telegram или MAX предлагай безопасный предпросмотр в личном чате с ботом (`telegram_preview_post` или `max_preview_post`).
+- Чтение статистики, постов, ленты канала (`max_get_channel_history`) и комментариев идёт через `call_tool`; любая публикация, отложенный пост, редактирование, закрепление, удаление, ответ в комментариях, модерация или отправка сообщения сообщества — только через `call_write_tool` после явного подтверждения текста, медиа и времени выхода.
+
 ### Yandex Webmaster
 
 - `webmaster_*` используют отдельный OAuth Вебмастера, не `client_login`.
@@ -224,6 +245,7 @@ workspace_project_id
 - YooKassa seller secrets никогда не показывай пользователю.
 - `generate_ad_image` или аналогичные платные генерации запускай только после показа prompt, format/crop и явного подтверждения.
 - Для managed-сайта с `design_template_id="knowledge-base"` маршрутизируй ingest, query-to-wiki, provenance, relations, findings, changesets и lint в `$lidfly-knowledge-maintainer`. `$lidfly-site-commerce` отвечает только за обычные операции сайта, Commerce и выбор шаблона; не обновляй knowledge entries последовательными page writes.
+- Для базы знаний ИИ-помощника (`ermiy_*`: сайт, Авито, ВКонтакте) и подготовки договоров/КП по образцам Word (`business_docs_*`) сначала проверяй черновик или `changeset`, а публикацию и сохранение выполняй через `call_write_tool`.
 
 ## Wordstat
 
