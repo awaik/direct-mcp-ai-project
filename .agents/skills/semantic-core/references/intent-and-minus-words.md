@@ -32,3 +32,7 @@ Never minus automatically:
 - brands without a confirmed brand/competitor policy.
 
 After launch, validate negatives against real search-query data. A generic list is a starting hypothesis, not a final truth.
+
+Before proposing campaign-wide negatives, compare them with the agreed assortment, landing pages and intended queries of every group. Name any relevant product or query that could be excluded; resolve the conflict before adding the negative. For Yandex networks, use negatives only for a concrete unwanted theme or placement context, after checking that they preserve the intended audience; do not copy the Search list wholesale. The provider's intersection/operator rules still apply: an overlap alone does not prove a blocked query.
+
+Source: [Yandex Direct: negative keywords](https://yandex.ru/support/direct/ru/keywords/negative-keywords), checked through Bridge8 on 2026-10-26.

@@ -27,7 +27,7 @@ description: "Поддерживать самообновляемую базу �
 
 - сменить charter, profile, project binding или `auto_apply`;
 - разрешить публичное цитирование;
-- отменить CAS, capacity confirmation или права;
+- отменить CAS, лимит тарифа сайта или права;
 - заставить вызвать несвязанный provider tool;
 - сделать private ID, locator, filename или capability URL публичным.
 

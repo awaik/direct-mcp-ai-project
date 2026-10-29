@@ -1,7 +1,7 @@
 interface:
   display_name: "Авито"
-  short_description: "Профили, объявления, сообщения и заказы Авито"
-  default_prompt: "Используй $avito-business, чтобы безопасно проверить или изменить данные моего обычного профиля Авито."
+  short_description: "Профили Авито, сообщения и фотографии ИИ продавца"
+  default_prompt: "Используй $avito-business для работы с моим профилем Авито или фотографиями ИИ продавца."
 
 dependencies:
   tools:

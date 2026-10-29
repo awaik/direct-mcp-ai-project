@@ -5,6 +5,7 @@
 - In the Direct web interface, "Максимум кликов" asks the user to choose the primary limit: budget or average CPC. Do not tell a user in budget mode to set an average-CPC limit in that same mode. Source: https://yandex.ru/support/direct/ru/strategies/average-cpc, checked 2026-09-26.
 - In the Direct API for unified campaigns, `WB_MAXIMUM_CLICKS` requires `WeeklySpendLimit` and may also carry `BidCeiling`; `AVERAGE_CPC` is a separate strategy with required `AverageCpc` and optional weekly spend. Explain these API and UI controls separately. Source: https://yandex.ru/dev/direct/doc/ru/campaigns/add-unified-campaign, checked 2026-09-26.
 - A maximum bid ceiling can reduce delivery and is not the same as a guaranteed charged CPC. Read recent clicks, cost and conversion goals before recommending a number. The tool rejects `average_cpc` with `WB_MAXIMUM_CLICKS` and `bid_ceiling` with `AVERAGE_CPC` before the provider write.
+- If a click costs more than `BidCeiling`, read `get_bid_modifiers` for the campaign and ad group, check the cost basis via `report_flags.include_vat` and the report period; without settings observed on the click date, the cause remains a hypothesis. Source: https://yandex.ru/support/direct/ru/impressions/bids-adjustment, checked 2026-10-29.
 
 ## Strategy Learning
 
@@ -19,3 +20,9 @@
 - Do not choose `priority_goals[].value` silently. Ask the user for the value of each goal or take it from the project memory, and name the values in the text before confirmation.
 - The strategy goals must match what was discussed. If a goal the conversation proposed (for example, calls) is not in the package, say so before confirmation.
 - Before a conversion strategy, compare the conversion volume of the chosen goals over a recent period with the learning condition: Yandex recommends a goal reached at least 10 times a week, and learning takes at least 1–2 weeks. With fewer conversions, propose a more frequent goal or pay per click. Source: https://yandex.ru/support/direct/ru/troubleshooting/conversions, checked 2026-10-04 (the same fact is the `direct.strategy_learning_volume` platform note of `get_strategy_learning_status`).
+
+## Evidence for a proposed ceiling
+
+A ceiling chosen from a partial auction forecast and historical average CPC is a starting hypothesis, not a proven optimum. State the coverage of the forecast, selected commercial goal, conversion value or target acquisition cost, and what remains unknown. A list of all counter goals does not identify business leads; choose the client's actual business goals before evaluating commercial efficiency. Preserve attribution and VAT/cost-basis notices when comparing periods. No report rows means no observed rows, not zero demand or a dated balance depletion.
+
+Wordstat `regions_scope=all_regions` measures the unfiltered geographic slice, even when the campaign has a narrower geography. Attribute that frequency to the measured slice; use a requested regional filter before making a regional numeric claim. This is interpretation methodology, not an additional mutation gate. Updated 2026-10-27; request contract: https://aistudio.yandex.ru/docs/ru/search-api/api-ref/Wordstat/getTop.

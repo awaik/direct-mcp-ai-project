@@ -1,5 +1,7 @@
 # Avito for business methodology
 
+For the AI seller's photo library, read [Assistant photos](assistant-photos.md), or call the direct meta-tool `get_skill_resource({ name: "avito-business", path: "references/assistant-photos.md" })`. Its `ermiy_*` tools belong to `provider:"lidfly"` and require exact project/agent/binding IDs. External MCP clients upload local bytes with a short-lived PUT capability; embedded chat uses the cabinet UI. The Avito provider workflow below does not replace that upload flow.
+
 Use get_provider_context(provider: "avito") and avito_status first. Copy connection_id and avito_user_id from tool_args; never substitute an avito_ads account_id.
 OAuth scopes and personal client_credentials capabilities are separate. Follow the manifest-selected auth mode and unavailable_reason; never swap credentials by guesswork.
 Use call_tool for READ-ONLY tools and call_write_tool for WRITE tools. Writes perform preflight, one outbound attempt and readback when the API has a reliable read endpoint.

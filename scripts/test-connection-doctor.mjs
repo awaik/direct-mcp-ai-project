@@ -92,7 +92,7 @@ const layerEvidence = {
   config: "### Config отсутствует или неверен",
   mcp_oauth: "### Ожидается MCP OAuth",
   transport: "### Connection timeout",
-  provider_connection: "### MCP работает, provider не подключён",
+  provider_connection: "### MCP работает, но кабинетов нет",
   skills: "### Skills отсутствуют или устарели",
 };
 

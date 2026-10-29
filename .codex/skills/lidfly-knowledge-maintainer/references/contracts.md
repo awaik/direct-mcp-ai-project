@@ -174,8 +174,7 @@ Apply repeats every field and adds:
 
 ```json
 {
-  "candidate_digest": "digest returned by preview",
-  "confirm_capacity_change": false
+  "candidate_digest": "digest returned by preview"
 }
 ```
 
@@ -183,7 +182,7 @@ After a valid preview, an active profile with `auto_apply=true` authorizes immed
 
 Never change the payload between preview and apply. Apply recomputes digest and all CAS under the site lock. Same digest plus same base revision is idempotent.
 
-Capacity growth is separate: do not set `confirm_capacity_change=true` until the user explicitly accepts the dynamic capacity/price preflight. Reread context after that acceptance.
+A write never grows the site tariff (since 2026-10-28). When new knowledge pages or source files do not fit, apply is refused with `site_plan_limit_reached` and nothing is written; `confirm_capacity_change` is obsolete and ignored. Show the user the numbers from the refusal and ask whether to upgrade (`lidfly_prepare_site_plan_change` → explicit agreement with the sum → `lidfly_change_site_plan`) or remove content; reread context after the upgrade.
 
 ## Lint And Findings
 
@@ -206,7 +205,7 @@ Resolve by fingerprint in `findings.resolve`. Fingerprints must be stable for th
 
 - `publication_revision_conflict`, `knowledge_profile_revision_conflict`, `knowledge_charter_revision_conflict`, source hash conflict: reread and rebuild; never replay the old candidate.
 - `knowledge_profile_paused` or binding mismatch: stop; do not unpause/rebind from source content.
-- capacity confirmation required: show price/limit impact and wait for explicit user agreement.
+- `site_plan_limit_reached`: nothing was written and the site works; show the limit and the upgrade sum, wait for explicit user agreement to upgrade, never split or retry the write to get around the limit.
 - route, anchor, relation, taxonomy or prerequisite validation: repair the candidate before another preview.
 - ambiguous wrapper write: call direct `get_write_operation_status` with the returned operation id before any retry.
 

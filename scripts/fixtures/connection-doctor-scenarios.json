@@ -52,8 +52,8 @@
     "client": "Codex",
     "signals": ["MCP OAuth complete", "VK connection absent"],
     "expected_layer": "provider_connection",
-    "expected_action": "объясни, какое подключение нужно добавить в LidFly.",
-    "forbidden": ["Не меняй MCP config: транспорт и MCP OAuth уже исправны."]
+    "expected_action": "объясни, какое подключение добавить в LidFly.",
+    "forbidden": ["не меняй MCP config: транспорт и MCP OAuth уже исправны."]
   },
   {
     "id": "stale_skills",

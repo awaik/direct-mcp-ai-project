@@ -70,7 +70,8 @@ Verify lead `consent` via `lidfly_get_leads`: time, current version, immutable t
 новая подготовка и согласование, без подмены CAS. `disable` сохраняет настройку,
 `reset` удаляет. После pending/потери ответа читайте журнал операции.
 Виджет независим от серверных форм, webhook не нужен. Установка не доказывает
-передачу ClientID; ссылка t.me не становится B242YA-каналом. Реальные CRM/Telegram
+передачу ClientID. Свои ссылки t.me без второй кнопки — `mode=telegram_links` с
+одним `telegram_bot` (нужны B242YA и CRM-трекинг). Реальные CRM/Telegram
 обращения — только по отдельному поручению.
 Источники: [Битрикс24](https://helpdesk.bitrix24.ru/open/25268342/),
 [B242YA](https://b242ya.ru/), проверено 08.10.2026.

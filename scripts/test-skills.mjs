@@ -48,7 +48,7 @@ const skills = fs
   .map((entry) => entry.name)
   .sort();
 
-assert.equal(skills.length, 26, "unexpected generated skill count");
+assert.equal(skills.length, 27, "unexpected generated skill count");
 
 execFileSync(
   process.execPath,
@@ -67,7 +67,7 @@ const sourceSnapshot = JSON.parse(
   ),
 );
 assert.equal(sourceSnapshot.schema_version, 1);
-assert.equal(sourceSnapshot.skill_count, 26);
+assert.equal(sourceSnapshot.skill_count, 27);
 assert.equal(sourceSnapshot.files.length, sourceSnapshot.file_count);
 assert.match(sourceSnapshot.skills_tree_sha256, /^[a-f0-9]{64}$/);
 assert.deepEqual(
@@ -440,7 +440,7 @@ try {
     fs
       .readdirSync(pluginSkills, { withFileTypes: true })
       .filter((entry) => entry.isDirectory()).length,
-    26,
+    27,
     "plugin target must contain all canonical skills",
   );
 
@@ -570,7 +570,8 @@ const directCreationReference = fs.readFileSync(
   path.join(sourceRoot, "yandex-direct-campaign-builder/references/campaign-creation-workflow.md"),
   "utf8",
 );
-assert.match(directCreationReference, /add_adgroup with adgroup_type: UNIFIED_AD_GROUP/);
+assert.match(directCreationReference, /add_adgroup with unified_offer_retargeting/);
+assert.doesNotMatch(directCreationReference, /add_adgroup with adgroup_type/);
 assert.doesNotMatch(
   directCreationReference,
   /add_adgroup\/add_adgroups[\s\S]*UNIFIED_AD_GROUP/,

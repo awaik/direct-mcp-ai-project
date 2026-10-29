@@ -44,6 +44,8 @@ Offer `search_phrase_vectorization` only when the user wants broader reach from 
 
 ## Creative And Text
 
+For a lead form or multiple image proportions in one ad, read [Lead forms and image formats](references/lead-forms-and-formats.md).
+
 - Validate package/banner pattern before creating banners.
 - Avoid unsupported symbols in text; keep copy within VK field limits.
 - Upload images/videos only after source asset is final.
