@@ -273,6 +273,7 @@ node scripts/sync-skills.mjs
 | `avito-ads` | Авито Реклама read/write workflows |
 | `avito-business` | Профиль Авито и Avito Promo: объявления, Autoload, чаты, отзывы, заказы и продвижение |
 | `telegram-posting` | Публикация, планирование, предпросмотр, редактирование и закрепление постов в Telegram |
+| `max-posting` | Публикация, планирование, редактирование и закрепление постов в каналах MAX, лента, просмотры и комментарии |
 | `yandex-webmaster` | Yandex Webmaster SEO audits and safe write actions |
 | `demand-research`, `semantic-core`, `seo-optimizer`, `serp-monitor` | Анализ спроса в Wordstat, сбор семантики, SEO/GEO-аудит и мониторинг позиций |
 | `lidfly-site-commerce` | LidFly sites, SEO/social metadata, Schema.org, assets, leads, Commerce, RSS and product feeds |
@@ -284,6 +285,12 @@ node scripts/sync-skills.mjs
 | `article-writer` | Написание глубоких статей на Хабр, VC.ru и в блог: проверка спроса в Wordstat, реестр фактов, карта H2, редстандарт `.styles/*.md` и автопроход ревизора |
 | `article-reviser` | Независимая ревизия готовой статьи или HTML: интент, плотность пользы, доказательная база, SEO/GEO и запуск финальной языковой полировки |
 | `human-editorial-polish` | Глубокая русскоязычная редактура («гуманизация») по каталогу `russian-patterns.md`: удаление ИИ-штампов, воды и рекламной инфляции при 100% защите фактов и цифр |
+
+## Сопровождение шаблона
+
+- `AGENTS.md` (и симлинк `CLAUDE.md`) держите не больше 28 КиБ. Codex встраивает из `AGENTS.md` не больше 32 КиБ (`project_doc_max_bytes`) и молча отбрасывает остальное, а этот лимит общий с `AGENTS.md`, которые пользователь добавит во вложенные папки. Размер проверяет `scripts/test-skills.mjs`. В `AGENTS.md` — только общие правила и маршрутизация, подробные методики — в skills.
+- Skills не обновляются автоматически при правке основного `direct-mcp/skills-source`: сначала нужен подписанный выпуск, затем ручные pull и sync в этом репозитории. Workflow `pull-lidfly-skills.yml` запускается через `workflow_dispatch`, расписания нет. Ручные расхождения не перезаписывайте; `AGENTS.md` и `CLAUDE.md` этими командами не генерируются.
+- Экспорт skills в плагин Codex: `node scripts/sync-skills.mjs --plugin-target ../lidfly-plugins/plugins/lidfly/skills`.
 
 ## Настройка Под Бизнес
 

@@ -332,6 +332,13 @@ assert.match(
 const agentsRules = fs.readFileSync(path.join(root, "AGENTS.md"), "utf8");
 const claudeRules = fs.readFileSync(path.join(root, "CLAUDE.md"), "utf8");
 assert.equal(agentsRules, claudeRules, "AGENTS.md and CLAUDE.md must stay synchronized");
+// Codex embeds at most 32 KiB of AGENTS.md (project_doc_max_bytes) and silently drops the rest;
+// the budget is shared with nested AGENTS.md files the user adds, so keep headroom.
+const agentsRulesBytes = Buffer.byteLength(agentsRules, "utf8");
+assert.ok(
+  agentsRulesBytes <= 28 * 1024,
+  `AGENTS.md is ${agentsRulesBytes} bytes; keep it within 28 KiB and move details into skills`,
+);
 assert.match(
   agentsRules,
   /lidfly_get_css[\s\S]*lidfly_update_page_css[\s\S]*lidfly_update_site_css[\s\S]*expected_custom_css_sha256[\s\S]*Не передавай `custom_css` в `lidfly_update_page`[\s\S]*64 KiB/,
