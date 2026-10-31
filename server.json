@@ -1,0 +1,22 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "ru.lidfly/mcp",
+  "description": "LidFly MCP Server (RU/EN): Yandex Direct, Yandex Metrika, Wordstat, Webmaster, Audience, AppMetrica, VK Ads, VKontakte communities (vk_social), Telegram channels, MAX Messenger channels, Avito & Avito Ads, LidFly Sites & Commerce, AI Consultant, Word (.docx) documents, free video/audio transcription, and 27 agent skills.",
+  "repository": {
+    "url": "https://github.com/awaik/direct-mcp-ai-project",
+    "source": "github"
+  },
+  "version_detail": {
+    "version": "3.0.0"
+  },
+  "remotes": [
+    {
+      "transport_type": "streamable-http",
+      "url": "https://lidfly.ru/mcp/v3"
+    },
+    {
+      "transport_type": "streamable-http",
+      "url": "https://lidfly.ru/mcp/accounting"
+    }
+  ]
+}

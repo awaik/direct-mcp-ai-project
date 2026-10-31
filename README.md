@@ -347,6 +347,8 @@ node scripts/sync-skills.mjs
 ├── .styles/awaik.md           # Редакционный стандарт для статей на Хабр, VC.ru и в блог
 ├── METRIKA-ADS-RULES.md       # Подробные правила работы с API Яндекс Директа и Метрики
 ├── VK-ADS-RULES.md            # Подробные правила создания и проверки кампаний VK Рекламы
+├── server.json                # Манифест сервера для каталогов MCP (Official MCP Registry)
+├── docs/mcp-platforms.md      # Полный справочник площадок, provider IDs и запросов search_tools
 ├── docs/setup-*.md            # Пошаговые инструкции подключения для всех ИИ-клиентов
 ├── skills-source/             # Подписанный источник 27 навыков (skills) LidFly
 ├── scripts/sync-skills.mjs    # Скрипт синхронизации навыков по папкам клиентов
@@ -396,6 +398,8 @@ node scripts/sync-skills.mjs
 - **LidFly Sites, Commerce, AI Consultant & Word Docs (`lidfly`, `ermiy`, `business_docs`):** landing pages, online stores, self-updating knowledge bases, AI assistant training, and `.docx` contract/invoice generation from templates.
 - **Media, Free Audio/Video Transcription & Editorial Skills:** image generation/editing, free transcription of large video and audio files (up to 3 GB via `ffmpeg` + LidFly ASR), YouTube SEO packaging, and Russian editorial workflows for Habr / VC.ru (`article-writer`, `article-reviser`, `human-editorial-polish`).
 - **Workspace Memory & Scheduled AI Tasks (`workspace`):** multi-client project memory (`workspace_project_id`), decisions, documents, reminders, and scheduled autonomous AI checks.
+
+See [`docs/mcp-platforms.md`](docs/mcp-platforms.md) for the complete platform reference table (`provider`, scope identifiers, `search_tools` queries, and skills) and [`server.json`](server.json) for the machine-readable Official MCP Registry manifest.
 
 ---
 
