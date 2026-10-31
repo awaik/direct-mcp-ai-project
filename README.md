@@ -375,6 +375,30 @@ node scripts/sync-skills.mjs
 - Любые изменения ставок, бюджетов, объявлений, постов или настроек сайта выполняются только через `call_write_tool` после чтения текущего состояния, preflight-проверки и вашего согласия.
 - Для агентств и командных Пространств write-действия требуют точный `workspace_project_id`.
 
+---
+
+## English Overview: LidFly MCP Server (Yandex, VKontakte, VK Ads, Telegram, MAX Messenger & Avito)
+
+**LidFly MCP (`https://lidfly.ru/mcp/v3`)** is a production Streamable HTTP **Model Context Protocol (MCP)** server and official project template with 27 specialized agent skills for Russian marketing, analytics, social media, classifieds, and e-commerce platforms. It connects **Claude Desktop (Cowork)**, **Claude Code**, **ChatGPT**, **OpenAI Codex**, **Cursor**, **VS Code (GitHub Copilot)**, **Windsurf**, **Cline**, **Gemini CLI**, **OpenCode**, and **OpenClaw** via browser OAuth (or API key) with explicit user confirmation before any write operation.
+
+### Supported Platforms & MCP Integrations (RU / EN)
+
+- **Yandex Direct MCP (Яндекс Директ MCP):** campaign creation (Unified Performance Campaigns / ЕПК), ad groups, keywords, negative keywords, bids, budgets, search queries, and Reports API analytics.
+- **Yandex Metrika MCP & AppMetrica MCP (Яндекс Метрика MCP и AppMetrica MCP):** web traffic counters, conversion goals, UTM attribution, CPA analysis, ecommerce events, and mobile app install/event analytics.
+- **Yandex Wordstat MCP (Яндекс Вордстат MCP):** search demand research, keyword frequency, regional demand, and seasonality analysis.
+- **Yandex Webmaster MCP (Яндекс Вебмастер MCP):** site indexing diagnostics, search query positions, CTR, sitemaps, and URL recrawl requests.
+- **Yandex Audience MCP (Яндекс Аудитории MCP):** CRM contact segments (CSV upload), retargeting segments, and look-alike audiences.
+- **VK Ads MCP (VK Реклама MCP):** campaign management, ad groups, banners, lead forms, retargeting audiences, goal compatibility checks, and statistics.
+- **VKontakte MCP (`vk_social`, ВКонтакте MCP для сообществ):** community wall posts, scheduled publishing, stories, comments moderation, community messages, and analytics.
+- **Telegram MCP (`telegram`, Телеграм MCP):** channel and group publishing, scheduled posts, media albums, inline buttons, pinned messages, and bot DM previews.
+- **MAX Messenger MCP (`max`, Мессенджер MAX MCP):** channel publishing, scheduled posts, bot DM previews, channel feed history, views, and comments in the MAX messenger.
+- **Avito MCP & Avito Ads MCP (`avito`, `avito_ads`, Авито MCP и Авито Реклама MCP):** seller profile listings, Autoload XML/CSV feeds, customer chats, reviews, orders, AI product photo generation, Avito Promo, and Avito Ads campaign management.
+- **LidFly Sites, Commerce, AI Consultant & Word Docs (`lidfly`, `ermiy`, `business_docs`):** landing pages, online stores, self-updating knowledge bases, AI assistant training, and `.docx` contract/invoice generation from templates.
+- **Media, Free Audio/Video Transcription & Editorial Skills:** image generation/editing, free transcription of large video and audio files (up to 3 GB via `ffmpeg` + LidFly ASR), YouTube SEO packaging, and Russian editorial workflows for Habr / VC.ru (`article-writer`, `article-reviser`, `human-editorial-polish`).
+- **Workspace Memory & Scheduled AI Tasks (`workspace`):** multi-client project memory (`workspace_project_id`), decisions, documents, reminders, and scheduled autonomous AI checks.
+
+---
+
 ## Ссылки и контакты
 
 - **Официальный сайт платформы:** [lidfly.ru](https://lidfly.ru/)
