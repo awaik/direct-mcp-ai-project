@@ -1,14 +1,20 @@
-# Подключение LidFly MCP к OpenClaw
+# Подключение LidFly MCP к OpenClaw (Яндекс Директ, Метрика, Вордстат, Вебмастер, VK Реклама, ВКонтакте, Telegram, MAX, Авито)
+
+Эта инструкция покажет, как подключить **OpenClaw** к платформе **[LidFly](https://lidfly.ru/)** через единый MCP-сервер `https://lidfly.ru/mcp/v3`.
+
+После подключения OpenClaw сможет управлять рекламой в **Яндекс Директе**, **VK Рекламе (VK Ads)** и **Авито Рекламе**, проверять отчёты **Яндекс Метрики** и **AppMetrica**, собирать ключевые слова в **Вордстате**, проводить SEO-аудит в **Яндекс Вебмастере**, выпускать и планировать посты в **Telegram**, **ВКонтакте** и мессенджере **MAX**, работать с объявлениями и покупателями на **Авито**, создавать сайты на LidFly и вести проекты в **Пространствах**.
+
+---
 
 ## Настройка
 
-Скопируйте пример:
+Скопируйте подготовленный пример конфигурации в рабочий файл:
 
 ```bash
 cp .openclaw/openclaw.example.json .openclaw/openclaw.json
 ```
 
-Пример содержит MCP URL и список skills:
+Файл содержит адрес единого MCP-сервера и путь к каталогу навыков (`skills`):
 
 ```json
 {
@@ -24,20 +30,26 @@ cp .openclaw/openclaw.example.json .openclaw/openclaw.json
 }
 ```
 
-Если OpenClaw в вашей версии не поддерживает OAuth remote MCP, добавьте Bearer API-key только в локальный `.openclaw/openclaw.json` и не коммитьте этот файл.
+Если ваша версия OpenClaw поддерживает remote MCP OAuth, пройдите вход по email в браузере. Если требуется статический заголовок, добавьте Bearer API-ключ только в локальный `.openclaw/openclaw.json` (файл исключён из Git) по [инструкции для API-ключа](setup-api-key.md).
 
-## Skills
+## Навыки (Skills)
 
-Копии skills в `.openclaw/skills` генерируются из `skills-source/`:
+Актуальные копии всех 27 навыков в `.openclaw/skills` уже находятся в репозитории и обновляются из `skills-source/` командой:
 
 ```bash
 node scripts/sync-skills.mjs
 ```
 
-## Проверка
+---
+
+## Проверка и первые запросы
 
 ```text
-Покажи мои доступные Пространства и рекламные кабинеты.
+Покажи мои доступные Пространства, рекламные кабинеты и подключённые площадки (Директ, Метрика, VK, Telegram, MAX, Авито).
 ```
 
-Дальше OpenClaw должен работать через v3 meta-layer: `search_tools`, `get_tool_schema`, `call_tool`, `call_write_tool`, `get_provider_context`, `resolve_campaign_scope`.
+```text
+Проверь мои активные кампании в Яндекс Директе и конверсии по Метрике за последние 30 дней. Ничего не меняй без отдельного плана.
+```
+
+OpenClaw работает через компактный v3 meta-layer: `get_provider_context`, `resolve_campaign_scope`, `search_tools`, `get_tool_schema`, `call_tool` (чтение) и `call_write_tool` (запись после вашего подтверждения).
