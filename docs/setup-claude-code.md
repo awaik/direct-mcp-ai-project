@@ -50,7 +50,7 @@ claude mcp add \
 
 В приложении Claude Desktop подключение работает через встроенные коннекторы (**Connectors**) и режим работы с папкой (**Cowork**):
 
-1. При желании скачайте установщик LidFly на странице **[lidfly.ru/claude](https://lidfly.ru/claude/)** и нажмите **«Установить папку»** — приложение само создаст рабочую папку `~/LidFly` (на macOS) или `C:\Users\<имя>\LidFly` (на Windows) с актуальными файлами `CLAUDE.md` и навыками (`skills`).
+1. При желании скачайте установщик LidFly на странице **[lidfly.ru/claude](https://lidfly.ru/claude/)** и нажмите **«Установить папку»** — приложение само создаст рабочую папку `~/LidFly` (на macOS) или `%USERPROFILE%\LidFly` (на Windows) с актуальными файлами `CLAUDE.md` и навыками (`skills`).
 2. В приложении **Claude Desktop** откройте **Settings (или Customize) → Connectors**.
 3. Нажмите **`Add custom connector`** и укажите:
 
