@@ -15,7 +15,7 @@
 | **Яндекс Вебмастер MCP** (`Yandex Webmaster MCP`) | `yandex` | `host_id` (без `client_login`) | `query: "webmaster"` | `yandex-webmaster`, `seo-optimizer`, `serp-monitor` |
 | **Яндекс Аудитории MCP** (`Yandex Audience MCP`) | `yandex` | `audience_connection_id` | `query: "audience"` | `yandex-direct-campaign-builder`, `yandex-metrika` |
 | **VK Реклама MCP** (`VK Ads MCP`) | `vk` | `connection_id`, `client_id` | `provider: "vk"`, `query: "vk"` | `vk-ads-campaign-builder`, `export-ad-reports` |
-| **ВКонтакте MCP (сообщества)** (`VKontakte MCP`) | `vk_social` | `connection_id`, `group_id` | `provider: "vk_social"`, `query: "vk_social"` | инструменты `vk_social_*` |
+| **ВКонтакте MCP (сообщества)** (`VKontakte MCP`) | `vk_social` | `connection_id`, `group_id` | `provider: "vk_social"`, `query: "vk_social"` | `vk-social-community` |
 | **Telegram MCP (каналы и группы)** (`Telegram MCP`) | `telegram` | `connection_id`, `chat_binding_id` | `provider: "telegram"`, `query: "telegram"` | `telegram-posting` |
 | **Мессенджер MAX MCP (каналы)** (`MAX Messenger MCP`) | `max` | `connection_id`, `chat_binding_id` | `provider: "max"`, `query: "max"` | `max-posting` |
 | **Авито MCP (профиль бизнеса)** (`Avito MCP`) | `avito` | `connection_id`, `avito_user_id` | `provider: "avito"`, `query: "avito"` | `avito-business` |

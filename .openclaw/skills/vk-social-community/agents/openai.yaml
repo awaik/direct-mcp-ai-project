@@ -1,0 +1,11 @@
+interface:
+  display_name: "Сообщество ВКонтакте"
+  short_description: "Посты, истории, комментарии и статистика сообществ ВКонтакте"
+  default_prompt: "Используй $vk-social-community, чтобы подготовить и опубликовать пост в моём сообществе ВКонтакте."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для сообществ ВКонтакте"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

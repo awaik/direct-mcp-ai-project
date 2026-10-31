@@ -12,7 +12,7 @@
 
 ### Способ А. Работа прямо из этого проекта (рекомендуем)
 
-В корне этого репозитория уже настроены файл подключения `.mcp.json`, правила `CLAUDE.md` и папка `.claude/skills/` со всеми 27 профессиональными навыками LidFly.
+В корне этого репозитория уже настроены файл подключения `.mcp.json`, правила `CLAUDE.md` и папка `.claude/skills/` со всеми 28 профессиональными навыками LidFly.
 
 1. Скачайте этот репозиторий (или компактный архив только для Claude Code — [`lidfly-claude-code.zip`](https://github.com/awaik/direct-mcp-ai-project/releases/latest/download/lidfly-claude-code.zip)) и откройте папку в VS Code или терминале.
 2. Если VS Code спросит о доверии к папке (**Restricted Mode**), нажмите **«Доверять авторам»** — иначе Claude Code не подхватит проектный `.mcp.json`.

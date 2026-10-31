@@ -34,7 +34,7 @@ cp .openclaw/openclaw.example.json .openclaw/openclaw.json
 
 ## Навыки (Skills)
 
-Актуальные копии всех 27 навыков в `.openclaw/skills` уже находятся в репозитории и обновляются из `skills-source/` командой:
+Актуальные копии всех 28 навыков в `.openclaw/skills` уже находятся в репозитории и обновляются из `skills-source/` командой:
 
 ```bash
 node scripts/sync-skills.mjs

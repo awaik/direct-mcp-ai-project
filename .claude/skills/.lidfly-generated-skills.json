@@ -119,6 +119,10 @@
       "references/max-messenger.md": "60757828176ccac712a60b5df1dc448e4872f94a5cd571733d66224ce429ee10",
       "references/methodology.md": "ceef2bf25641f19691cab7b4b68f80e360a906175af8fcf9b4d8102dca0a5edb"
     },
+    "vk-social-community": {
+      "SKILL.md": "b55ecbb75d9dd36470e8548803acaa3b47ac87a8204351e960d429b5242613bb",
+      "agents/openai.yaml": "2af51a44038fdfe60eff5a0f5102e29e5b814ea8dd4010a691e5c642f4fcd264"
+    },
     "workspace-project-manager": {
       "SKILL.md": "1b90c27694829fbd6cead04c8692509c8ae809639499541b35fec1be8ae83a52",
       "agents/openai.yaml": "9778d6c5f249e406d862ecb095de9b7e86df795274f59f7159fbaa43c5abbdbf",

@@ -10,7 +10,7 @@
 
 ### Вариант 1. Открыть готовый проект (рекомендуем)
 
-В этом репозитории уже настроены конфиг `.cursor/mcp.json`, правила `AGENTS.md` и папка `.agents/skills/` со всеми 27 профессиональными навыками LidFly.
+В этом репозитории уже настроены конфиг `.cursor/mcp.json`, правила `AGENTS.md` и папка `.agents/skills/` со всеми 28 профессиональными навыками LidFly.
 
 1. Скачайте этот репозиторий (или компактный архив специально для Cursor — [`lidfly-cursor.zip`](https://github.com/awaik/direct-mcp-ai-project/releases/latest/download/lidfly-cursor.zip)) и откройте папку в **Cursor** (`File → Open Folder`).
 2. Перезапустите Cursor и нажмите **`Authenticate` / `Connect` / `Login`** рядом с сервером `lidfly`, когда клиент предложит войти.

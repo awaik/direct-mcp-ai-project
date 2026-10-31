@@ -1,8 +1,8 @@
 # LidFly MCP — Яндекс Директ, Метрика, Вордстат, Вебмастер, VK Реклама, ВКонтакте, Telegram, MAX и Авито в Claude, ChatGPT, Cursor и Codex
 
-Официальный MCP-проект, готовые конфиги и набор из 27 навыков (`skills`) платформы **[LidFly](https://lidfly.ru/)** для работы через ИИ со всеми ключевыми площадками: **Яндекс Директ, Яндекс Метрика, Яндекс Вордстат (Wordstat), Яндекс Вебмастер, Яндекс Аудитории, AppMetrica, VK Реклама (VK Ads), сообщества ВКонтакте, каналы и группы Telegram, каналы в мессенджере MAX, профиль Авито и Авито Реклама, сайты и интернет-магазины LidFly (Commerce), базы знаний, ИИ-консультант, генерация документов Word (`.docx`), Пространства (память по проектам) и бухгалтерия УСН «Доходы»** — напрямую из **Claude Code, Claude Desktop, ChatGPT, OpenAI Codex, Cursor, VS Code (GitHub Copilot), Windsurf, Gemini CLI, OpenCode, Cline и OpenClaw**.
+Официальный MCP-проект, готовые конфиги и набор из 28 навыков (`skills`) платформы **[LidFly](https://lidfly.ru/)** для работы через ИИ со всеми ключевыми площадками: **Яндекс Директ, Яндекс Метрика, Яндекс Вордстат (Wordstat), Яндекс Вебмастер, Яндекс Аудитории, AppMetrica, VK Реклама (VK Ads), сообщества ВКонтакте, каналы и группы Telegram, каналы в мессенджере MAX, профиль Авито и Авито Реклама, сайты и интернет-магазины LidFly (Commerce), базы знаний, ИИ-консультант, генерация документов Word (`.docx`), Пространства (память по проектам) и бухгалтерия УСН «Доходы»** — напрямую из **Claude Code, Claude Desktop, ChatGPT, OpenAI Codex, Cursor, VS Code (GitHub Copilot), Windsurf, Gemini CLI, OpenCode, Cline и OpenClaw**.
 
-[**Быстрый старт за 3 минуты**](#быстрый-старт) · [**Инструкции для вашего ИИ-клиента**](#поддерживаемые-клиенты) · [**Все возможности по площадкам**](#что-можно-делать-через-lidfly) · [**Готовые промпты**](#стартовые-промпты) · [**Каталог 27 навыков (Skills)**](#skills) · [**Личный кабинет LidFly**](https://lidfly.ru/app)
+[**Быстрый старт за 3 минуты**](#быстрый-старт) · [**Инструкции для вашего ИИ-клиента**](#поддерживаемые-клиенты) · [**Все возможности по площадкам**](#что-можно-делать-через-lidfly) · [**Готовые промпты**](#стартовые-промпты) · [**Каталог 28 навыков (Skills)**](#skills) · [**Личный кабинет LidFly**](https://lidfly.ru/app)
 
 > Проект создан и официально поддерживается командой **[LidFly](https://lidfly.ru/)** (`https://lidfly.ru/`). Историческое имя репозитория в URL (`direct-mcp-ai-project`) сохранено для обратной совместимости ссылок, git-репозиториев и автоматических релизов — внутри находится актуальный единый шаблон **LidFly MCP v3** для всех рекламных, аналитических, контентных и соцсетевых площадок.
 
@@ -14,7 +14,7 @@
 
 - **Сначала проверка и план — потом действие с вашего согласия.** ИИ сам находит нужный проект, рекламный кабинет, счётчик Метрики, группу ВКонтакте или канал в Telegram / MAX, читает текущие цифры и показывает понятный план. **Ни одна ставка, кампания, цена или публикация не изменится без вашего явного подтверждения.**
 - **Весь маркетинг, соцсети и продажи в одном окне.** Без переключения между десятком вкладок: в одном диалоге проверяйте расход и заявки в Яндекс Директе и VK Рекламе, сводите конверсии с Метрикой, выпускайте посты в Telegram, ВКонтакте и мессенджере MAX (с безопасным предпросмотром в личном боте), отвечайте покупателям на Авито, собирайте статьи из часовых видео и выгружайте отчёты в Google Таблицы.
-- **27 проверенных профессиональных навыков (`skills`) внутри.** Ваш ИИ сразу знает актуальные правила Единой перфоманс-кампании (ЕПК) в Директе, совместимость пакетов и целей в VK Ads, работу с автозагрузкой фидов Авито, SEO-аудит по Вебмастеру и Вордстату и редактуру статей для Хабра и VC.ru без нейросетевых штампов.
+- **28 проверенных профессиональных навыков (`skills`) внутри.** Ваш ИИ сразу знает актуальные правила Единой перфоманс-кампании (ЕПК) в Директе, совместимость пакетов и целей в VK Ads, работу с автозагрузкой фидов Авито, SEO-аудит по Вебмастеру и Вордстату и редактуру статей для Хабра и VC.ru без нейросетевых штампов.
 - **Подключение за пару минут без возни с токенами.** Единый сервер `https://lidfly.ru/mcp/v3` авторизуется через браузер по email (OAuth) — вручную выпускать и копировать API-ключи рекламных площадок в конфиги не нужно.
 
 ---
@@ -297,7 +297,7 @@ subscription_status
 
 ## Skills
 
-В проект встроены 27 специализированных навыков (`skills`), которые задают ИИ проверенные алгоритмы работы с каждой площадкой:
+В проект встроены 28 специализированных навыков (`skills`), которые задают ИИ проверенные алгоритмы работы с каждой площадкой:
 
 | Skill | Задача |
 |---|---|
@@ -313,6 +313,7 @@ subscription_status
 | `avito-business` | Профиль продавца Авито и Avito Promo: объявления, автозагрузка (`Autoload`), чаты, отзывы, заказы и продвижение |
 | `telegram-posting` | Ведение каналов и групп Telegram: публикация, отложенный постинг, предпросмотр в боте, правка и закрепление |
 | `max-posting` | Ведение каналов в мессенджере MAX: публикация, планирование, предпросмотр, лента, просмотры и комментарии |
+| `vk-social-community` | Ведение сообществ ВКонтакте: посты и отложенные посты, предложенные записи, истории, комментарии, сообщения сообщества, товары и статистика |
 | `yandex-webmaster` | Яндекс Вебмастер: поисковые запросы, позиции, индексация, диагностика ошибок, `sitemap` и переобход |
 | `demand-research`, `semantic-core`, `seo-optimizer`, `serp-monitor` | Исследование спроса в Вордстате, сбор семантического ядра, SEO/GEO-аудит страниц и мониторинг выдачи |
 | `lidfly-site-commerce` | LidFly sites, SEO/social metadata, Schema.org, assets, leads, Commerce, RSS and product feeds |
@@ -350,7 +351,7 @@ node scripts/sync-skills.mjs
 ├── server.json                # Манифест сервера для каталогов MCP (Official MCP Registry)
 ├── docs/mcp-platforms.md      # Полный справочник площадок, provider IDs и запросов search_tools
 ├── docs/setup-*.md            # Пошаговые инструкции подключения для всех ИИ-клиентов
-├── skills-source/             # Подписанный источник 27 навыков (skills) LidFly
+├── skills-source/             # Подписанный источник 28 навыков (skills) LidFly
 ├── scripts/sync-skills.mjs    # Скрипт синхронизации навыков по папкам клиентов
 ├── .mcp.json                  # Готовый конфиг MCP для Claude Code
 ├── .codex/config.toml         # Готовый конфиг MCP для OpenAI Codex
@@ -381,7 +382,7 @@ node scripts/sync-skills.mjs
 
 ## English Overview: LidFly MCP Server (Yandex, VKontakte, VK Ads, Telegram, MAX Messenger & Avito)
 
-**LidFly MCP (`https://lidfly.ru/mcp/v3`)** is a production Streamable HTTP **Model Context Protocol (MCP)** server and official project template with 27 specialized agent skills for Russian marketing, analytics, social media, classifieds, and e-commerce platforms. It connects **Claude Desktop (Cowork)**, **Claude Code**, **ChatGPT**, **OpenAI Codex**, **Cursor**, **VS Code (GitHub Copilot)**, **Windsurf**, **Cline**, **Gemini CLI**, **OpenCode**, and **OpenClaw** via browser OAuth (or API key) with explicit user confirmation before any write operation.
+**LidFly MCP (`https://lidfly.ru/mcp/v3`)** is a production Streamable HTTP **Model Context Protocol (MCP)** server and official project template with 28 specialized agent skills for Russian marketing, analytics, social media, classifieds, and e-commerce platforms. It connects **Claude Desktop (Cowork)**, **Claude Code**, **ChatGPT**, **OpenAI Codex**, **Cursor**, **VS Code (GitHub Copilot)**, **Windsurf**, **Cline**, **Gemini CLI**, **OpenCode**, and **OpenClaw** via browser OAuth (or API key) with explicit user confirmation before any write operation.
 
 ### Supported Platforms & MCP Integrations (RU / EN)
 

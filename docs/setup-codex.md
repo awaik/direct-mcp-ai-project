@@ -24,7 +24,7 @@
 
 ## Способ 2. Работа через этот проект в VS Code или Codex CLI (максимум возможностей)
 
-При открытии этой папки проекта Codex автоматически подхватывает правила `AGENTS.md`, настройку `.codex/config.toml` и все 27 навыков в `.agents/skills/<name>/SKILL.md` (каталог `.codex/skills` сохранён для обратной совместимости; UI-метаданные лежат в `<skill>/agents/openai.yaml`).
+При открытии этой папки проекта Codex автоматически подхватывает правила `AGENTS.md`, настройку `.codex/config.toml` и все 28 навыков в `.agents/skills/<name>/SKILL.md` (каталог `.codex/skills` сохранён для обратной совместимости; UI-метаданные лежат в `<skill>/agents/openai.yaml`).
 
 1. Скачайте этот репозиторий (или компактный архив только для Codex — [`lidfly-codex.zip`](https://github.com/awaik/direct-mcp-ai-project/releases/latest/download/lidfly-codex.zip)) и распакуйте в удобную папку.
 2. Откройте папку в **VS Code** (`File → Open Folder`). Если появится окно **Restricted Mode**, выберите **«Доверять авторам»** — без доверия Codex не загрузит проектный `.codex/config.toml`.

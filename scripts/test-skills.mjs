@@ -48,7 +48,7 @@ const skills = fs
   .map((entry) => entry.name)
   .sort();
 
-assert.equal(skills.length, 27, "unexpected generated skill count");
+assert.equal(skills.length, 28, "unexpected generated skill count");
 
 execFileSync(
   process.execPath,
@@ -67,7 +67,7 @@ const sourceSnapshot = JSON.parse(
   ),
 );
 assert.equal(sourceSnapshot.schema_version, 1);
-assert.equal(sourceSnapshot.skill_count, 27);
+assert.equal(sourceSnapshot.skill_count, 28);
 assert.equal(sourceSnapshot.files.length, sourceSnapshot.file_count);
 assert.match(sourceSnapshot.skills_tree_sha256, /^[a-f0-9]{64}$/);
 assert.deepEqual(
@@ -447,7 +447,7 @@ try {
     fs
       .readdirSync(pluginSkills, { withFileTypes: true })
       .filter((entry) => entry.isDirectory()).length,
-    27,
+    28,
     "plugin target must contain all canonical skills",
   );
 

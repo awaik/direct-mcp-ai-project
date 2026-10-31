@@ -155,10 +155,10 @@ https://lidfly.ru/mcp/v3
 
 ### Сообщества ВКонтакте (vk_social), Telegram И MAX
 
-- Ведение сообществ ВКонтакте — отдельный `provider: "vk_social"` (`vk_social_*`), не подменяй его рекламным кабинетом `provider: "vk"` (VK Ads). Сначала резолви `connection_id` и `group_id` через `get_provider_context({ provider: "vk_social" })` или `vk_social_list_groups`.
+- Ведение сообществ ВКонтакте — отдельный `provider: "vk_social"` (`vk_social_*`), не подменяй его рекламным кабинетом `provider: "vk"` (VK Ads). Сначала резолви `connection_id` и `group_id` через `get_provider_context({ provider: "vk_social" })` или `vk_social_list_communities`.
 - Для каналов и групп Telegram (`provider: "telegram"`, `telegram_*`) и каналов в мессенджере MAX (`provider: "max"`, `max_*`) сначала получай `connection_id` и `chat_binding_id` через `get_provider_context` либо `telegram_list_chats` / `max_list_chats`. Не подставляй произвольный `chat_id` или `@username` без привязки в LidFly.
 - Перед публикацией или планированием поста в Telegram или MAX предлагай безопасный предпросмотр в личном чате с ботом (`telegram_preview_post` или `max_preview_post`).
-- Чтение статистики, постов, ленты канала (`max_get_channel_history`) и комментариев — через `call_tool`; публикация, отложенный пост, правка, закрепление, удаление, ответ, модерация или сообщение сообщества — только через `call_write_tool` после явного подтверждения текста, медиа и времени выхода. Методики — `$telegram-posting`, `$max-posting`.
+- Чтение статистики, постов, ленты канала (`max_get_channel_history`) и комментариев — через `call_tool`; публикация, отложенный пост, правка, закрепление, удаление, ответ, модерация или сообщение сообщества — только через `call_write_tool` после явного подтверждения текста, медиа и времени выхода. Методики — `$vk-social-community`, `$telegram-posting`, `$max-posting`.
 
 ### Yandex Webmaster
 

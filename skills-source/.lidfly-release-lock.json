@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "key_id": "lidfly-skills-2026-01",
-  "release_version": "2026.10.29.1",
-  "registry_digest": "sha256:da37e94149d1bf5caab8699085a60f7b67d14f9f448472a58fb7debeca32a346",
-  "manifest_digest": "sha256:7836911473e363cc66c6bbe5e54f00008fe2cb339fd1b386226c1ddaca118c6e",
+  "release_version": "2026.10.31.1",
+  "registry_digest": "sha256:dc5e6f7474881130d2ee56959ea44c49bd66fb7d98832c1a4e787cc7c7b39aa6",
+  "manifest_digest": "sha256:bf07c5ebe63096c16b98bfd7dce35c2c909ea6e1abcc5f40add17804f429c6f6",
   "files": {
     "ai-markers-remove/agents/openai.yaml": "sha256:e7f4c0c7cb12533b2855f83a10fc8bfa7e0109e5504d50dc2670813585f79cff",
     "ai-markers-remove/SKILL.md": "sha256:266931aa924feebf8afa414d9e350daf792ad09b2f1010cb4b222a1802011c4c",
@@ -79,6 +79,8 @@
     "vk-ads-campaign-builder/references/max-messenger.md": "sha256:60757828176ccac712a60b5df1dc448e4872f94a5cd571733d66224ce429ee10",
     "vk-ads-campaign-builder/references/methodology.md": "sha256:ceef2bf25641f19691cab7b4b68f80e360a906175af8fcf9b4d8102dca0a5edb",
     "vk-ads-campaign-builder/SKILL.md": "sha256:e3ed5b7039042f1b0c6102f5fbf3d2bf4abdd2268a5135fd6230dd9ce57b1797",
+    "vk-social-community/agents/openai.yaml": "sha256:2af51a44038fdfe60eff5a0f5102e29e5b814ea8dd4010a691e5c642f4fcd264",
+    "vk-social-community/SKILL.md": "sha256:b55ecbb75d9dd36470e8548803acaa3b47ac87a8204351e960d429b5242613bb",
     "workspace-project-manager/agents/openai.yaml": "sha256:9778d6c5f249e406d862ecb095de9b7e86df795274f59f7159fbaa43c5abbdbf",
     "workspace-project-manager/references/business-brief.md": "sha256:1f21c9ed06d3e50aba7990c1f40ab1dbcf806bd310bbfc1e709e695685463c30",
     "workspace-project-manager/references/methodology.md": "sha256:8d4bf6e612658d4820080b9a8ededb7ec459d8d627307a41955330cec7f1974b",
