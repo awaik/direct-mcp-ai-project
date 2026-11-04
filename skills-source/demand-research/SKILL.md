@@ -25,6 +25,19 @@ Use for demand checks, seasonality, missed demand, keyword cannibalization, regi
 6. Identify missed demand, seasonality, and cannibalization risk.
 7. Return the research in the requested format. Save to Workspace only when the user asked to save there and the exact project scope is resolved; usefulness for future work is not permission to persist it.
 
+For a business topic rather than explicitly requested exact phrases, decompose the
+topic into 3–5 short seed queries (usually 1–4 words). Measure each separately; do
+not send the whole business description as one Wordstat phrase or add overlapping
+phrase counts together. Preserve explicitly requested phrases without substitution.
+
+For “the last 12 months”, use the last 12 complete calendar months with monthly
+dynamics, ending at the end of the previous month, and state the actual dates.
+If needed, read the unfinished month separately with daily/weekly aggregation.
+Keep annual dynamics separate from the last-30-days regional distribution. Country,
+district, region and city rows are nested: use parent IDs/names and never sum counts
+or shares across those levels. For annual trends in named regions, request dynamics
+with those region filters. Missing dates are unconfirmed, not measured zero.
+
 ## Output
 
 Bind every number to its exact phrase, section, regions, devices and observation

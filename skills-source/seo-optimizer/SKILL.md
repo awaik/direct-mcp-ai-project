@@ -5,7 +5,9 @@ description: "Проводить SEO/GEO-аудит и оптимизацию с
 
 # SEO Optimizer
 
-Use for SEO audits, GEO/AI-search visibility, page optimization, metadata, internal links, and content improvement plans.
+Use for SEO audits, GEO/AI-search visibility, question selection and monitoring reports, page optimization, metadata, internal links, and content improvement plans.
+
+For GEO monitoring, question selection, report analysis or comparison, read [references/geo-monitoring.md](references/geo-monitoring.md). Use the shared `lidfly_geo_*` tools for sites on any platform.
 
 ## Workflow
 
@@ -21,5 +23,8 @@ Read `references/audit-checklist.md` before producing the final priority list. I
 ## Rules
 
 - Separate verified data from hypotheses.
+- Use selected-project notes and rules for attributed business terms; do not ask again for facts already supplied there. Name conflicts with website content and the source of each claim.
+- If `page_details_available: false` or a page has `details: null`, give a text audit: distinguish findings checked through text/available Webmaster data from checks requiring a browser or manual inspection (forms, header/footer, mobile layout, canonical/robots). Missing details do not mean those elements are absent. Do not call `read_website_page(part="details")` for a page whose details are unavailable.
+- When moving from an audit to drafting page copy, briefly retain the unfinished checks from the audit. Use only services needed for the task; missing visual data does not block useful text recommendations.
 - Do not invent rankings or traffic numbers.
 - For generated page changes, preserve user-provided brand and legal constraints; flag regulated or unsupported claims that require qualified review.

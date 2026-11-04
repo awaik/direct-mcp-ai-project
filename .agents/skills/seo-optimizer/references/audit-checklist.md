@@ -7,6 +7,8 @@ Use this checklist after obtaining the page content and any available live data.
 - Record URL, region, target audience, business goal, and audit date.
 - Separate page observations, provider data, and hypotheses.
 - Do not infer traffic, rankings, indexing, or conversions without a source.
+- Record which pages and data ranges were actually read. With unavailable page details, separate “Проверено по тексту и Вебмастеру” (only sources actually used) from “Не проверено”: forms, header/footer, mobile layout and HTML attributes need their own evidence. A title or heading in extracted text does not prove canonical, robots or a working form.
+- Preserve attributed project notes/rules, identify conflicts with current site content, and carry unfinished audit checks into a follow-up copywriting step.
 
 ## Technical And Indexing
 

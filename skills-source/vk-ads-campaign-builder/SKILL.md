@@ -46,6 +46,13 @@ Offer `search_phrase_vectorization` only when the user wants broader reach from 
 
 For a lead form or multiple image proportions in one ad, read [Lead forms and image formats](references/lead-forms-and-formats.md).
 
+- Read `banner_requirements` in `vk_prepare_campaign` / `vk_get_package` before requesting assets. Check draft text immediately with `vk_prepare_banner(package_id=..., targetings=...)`, even before group creation or image upload. Missing material keeps `ready=false`; never present that as a completed launch.
+- In built-in chat import attached originals with `vk_upload_image(chat_attachment_id=..., role=...)`. The server checks ownership, geometry and the original hash before approval. A connected ChangeSet may bind its `content_id` to `content.<role>.id` and a campaign's `ad_group_id` to the banner in the same exact VK scope.
+- `list_media` is the LidFly transit library, not the VK cabinet library; empty results do not disprove the user's assets. `request_upload → curl` is for external MCP clients only. A filename/path without bytes is not an uploaded image.
+- For a manual kit, use the checked format limits, identify any missing slots and preserve the chosen texts and budget in existing conversation decisions. Do not return to unavailable import steps.
+- Keep the approved copy in a manual kit. Label proposed rewrites as drafts; never add prices, guarantees, service details or delivery promises absent from the client's confirmed brief. Unknown fields stay explicitly unfilled.
+- Keep distinct customer offers separate: for example, family and children's formats retain their own conditions. A newer explicit customer decision replaces the older condition for that same offer; it does not silently change another offer. Label audience/cost estimates as hypotheses with inputs, period and uncertainty unless supported by observed statistics.
+- After a definitive provider refusal, deliver the useful work already prepared: all text variants, checked format limits, missing assets and exact blocking step. Distinguish supplied text, API readiness and actual creation; missing group IDs or images keep the banner unready. Do not invent IDs, repeat the rejected POST or substitute a package/account. Explain the known failure from its receipt; an unknown provider cause remains unknown. Offer further read-only diagnosis or an actionable manual kit without requiring the client to ask for the existing texts again.
 - Validate package/banner pattern before creating banners.
 - Avoid unsupported symbols in text; keep copy within VK field limits.
 - Upload images/videos only after source asset is final.

@@ -1,0 +1,12 @@
+interface:
+  display_name: "Яндекс Товары"
+  short_description: "Фиды, цены и скрытие товаров в Яндекс Товарах"
+  default_prompt: "Используй $yandex-products, чтобы проверить фиды магазина, обновить цены и скидки или скрыть закончившиеся товары в Яндекс Товарах."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Яндекс Товаров"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

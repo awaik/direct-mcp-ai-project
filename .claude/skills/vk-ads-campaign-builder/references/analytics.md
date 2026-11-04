@@ -4,7 +4,7 @@ Use after the VK scope is resolved. Statistics results already state the execute
 
 ## Reading Statistics
 
-- `period=summary` is lifetime delivery and does not accept dates. For a date range use `period=day`: each object's period total comes before its day rows. Take period figures from the total line; never sum CTR, CPC, CPM or cumulative reach across days.
+- `period=summary` is lifetime delivery and does not accept dates. For a date range use `period=day`: all objects' period totals come before any day rows. Take period figures from the total line; never sum CTR, CPC, CPM or cumulative reach across days.
 - `uniques.total` is cumulative reach from campaign start, `increment` is growth within the row's range, `frequency` is daily frequency. After a delivery pause longer than 90 days unique metrics are not reliable.
 - V3 (`sort_by`, `limit`, `offset`, `fields`) returns period totals per object without days. `count` is the total number of matching objects (live check 2026-09-27); continue with `offset`.
 - A zero, a missing metric, an empty response and unavailable detail (delegated `_user_id` cabinet) are different states. Do not report a missing field as zero or an empty response as "no delivery".
@@ -35,3 +35,9 @@ Sources: [VK help — budget optimization](https://ads.vk.ru/help/features/optim
 In `vk_get_projection` `campaign_id` is the ad group ID; only the passed `targetings` are used, not the group's saved targetings. The recommended effective bid is VK's definition (at least 75 % of the audience), not an optimal budget or a CPA guarantee. A forecast is not a result.
 
 Source: [ProjectionPrediction](https://ads.vk.com/doc/api/resource/ProjectionPrediction), live check 2026-09-27.
+
+## Bounded reports and banner details
+
+Chat report coverage distinguishes `totals_complete` from `buckets_truncated`: complete period totals can support an audit even when daily detail is omitted. Smaller historical evidence retains its source, time and coverage; omitted rows require a narrower read, not a claim that no statistics exist. Never sum rates or overlapping goals to reconstruct omitted totals.
+
+Banner `content` returns asset IDs, roles, dimensions and the original URL without resize variants. A large banner page still advances `offset`; use the reported next offset and a narrow `vk_get_banner(fields=...)` for omitted details.

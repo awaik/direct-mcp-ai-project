@@ -1,67 +1,53 @@
 # Visual quality review for LidFly
 
-Judge the rendered page against its brief and references. Server acceptance,
-HTML validity and publication success do not establish visual quality.
+Judge rendered pages against the brief and references. Publication, valid HTML,
+accepted postconditions and technical pass/warning are not aesthetic approval.
 
-## Collect evidence for the exact result
+## Evidence and focused corrections
 
-After a managed write, reread snapshots and publication_revision. Call
-lidfly_inspect_site_visual for the exact revision and promised managed routes
-(at most 10 per request). Poll the returned job through
-lidfly_get_visual_inspection; do not start another job just because it is
-pending. Desktop 1440×900 and mobile 390×844 checks cover technical defects and
-produce screenshots. Follow the current tool schema and returned artifact links.
+After a managed write, reread snapshots and publication_revision. Inspect that
+revision with `lidfly_inspect_site_visual` (at most 10 promised routes); poll its
+job via `lidfly_get_visual_inspection`, without starting duplicate pending jobs.
+Desktop 1440×900 and mobile 390×844 produce screenshots and technical findings.
 
-Read design_metrics first: every finding names the metric, its threshold, the
-blocks (block_index from lidfly_get_page) and a props-level hint. Page writes and
-site changesets also return composition warnings («Композиция «route»: … → …»);
-apply the replacement before judging screenshots. Preview URLs open only in the
-owner's session, so a client that can view images passes include_images=true
-(and image_route) to lidfly_get_visual_inspection: it receives the desktop and
-mobile first screens and a whole-page overview of one route.
+Read `design_metrics`: metric, threshold, block_index from `lidfly_get_page` and
+props-level hint. Resolve composition warnings from writes/changesets before
+judging screenshots. Preview URLs need the owner's session; image-capable clients
+use `include_images=true` and `image_route` to receive one route's desktop/mobile
+first screens and whole-page overview. View actual images, including lower
+sections, against the brief/references. URLs or JSON status alone are insufficient;
+`reference_comparison.status=pending_model_comparison` remains unfinished.
 
-Inspect the actual screenshots, including lower sections, not only their URLs
-or the JSON status. Compare with the declared direction and any reference images.
-reference_comparison.status=pending_model_comparison is unfinished comparison.
-Even a completed job with technical pass/warning or accepted postconditions
-does not prove that typography, composition and image crops are satisfactory.
+For a text/block correction preserve neighbors, direction and identities; inspect
+the changed area with `routes=[route]` and the returned `image_block_index` for
+both viewport crops. No new blueprint, reference composition or full inventory
+is needed. Add tablet/intermediate width for a wide table/grid or layout risk.
+For `commerce_taxonomy`: `lidfly_get_catalog_node_page` →
+`lidfly_update_catalog_node_page` with `slotOperations.update_block` →
+`lidfly_preview_catalog_publish(detail_level="summary")` → `lidfly_publish_store`
+→ inspect. On `route_html_missing` or `publication_revision_changed`, follow
+`next_safe_call`, refresh scope/revision and resolve the cause before retrying.
+Never repeat an identical structurally invalid request.
 
-Use an available browser for interactive states and a tablet/intermediate width
-when the layout warrants it. For static sites use the actual preview/published
-page and the client's browser facilities; do not promise that managed inspection
-accepts static routes. If image viewing or browser interaction is unavailable,
-report exactly which visual/behavioral checks remain unverified.
+For static sites inspect the actual preview/published page in a browser; managed
+inspection need not accept static routes. State unavailable image/interaction
+checks explicitly. Source: LidFly tool contracts, verified 02.11.2026.
 
-## Review the whole page
+## Creation/redesign checklist
 
-- Opening: clear page identity, meaningful H1, useful first-screen content and
-  visible navigation. Flag an almost empty homepage with only a link rail.
-- Hierarchy: readable type and real line breaks, clear headings, text measure,
-  contrast, alignment, spacing rhythm and coherent section transitions.
-- Density: proportional media and gaps; no endless sequence of mostly empty
-  tall cards on a phone. Preserve content while fixing its arrangement.
-- Assets: relevant and consistent images, deliberate crops, no broken media,
-  no stretched subjects, readable overlays and stable space while loading.
-- Responsive behavior: no horizontal overflow, clipping, overlapping controls,
-  inaccessible tab content or accidental loss of essential information.
-- Interactions: menus, links/anchors, whole-card navigation, intended zoom,
-  tabs, forms, visible focus and Tab/Enter. A screenshot cannot verify clicks.
+- Opening: identity/H1, useful first screen/navigation; flag a link-rail-only home.
+- Hierarchy: readable type/breaks/headings/measure, contrast, alignment, rhythm,
+  coherent section transitions.
+- Density: proportional media/gaps, no empty tall mobile cards; preserve content.
+- Assets: relevant consistent imagery/crops, readable overlays, stable loading;
+  reveal hidden/lazy media before judging it broken.
+- Responsive: no overflow/clipping/overlap, inaccessible tabs or missing essentials.
+- Interaction: menus, anchors/links, whole-card navigation, intended zoom, tabs,
+  forms, focus, Tab/Enter. Screenshots prove neither clicks nor form delivery.
 
-Do not submit a real lead/order or payment just to check a visual change.
-Use an authorized test procedure if delivery must be proved; distinguish opening
-a form from successful delivery. Inspect hidden/lazy media after revealing it
-before labelling it broken.
-
-## Refine and report
-
-Make a short list of defects tied to route, viewport and visible evidence.
-Fix material problems within the authorized scope, then inspect the changed
-revision again. Recheck affected interactions; do not reuse an earlier pass.
-Preserve deliberate owner choices such as a hidden footer and report their
-effect instead of restoring them unasked.
-
-Report applied/published state separately from visual review and interaction
-coverage. Disclose every tool warning, deliberate deviation and remaining
-limitation. Say the site is ready only when the promised scope and necessary
-checks are complete. Do not infer real-user performance or conversion gains
-from one screenshot or a laboratory check.
+No real leads/orders/payments without authorization. List defects by
+route/viewport/evidence; fix within scope, recheck revision/interactions.
+Preserve deliberate owner choices (including hidden footers). Report publication
+separately from visual/interaction coverage, disclosing all warnings, deviations
+and limitations. Readiness requires promised scope/checks. Screenshots/lab tests
+prove neither conversion gains nor real-user performance.

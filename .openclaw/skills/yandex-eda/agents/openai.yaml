@@ -1,0 +1,12 @@
+interface:
+  display_name: "Яндекс Еда"
+  short_description: "Меню, стоп-лист и заказы ресторанов Яндекс Еды"
+  default_prompt: "Используй $yandex-eda для меню, остатков и заказов выбранного ресторана в проекте LidFly."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для Яндекс Еды"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"
