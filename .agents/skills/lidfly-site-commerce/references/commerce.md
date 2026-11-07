@@ -65,10 +65,12 @@ Keep `title_template` separate from `field_mapping`; Bitrix24 `TITLE` is adapter
 
 ### amoCRM delivery and Calltouch ordering
 
-amoCRM OAuth is completed only by the user in the LidFly cabinet. Read `lidfly_get_amocrm_integration` and give the returned `setup_url` when it is not connected or requires reauthorization. Never ask for or accept `client_id`, `client_secret`, access tokens, or refresh tokens in chat or MCP tool arguments.
+Read `lidfly_get_amocrm_integration`; give its `setup_url` for cabinet OAuth/reauthorization. Never ask for or accept client IDs/secrets or tokens in chat/MCP.
 
-For a profile change use `lidfly_search_amocrm_schema → lidfly_preview_amocrm_profile_change → explicit confirmation → lidfly_apply_amocrm_profile_change → lidfly_list_amocrm_profiles`. Use only discovered pipeline, field, enum, and tag IDs. The selected pipeline must have Unsorted enabled. Do not request Users or Sources, do not map status or assignee, and do not invent or create CRM fields, pipelines, statuses, enums, or tags. An exact form binding is allowed only for a stable managed form without a definition conflict; otherwise use a verified scenario/default rule or stop.
+Profile: `lidfly_search_amocrm_schema → lidfly_preview_amocrm_profile_change → explicit confirmation → lidfly_apply_amocrm_profile_change → lidfly_list_amocrm_profiles`. Use discovered IDs and an Unsorted-enabled pipeline. Never create CRM configuration, request Users/Sources, or map status/assignee. Exact bindings require a stable managed form without conflicts; otherwise use a verified scenario/default or stop.
 
-For routing use `lidfly_preview_amocrm_delivery_policy → explicit confirmation → lidfly_apply_amocrm_delivery_policy`. `amocrm_primary_after_calltouch` creates amoCRM Unsorted first and releases the dependent Calltouch request after a successful or reconciled delivery. Fallback is permitted only after a proven `failed_not_created`; it is never an automatic response to a timeout or malformed success.
+Routing: `lidfly_preview_amocrm_delivery_policy → explicit confirmation → lidfly_apply_amocrm_delivery_policy`. `amocrm_primary_after_calltouch` delivers amoCRM first, then Calltouch. Only proven `failed_not_created` permits fallback; timeout/malformed success never does.
 
-Treat `unknown` as terminal until reconciliation. Call `lidfly_preview_amocrm_reconciliation`, show its PII-free evidence, and use `lidfly_resolve_amocrm_delivery` only after explicit confirmation with the unchanged `preview_hash`. Never call `lidfly_retry_amocrm_delivery` for `unknown`; ordinary retry is restricted to a delivery whose server ledger proves `failed_not_created`.
+`unknown` cannot retry. `lidfly_preview_amocrm_reconciliation` is read-only; current resolve refuses form/time-only evidence even with confirmation. `lidfly_retry_amocrm_delivery` retries create for `failed_not_created`, but only GETs saved IDs for `readback_incomplete`. `readback_mismatch` needs a developer.
+
+Explain returned contact policy: each submission gets a deal; exact PHONE reuses the earliest `(created_at,id)` contact. New values become a private note; contacts stay unchanged. Zero requires complete search/full visibility. Follow journal next steps. CRM owner configures BIG DATA to keep deals separate; never merge/delete or change CRM rules automatically.

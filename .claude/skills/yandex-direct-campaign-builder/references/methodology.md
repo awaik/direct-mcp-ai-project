@@ -51,3 +51,12 @@ For branded or geographic search queries, compare the proposed exclusion with th
 When model_coverage.provider_complete=false, report selected/total rows, sorting and period. Keep conclusions within that sample. An omitted_observations index records a past read, not its numeric data: reread through the ordinary provider tool if exact values are needed. Missing data in the context budget is not missing spend at the provider.
 
 Treat Metrika reaches as events, visits as goal visits, users as unique goal visitors, not verified leads. Match exact campaign/group IDs and attribution before comparing Direct spend to Metrika outcomes. A 403 on goal enrichment concerns catalog access, not tag health; goal optimization may work without counter access when enabled by its owner. Sources checked via Bridge8 2026-10-27: [metric units](https://yandex.ru/dev/metrika/ru/stat/metrics/advertising/conversions), [counter access and goal optimization](https://yandex.ru/support/direct/ru/statistics/metrika#access-to-goals).
+
+
+## Продолжение аналитики при недоступном отчёте (2026-11-05)
+
+Сохраняй предмет задачи: конкретную кампанию, даты, выбранную цель, атрибуцию и обещанные срезы. Уже разрешённые чтения продолжай без дополнительного согласования; согласие на чтение не разрешает запись. Если бизнес-цель ещё неизвестна, дай короткую техническую диагностику доступных данных и задай один вопрос о результате бизнеса. Не делай этот вопрос условием любого анализа.
+
+Если клиент предлагает скриншот или выгрузку после отказа API, перечисли параметры отчёта: видимый фильтр нужной кампании, согласованный период вокруг события (например, 03–17.10 для всплеска 10.10), дни, отдельно сеть и устройство по задаче, показы, клики, CTR, расход и CPC. Для конверсий укажи точную цель и атрибуцию; клик по телефону не равен состоявшемуся звонку. Скриншот локализует вклад срезов и метрик, но не гарантирует объяснение причины: изменения настроек требуют истории изменений или другого подтверждения.
+
+Неготовый Reports-ответ не содержит статистики: повтор проверяет тот же запрос после указанного интервала. После исчерпанного ожидания объясни, что не получено, предложи повтор позже или альтернативный источник, сохранив scope. Источник протокола ожидания: https://yandex.ru/dev/direct/doc/ru/mode (Bridge8, проверено 05.11.2026). Это методика анализа, не основание создавать проект, расписание или менять кампанию.
