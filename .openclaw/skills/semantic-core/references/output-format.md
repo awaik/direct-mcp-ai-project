@@ -32,6 +32,16 @@ For SEO also include:
 - cannibalization risks;
 - internal-linking relationship.
 
+## Negative Keywords (Минус-слова)
+
+In advertising mode always include a separate negative-keyword block beside the
+cluster/phrase table. Separate campaign-wide negatives from cross-group negatives,
+give the reason and the observed Wordstat phrase behind each recommendation.
+Do not exclude relevant commercial demand merely because a word occurs frequently.
+If Wordstat was not called or supplied no basis, state «нет данных из проверенных
+источников» and distinguish any unmeasured ideas. This block is part of the result
+even when campaign settings cannot be read or edited through the API.
+
 ## Evidence Rules
 
 - Attach frequency only to the exact query/region/period returned by Wordstat.

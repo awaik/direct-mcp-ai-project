@@ -26,6 +26,10 @@ Ask only for missing essentials:
 
 ## Workflow
 
+For keywords for an existing campaign, first read its settings with `get_campaigns`,
+current groups, keywords, ads and the landing page. Use the returned platform rules
+to explain API visibility; an empty response does not prove that the campaign is absent.
+
 1. Generate seed queries.
 2. Expand through `wordstat_top_requests`.
 3. Check seasonality and region when relevant.
@@ -50,3 +54,8 @@ reading it. Frequency alone does not prove conversion potential. List missing
 sources explicitly; advice on supplied data does not require a paid refresh.
 
 Return clusters, representative phrases, intent, recommended page/campaign, minus words, and validation notes. Mark estimates clearly when Wordstat data is unavailable.
+
+If the campaign is not returned by the API (for example a statistics-only «Баннер
+на поиске» or Campaign Wizard object), still provide ready-to-paste keywords and
+negative keywords. Explain the observed limitation and the manual addition path in
+the Yandex Direct web interface; never claim that phrases were added through the API.

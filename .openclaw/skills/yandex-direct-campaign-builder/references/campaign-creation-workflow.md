@@ -36,6 +36,9 @@ Default result: a draft copy awaiting the canonical approval. Include `manage_ad
 
 ## Continue the accepted build
 
+In an accepted campaign build, complete available campaign/site reads and missing demand research in the current turn. When the site is known, optional ad wording and selling points can be explicit assumptions in a stopped `DRAFT` package. Required strategy inputs still come from the customer's current explicit decisions: if e.g. `weekly_spend_limit` for `PAY_FOR_CONVERSION` is missing, collect all remaining mandatory decisions in one list after the reading. Do not borrow the source campaign's budget. Keep preparation of the campaign ChangeSet after these answers as the concrete next step; waiting for inputs does not finish the build. Do not include suspension of existing campaigns unless the customer requests it. Local workflow decision: owner, 2026-11-10; API-required fields remain owned by the tool schema/preflight.
+
+
 Use retained research, explicit decisions and the execution ledger to identify the unfinished part of the accepted task. A short “continue” does not restart demand research. Prepare all available dependent actions together, and name the concrete missing input or the part assigned to the client. Keep the created campaign/group/ad IDs and distinguish prepared, accepted and read-back-verified results. Moderation and launch still require their own explicit authorization.
 
 Frequency checks of a few masks do not constitute a finished core: show measured mask → checked returned phrases → groups → exact group keywords. Fill coverage gaps without remeasuring unchanged sources merely to advance to the next stage.

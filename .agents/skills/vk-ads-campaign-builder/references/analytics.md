@@ -41,3 +41,10 @@ Source: [ProjectionPrediction](https://ads.vk.com/doc/api/resource/ProjectionPre
 Chat report coverage distinguishes `totals_complete` from `buckets_truncated`: complete period totals can support an audit even when daily detail is omitted. Smaller historical evidence retains its source, time and coverage; omitted rows require a narrower read, not a claim that no statistics exist. Never sum rates or overlapping goals to reconstruct omitted totals.
 
 Banner `content` returns asset IDs, roles, dimensions and the original URL without resize variants. A large banner page still advances `offset`; use the reported next offset and a narrow `vk_get_banner(fields=...)` for omitted details.
+
+
+### Идентичность результата и оплаты (09.11.2026)
+
+В сводке сохраняй имя поля: `base.goals` / `base.vk.goals` — общий счётчик, не доказательство корзины или покупки по `priced_goal`. `events.*` описывает отдельные действия. Для вывода о конкретном ecommerce-событии сопоставь `vk_get_goal_statistics` с теми же объектами, датами и явной атрибуцией: `ec:add`, `ec:purchase`, `ag:product_list` различаются. Пустой detail означает отсутствие подтверждения в этом срезе, а не доказанный ноль продаж. Событие покупки не равно оплаченному заказу: сверяй оплаты с доступными данными CRM/оплат в разрешённой области. Без выручки, затрат и сопоставимого учёта не рассчитывай бизнес-ROI. Расходы и клики можно анализировать без дополнительного отчёта целей.
+
+Источник: [Statistics VK Ads](https://ads.vk.com/doc/api/info/Statistics), снимок официальной API-документации Bridge8 `/vk/ads`, проверен 09.11.2026; правило `vk.statistics_goals_identity` доставляется общим инструментом MCP и чата.
