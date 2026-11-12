@@ -41,7 +41,7 @@
       "references/russian-patterns.md": "62db0207de0987f0bd6a60127247590fe81451afbd5a6768c8ae0a2c65e34401"
     },
     "lidfly-connection-doctor": {
-      "SKILL.md": "fb78328b352130d01ff13496d15537a7feec4806f34d12c106317221d3b81350",
+      "SKILL.md": "6d6c50664438805d3fc87e4357b5b389f513a6c07df59bd0db4a76be182ccbde",
       "agents/openai.yaml": "0c122a44d7f8094be46f36aa15503db5698be801c1e1e2697c8aa1079ebb11ca"
     },
     "lidfly-knowledge-maintainer": {
@@ -103,7 +103,7 @@
       "agents/openai.yaml": "9d55a40b9999bfa1405f5269fd42c4e1554533c8ad629e0e093b15ccf61e1ed1"
     },
     "telegram-posting": {
-      "SKILL.md": "e9649e999027ea4f1cb88695505f1aa3bbf7b86e0d410d4f2077b423476e3203",
+      "SKILL.md": "5c343958e3bfeb469deb9d18fc42405f065fba564e472211968c4502930bc596",
       "agents/openai.yaml": "eae2aeb8f5493ea89a8c178465092aa1e3a4713fe36dfe95ab2ee30372f8c67d"
     },
     "video-article-writer": {

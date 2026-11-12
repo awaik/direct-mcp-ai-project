@@ -94,6 +94,24 @@ codex mcp list
 
 Ожидаемое поведение: Codex видит v3 meta-layer, начинает с `get_provider_context` для определения нужного кабинета или проекта и выполняет любые изменения только через `call_write_tool` после вашего подтверждения.
 
+### Windows: после перезапуска Codex не видит LidFly
+
+Если LidFly уже работал, а в новом сеансе Codex пишет, что инструменты недоступны, Codex на Windows не прочитал сохранённый вход ([известная ошибка Codex](https://github.com/openai/codex/issues/28201)). Полностью закройте Codex и VS Code, откройте глобальный файл `C:\Users\<имя>\.codex\config.toml` (не `.codex/config.toml` в папке проекта) и добавьте первой строкой:
+
+```toml
+mcp_oauth_credentials_store = "file"
+```
+
+Затем войдите заново и проверьте подключение:
+
+```bash
+codex mcp logout lidfly
+codex mcp login lidfly
+codex mcp list
+```
+
+Codex будет хранить вход в файле `.codex/.credentials.json` в папке пользователя; не пересылайте его содержимое. Если не хотите хранить вход в файле, подключитесь через [API-ключ](#подключение-через-api-ключ).
+
 ---
 
 ## Подключение через API-ключ

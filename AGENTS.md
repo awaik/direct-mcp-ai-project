@@ -77,6 +77,8 @@ https://lidfly.ru/mcp/v3
 
 `subscription_status` используй только для диагностики доступа, тарифа или auth-ошибок либо как одиночный connectivity/auth probe после повторной транспортной ошибки read-вызова по правилам ниже; не включай его в обычный workflow.
 
+Если инструментов LidFly нет в сеансе, не ищи их в файлах проекта: выполни `$lidfly-connection-doctor`.
+
 `get_write_operation_status({ operation_id })` вызывай напрямую после provider write с `outcome=unknown/ambiguous`. Не передавай его через wrappers.
 
 ## Эскалация Проблем В Поддержку
