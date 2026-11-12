@@ -96,7 +96,7 @@ codex mcp list
 
 ### Windows: после перезапуска Codex не видит LidFly
 
-Если LidFly уже работал, а в новом сеансе Codex пишет, что инструменты недоступны, Codex на Windows не прочитал сохранённый вход ([известная ошибка Codex](https://github.com/openai/codex/issues/28201)). Полностью закройте Codex и VS Code, откройте глобальный файл `C:\Users\<имя>\.codex\config.toml` (не `.codex/config.toml` в папке проекта) и добавьте первой строкой:
+Если LidFly уже работал, а в новом сеансе Codex пишет, что инструменты недоступны, Codex на Windows не прочитал сохранённый вход ([известная ошибка Codex](https://github.com/openai/codex/issues/28201)). Полностью закройте Codex и VS Code, откройте глобальный файл `%USERPROFILE%\.codex\config.toml` (не `.codex/config.toml` в папке проекта) и добавьте первой строкой:
 
 ```toml
 mcp_oauth_credentials_store = "file"
