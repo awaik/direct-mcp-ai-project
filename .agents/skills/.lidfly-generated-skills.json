@@ -32,7 +32,7 @@
       "agents/openai.yaml": "4ae1e34f8b136042dcd3c07452dc35f1d2606960631248b61d6ce3ec9dca0738"
     },
     "export-ad-reports": {
-      "SKILL.md": "9787092a030b95bde23574f76bfcdb050460131fd01ee05197c004de767f5153",
+      "SKILL.md": "d85162dfdf14f1d0193d29bf03081f05df00218da5814836519df3e863e42e79",
       "agents/openai.yaml": "755bf4d827ada5e21953bcf51430a8ecda8e8acd6eeb341bce1459f6acc5377f"
     },
     "human-editorial-polish": {
@@ -131,7 +131,7 @@
       "references/methodology.md": "8d4bf6e612658d4820080b9a8ededb7ec459d8d627307a41955330cec7f1974b"
     },
     "yandex-direct-campaign-builder": {
-      "SKILL.md": "0f8a0fe1b2bae9c245931f9d66c1484f4d154de8a8a9ba39604cb7beb5390410",
+      "SKILL.md": "df4d613d396a77acd9431169223135a02a291cacbcf97dbaf0e0cf0cd7804672",
       "agents/openai.yaml": "839127223c9ba2f88a465a94f99060a717cb7f9dd25697904883548023d29bde",
       "references/audiences.md": "72b21ee1409b9409a43a8f35addd3c59e845ad3b13a4f25ffc144bc622bf8484",
       "references/bidding-strategy.md": "0247d6e24c754292b554672b8a881e79835492802a667e65df02ebb790a60f3d",

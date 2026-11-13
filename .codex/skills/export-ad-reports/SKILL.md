@@ -22,7 +22,7 @@ Use this skill as the handoff between a provider skill, LidFly MCP v3 read calls
 4. Restrict the export payload to the allowed data boundary and preserve the report period, currency, attribution, provider IDs, and aggregation level needed to interpret the numbers.
 5. Perform a real write with the connected Google Sheets, Google Docs, or Google Drive connector. External Google-file writes are connector actions, not LidFly MCP writes; never route them through `call_write_tool`.
 6. Reread the changed range or document through the Google connector and verify the written values and images. A prepared table, Markdown response, or successful provider read is not a completed export.
-7. Report the actual target file, changed sheet/range or document section, row/item count, provider scope identifiers used, verification result, and exact connector error if any. State separately that nothing was written to a Пространство unless a separate Workspace write was requested.
+7. Report the actual target file, changed sheet/range or document section, row/item count, report period and provider account or campaigns, verification result, and exact connector error if any. Mention Workspace (Пространство) only when the user asked to save there or a Workspace write actually happened; otherwise do not mention it or `workspace_project_id` at all. Never claim the export was saved to a project unless a Workspace write tool returned success.
 
 ## Google Sheets
 

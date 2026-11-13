@@ -62,6 +62,24 @@ For exact Yandex IDs, discovery checks Reports over the supplied period or, by d
 
 For legacy Workspace links, accept a recovered Direct scope only when `get_provider_context` returns the complete `workspace_project_id + connection_id + client_login` in `tool_args`. Read `scope_issues`: run only a read-only `next_action` with `may_execute_automatically=true`; never guess around `manual_scope_review`, ambiguity, conflict, provider outage, or login-not-found. Do not derive `client_login` from `external_entity_key`, a project/account name, `external_entity_name`, or Direct `ClientId`.
 
+## Пустой API v5 при признаках активности
+
+После полных нефильтрованных пустых get_campaigns и discover_all_campaigns одного
+кабинета сопоставь DirectClickOrder с положительными визитами и повторные снимки
+общего счёта в той же подтверждённой области. Типизированный серверный
+non_v5_campaign_suspected — гипотеза оболочки «Простой старт»/Мастер кампаний,
+а не доказательство её типа. Не приравнивай UI-ID к DirectClickOrder. Одиночный
+положительный баланс (shared_account_funded) доказывает только наличие средств;
+лимит переноса минус остаток не является расходом кампании. Снижение остатка между
+снимками одного login/валюты также не доказывает расход конкретной кампании.
+
+Предложи Вариант А — ручные правки по Метрике и скриншотам; Вариант Б — параллельную
+управляемую через API ЕПК. Не останавливай текущую кампанию без отдельного решения.
+Не повторяй пустые отчёты без новых данных; неизвестный или другой кабинет не
+считается общей областью. Основание: наблюдения 12.11.2026 и
+[DirectClickOrder](https://yandex.ru/dev/metrika/ru/stat/attributes/visitssource_/direct).
+Видимость конкретной оболочки публичной документацией не подтверждена.
+
 ## Credential Boundary
 
 - В пользовательских задачах работай с Директом только через LidFly MCP v3. Не вызывай `api.direct.yandex.com` напрямую через shell, curl, PowerShell или другой HTTP-клиент — ни для проверки, ни как fallback после успеха, ошибки или timeout MCP.
