@@ -1,6 +1,6 @@
 interface:
   display_name: "LidFly Knowledge Maintainer"
-  short_description: "Поддерживает самообновляемую базу знаний"
+  short_description: "Самообновляемая база знаний проекта"
   default_prompt: "Используй $lidfly-knowledge-maintainer для безопасного ingest, query-to-wiki или lint базы знаний LidFly через MCP."
 
 dependencies:

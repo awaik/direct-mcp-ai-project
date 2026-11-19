@@ -48,3 +48,21 @@ Frequency checks of a few masks do not constitute a finished core: show measured
 Before preparing a build, name its agreed result: draft ads, submission for moderation, or a separately authorized launch. With an unspecified «создай рекламу», prepare drafts and state that moderation remains; do not silently include activation. A request that explicitly includes moderation can be one graph through `manage_ads(action=moderate)`, with IDs bound to the created ads.
 
 Use `lifecycle_stage=draft_not_moderated` as a historical ledger hint for the remaining step, not proof of current API state. Before recommending that the client wait for statistics, read delivery readiness for these exact ads. Creation, submission, approval, enabled delivery and commercial results are distinct outcomes. Do not repeat successful creation to finish the next stage. Historical `write:*` / `write-package:*` receipts establish only their dated recorded checks; an omitted or old receipt is not proof that a write never happened. Methodology updated 2026-10-27 after the HVG chat review; API states: https://yandex.ru/dev/direct/doc/ru/objects/ad#status.
+
+## Search intent and bid inputs
+
+Read the campaign's current strategy before preparing keywords. For automated
+search strategies, omit the manual keyword `bid`: Direct does not use it and
+returns warning 10160. Do not change the strategy to make that field effective.
+
+For commercial repair/service campaigns, do not add informational intent such
+as «почему», «как», «своими руками» without the customer's explicit agreement.
+These words are examples for contextual intent analysis, not an automatic
+lexical rule for excluding every query that contains them. Explain the intended
+traffic and obtain the decision before preparing such keywords.
+
+Existing EPK groups can be updated with `update_adgroups`: common patch by
+`adgroup_ids`, or individual `groups`. Existing responsive ads use
+`update_responsive_ads(ads)` after one campaign-level read. Keep exact text,
+regions, links and scope in the confirmation and distinguish accepted elements
+from properties confirmed by the post-read.

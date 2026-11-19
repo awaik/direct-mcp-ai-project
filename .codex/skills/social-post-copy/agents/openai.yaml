@@ -1,0 +1,11 @@
+interface:
+  display_name: "Короткий пост"
+  short_description: "Текст поста и фото для соцсетей"
+  default_prompt: "Используй $social-post-copy, чтобы написать короткий пост по моим фактам и приложенным изображениям."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для контекста проекта и публикации после подтверждения"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

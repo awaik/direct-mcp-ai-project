@@ -1,6 +1,6 @@
 interface:
   display_name: "Сообщество ВКонтакте"
-  short_description: "Посты, истории, комментарии и статистика сообществ ВКонтакте"
+  short_description: "Посты, истории и статистика VK"
   default_prompt: "Используй $vk-social-community, чтобы подготовить и опубликовать пост в моём сообществе ВКонтакте."
 dependencies:
   tools:

@@ -1,0 +1,11 @@
+interface:
+  display_name: "Запуск агента LidFly"
+  short_description: "Агент, знания, каналы и оплата с одним подтверждением"
+  default_prompt: "Используй $lidfly-agents, чтобы запустить автономного агента в моём проекте."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "lidfly"
+      description: "LidFly MCP v3 для запуска и настройки агентов"
+      transport: "streamable_http"
+      url: "https://lidfly.ru/mcp/v3"

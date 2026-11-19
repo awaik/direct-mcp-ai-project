@@ -1,6 +1,6 @@
 interface:
   display_name: "Постинг в MAX"
-  short_description: "Посты, расписание и комментарии в каналах MAX"
+  short_description: "Публикация постов в каналы MAX"
   default_prompt: "Используй $max-posting, чтобы подготовить и опубликовать мой пост в подключённом канале MAX."
 dependencies:
   tools:

@@ -1,6 +1,6 @@
 interface:
   display_name: "Эскалация в поддержку LidFly"
-  short_description: "Безопасный черновик обращения без автоотправки"
+  short_description: "Черновик обращения без автоотправки"
   default_prompt: "Используй $lidfly-support-escalation, чтобы безопасно диагностировать проблему MCP и подготовить обращение после согласия пользователя."
 
 dependencies:

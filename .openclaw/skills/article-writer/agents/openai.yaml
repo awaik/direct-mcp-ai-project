@@ -1,6 +1,6 @@
 interface:
   display_name: "SEO/GEO-статья"
-  short_description: "Доказательные статьи без шаблонной структуры"
+  short_description: "Доказательные SEO/GEO-статьи"
   default_prompt: "Используй $article-writer, чтобы подготовить доказательную SEO/GEO-статью по брифу, бренду и голосу моего проекта."
 
 dependencies:

@@ -1,6 +1,6 @@
 interface:
   display_name: "Постинг в Telegram"
-  short_description: "Посты и расписание в каналах и группах Telegram"
+  short_description: "Публикация постов в Telegram"
   default_prompt: "Используй $telegram-posting, чтобы подготовить и опубликовать мой пост в подключённом чате Telegram."
 dependencies:
   tools:
