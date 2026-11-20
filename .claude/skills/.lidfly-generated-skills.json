@@ -41,7 +41,7 @@
       "references/russian-patterns.md": "62db0207de0987f0bd6a60127247590fe81451afbd5a6768c8ae0a2c65e34401"
     },
     "lidfly-agents": {
-      "SKILL.md": "2c12be6667739150aec072bb6bfa32bae7d3b7575dbea613176eafb79b834560",
+      "SKILL.md": "0155af644d377f25d1c1a0bc5c9bd55045de8db230e6086e2cfba18514b007ee",
       "agents/openai.yaml": "87bc466a91160c0a66e564d37f3e64e12d4e8dfa40f3fc9c77fdc1fed9893d10"
     },
     "lidfly-connection-doctor": {
@@ -78,7 +78,7 @@
       "agents/openai.yaml": "20f68cd794cdf3463575212a81df8145b22461c549e7243dd9e24e7b7500fc1e"
     },
     "max-posting": {
-      "SKILL.md": "3c7b1cbc4f9495032150a9375a66fe673ff913e38b148cefc12df35136120ea9",
+      "SKILL.md": "924e4f1a8bab8b901a0c455fc6370ab2aae1721cc1d24227b826f4451f23776c",
       "agents/openai.yaml": "55afb7eaa838a6d5bf10443bbd773fa9922f1a410f93e85fa46f692f2e1a8124"
     },
     "mcp-v3-provider-context": {
@@ -111,7 +111,7 @@
       "agents/openai.yaml": "27daf69d4bf7a2b832828e0552fb731781d518a9ff5c5cd4a16a326da6d91f5e"
     },
     "telegram-posting": {
-      "SKILL.md": "b9c5a911b934a1bba5ea2901f2852afd22ed61a43ce8df8cc14d0a1ec7c20910",
+      "SKILL.md": "bd304c807ee116e4fd6f0b76a4a42c48fecb4c47a1bb658f5e5d143fee16857c",
       "agents/openai.yaml": "9b9b27e91eac886f5043a73887126c474599e2bc152f251de7fedf9588318d42"
     },
     "video-article-writer": {
@@ -129,7 +129,7 @@
       "references/methodology.md": "ceef2bf25641f19691cab7b4b68f80e360a906175af8fcf9b4d8102dca0a5edb"
     },
     "vk-social-community": {
-      "SKILL.md": "d252dd397aa6fff9e808a0b7cf5b3b17867d0b5a44557c8a172f6b27cbe1d878",
+      "SKILL.md": "1a34d56ccf66ef5c871f46ed3dd8b42d16deef476b472742a2ee39702ae40e3b",
       "agents/openai.yaml": "13b57a4668fb35086b24f4b4c19a131dee1edf7e2063198ebabb9d72ce1a1f4c"
     },
     "workspace-project-manager": {
@@ -145,14 +145,14 @@
       "references/bidding-strategy.md": "0247d6e24c754292b554672b8a881e79835492802a667e65df02ebb790a60f3d",
       "references/campaign-creation-workflow.md": "f0fce39838c6eebcc09e17dde34e6ef918bd527446cdf4b949bddcc43d244d32",
       "references/methodology.md": "dbab2265f8253867d58b060fc175666dd8e08156404e69e9db19e1628e75bf2b",
-      "references/serving-budget-competitors.md": "e5621b3628ceddd6d01ad10a938691e9ea58fdd4a8c612cfd2351897aa41658e"
+      "references/serving-budget-competitors.md": "cf954ccf08153e0f9173e20542b76fadef4afcdaf2315e3658a0f4be6f5d5ab6"
     },
     "yandex-eda": {
       "SKILL.md": "8ef47b2f83767620332fd247f5b86de29eb44f67e5c58d1d54e72dc573f7a1b5",
       "agents/openai.yaml": "84bf29873c56e1c38cdd2f8b59e068c33425708c55a60d46c91e330ada1f8f48"
     },
     "yandex-metrika": {
-      "SKILL.md": "23b930d1dc5e0761bfa82bb21890af3ffaded401a9527f12c2512147e09ce1ce",
+      "SKILL.md": "78a2c267b584691f5c43d8cc134fb6c52ed9509f341f80cc2df8b01ac18660ba",
       "agents/openai.yaml": "7d59929e5869fb198bfe623b0693326e22ace5d20d9d4c85cefdd2052b52c855",
       "references/appmetrica.md": "507c881280ad00d698468c9f5bca426509f3ef64f15200a23e49920be331e1e0"
     },

@@ -315,7 +315,11 @@ function validateReferences(skillDir, markdown, skillNames, skillName) {
     }
   }
 
-  const skillRefs = markdown.matchAll(/\$([a-z0-9]+(?:-[a-z0-9]+)*)/g);
+  // A skill reference stands alone (`$skill-name`); "$from" or _$value inside
+  // JSON/template examples is payload syntax, not a reference.
+  const skillRefs = markdown.matchAll(
+    /(?<![\w"'$])\$([a-z0-9]+(?:-[a-z0-9]+)*)/g,
+  );
   for (const match of skillRefs) {
     if (!skillNames.has(match[1])) {
       throw new Error(`${skillName}: unknown referenced skill $${match[1]}`);
