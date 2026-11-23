@@ -78,7 +78,7 @@
       "agents/openai.yaml": "20f68cd794cdf3463575212a81df8145b22461c549e7243dd9e24e7b7500fc1e"
     },
     "max-posting": {
-      "SKILL.md": "924e4f1a8bab8b901a0c455fc6370ab2aae1721cc1d24227b826f4451f23776c",
+      "SKILL.md": "66868aeb3e20a015291badbe2e55669d3ba8d4f3edf0a87f779e281648469588",
       "agents/openai.yaml": "55afb7eaa838a6d5bf10443bbd773fa9922f1a410f93e85fa46f692f2e1a8124"
     },
     "mcp-v3-provider-context": {
@@ -111,7 +111,7 @@
       "agents/openai.yaml": "27daf69d4bf7a2b832828e0552fb731781d518a9ff5c5cd4a16a326da6d91f5e"
     },
     "telegram-posting": {
-      "SKILL.md": "bd304c807ee116e4fd6f0b76a4a42c48fecb4c47a1bb658f5e5d143fee16857c",
+      "SKILL.md": "d773e59ed051f9c5942b4403069c072aa91ac4342eff69932c0d5a366be68c9d",
       "agents/openai.yaml": "9b9b27e91eac886f5043a73887126c474599e2bc152f251de7fedf9588318d42"
     },
     "video-article-writer": {
@@ -129,7 +129,7 @@
       "references/methodology.md": "ceef2bf25641f19691cab7b4b68f80e360a906175af8fcf9b4d8102dca0a5edb"
     },
     "vk-social-community": {
-      "SKILL.md": "1a34d56ccf66ef5c871f46ed3dd8b42d16deef476b472742a2ee39702ae40e3b",
+      "SKILL.md": "c6ad18e3b79895c284dfbccdc866c7ca1671101595d1f5c21a476edb2cf66585",
       "agents/openai.yaml": "13b57a4668fb35086b24f4b4c19a131dee1edf7e2063198ebabb9d72ce1a1f4c"
     },
     "workspace-project-manager": {
