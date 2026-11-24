@@ -78,7 +78,7 @@
       "agents/openai.yaml": "20f68cd794cdf3463575212a81df8145b22461c549e7243dd9e24e7b7500fc1e"
     },
     "max-posting": {
-      "SKILL.md": "f4b721d6ac12232548eb1be5615cc568a9ace3b02d3c89900959d113940bd454",
+      "SKILL.md": "09ada2fb18b145542506e9113381ea90255e495b03e33b10c539d0cf2f02003c",
       "agents/openai.yaml": "55afb7eaa838a6d5bf10443bbd773fa9922f1a410f93e85fa46f692f2e1a8124"
     },
     "mcp-v3-provider-context": {
@@ -107,11 +107,11 @@
       "agents/openai.yaml": "9d55a40b9999bfa1405f5269fd42c4e1554533c8ad629e0e093b15ccf61e1ed1"
     },
     "social-post-copy": {
-      "SKILL.md": "74ac67c3643d4bf1f1332977adfe4aea37efa5706e72a65630f421a141b1ed4c",
+      "SKILL.md": "439000c6ee0ac707666316f3b265a3c77210f4d2de9319569cf47faf3022e065",
       "agents/openai.yaml": "27daf69d4bf7a2b832828e0552fb731781d518a9ff5c5cd4a16a326da6d91f5e"
     },
     "telegram-posting": {
-      "SKILL.md": "bc912100852515402be60fa9f3e956b73b8bd6072b018a010b7524b5f027e607",
+      "SKILL.md": "6cefcfaad075ba132939726655147b33462f6c0f62ec193338b2a71009cee579",
       "agents/openai.yaml": "9b9b27e91eac886f5043a73887126c474599e2bc152f251de7fedf9588318d42"
     },
     "video-article-writer": {
@@ -120,7 +120,7 @@
       "references/transcription-workflow.md": "bdcfa671f750d5fcfb144f1fc8ecbdf402d1d710cd22a601c9047f90475d9e4b"
     },
     "vk-ads-campaign-builder": {
-      "SKILL.md": "686b2360b7c12bdf7c34cfd6022e9b96c2c9b0289794e527c0e551ea4659b154",
+      "SKILL.md": "ba03a5fefdfc907aad10efa6bb3c0d11310d8a3826020d259a06bfcabdb1516d",
       "agents/openai.yaml": "ddc725a75e49fdd27c47f0083fcf27477e29979730eba293110083f4ed219617",
       "references/analytics.md": "cd6422dfca13968dbe17b92d3fcc3a88bec862f797c480ee768ec22335815d11",
       "references/goal-mode.md": "212a2cdc69f41bca9c88f693d88efbae1db858367f180694405a968cf00b0d47",
@@ -129,7 +129,7 @@
       "references/methodology.md": "ceef2bf25641f19691cab7b4b68f80e360a906175af8fcf9b4d8102dca0a5edb"
     },
     "vk-social-community": {
-      "SKILL.md": "c017dc7a9ffbae527683c6af7e57a137d1ba40d3d22180c8cd5c1a151ef8164e",
+      "SKILL.md": "85439857565409f33fc7692d3f75a7401a749cc6db7691a86175fe4bcf546632",
       "agents/openai.yaml": "13b57a4668fb35086b24f4b4c19a131dee1edf7e2063198ebabb9d72ce1a1f4c"
     },
     "workspace-project-manager": {
@@ -139,7 +139,7 @@
       "references/methodology.md": "8d4bf6e612658d4820080b9a8ededb7ec459d8d627307a41955330cec7f1974b"
     },
     "yandex-direct-campaign-builder": {
-      "SKILL.md": "3c4e5e248cb9fe0998499f2a076c4b2dcc60dca0cf58656f44c6026910d303ed",
+      "SKILL.md": "616289fff4c99b11dae68673029f0fbbe6533d58258920ab14e0c791fcd1571c",
       "agents/openai.yaml": "839127223c9ba2f88a465a94f99060a717cb7f9dd25697904883548023d29bde",
       "references/audiences.md": "72b21ee1409b9409a43a8f35addd3c59e845ad3b13a4f25ffc144bc622bf8484",
       "references/bidding-strategy.md": "0247d6e24c754292b554672b8a881e79835492802a667e65df02ebb790a60f3d",

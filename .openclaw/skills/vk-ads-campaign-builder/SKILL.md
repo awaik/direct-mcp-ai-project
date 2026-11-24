@@ -56,6 +56,7 @@ For a lead form or multiple image proportions in one ad, read [Lead forms and im
 - Validate package/banner pattern before creating banners.
 - Avoid unsupported symbols in text; keep copy within VK field limits.
 - Upload images/videos only after source asset is final.
+- When generating ad creatives with `generate_ad_image`, short Russian text on the image (Cyrillic headline, badge, numbers) is supported directly in the prompt without extra quotes whenever the format or user asks for text; do not send the user to external editors for lettering, keep VK Ads banner text limits and moderation rules in mind, and do not force text onto pure photo creatives.
 - Do not replace complete banner sections unless the schema requires it and current content has been reread.
 
 ## Workspace
