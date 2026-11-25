@@ -5,87 +5,59 @@ description: "Управлять Пространствами LidFly и project-
 
 # Workspace Project Manager
 
-Use for projects, clients, memory, decisions, documents, settings, saved campaign context, tasks, reminders and scheduled AI checks.
+Use for projects, memory, decisions, documents, settings, campaign context, tasks, reminders and scheduled AI checks.
 
 ## Model
 
-- Пространство is the user-facing memory container.
-- Workspace project is a business, project, direction, or agency client.
-- `workspace_project_id` is the canonical id for memory writes.
-- Provider identifiers are external entities, not project ids: `client_login`, `client_id`, `account_id`, `counter_id`, `host_id`, `subdomain`.
+- Пространство = memory container; Workspace project = business/direction/client (`workspace_project_id` is canonical).
+- Provider IDs (`client_login`, `client_id`, `account_id`, `counter_id`, `host_id`, `subdomain`) are external entities, not project IDs.
 
 ## Project Scope
 
-Before writing audits, documents, decisions, snapshots, settings, provider/campaign links or provider-scoped tasks:
+Before writing memory, settings, links or provider-scoped tasks:
 
-1. If exact `workspace_project_id` is known, use it.
-2. Otherwise call `workspace_prepare_project_scope` with all known selectors: `project_name`, `provider`, `external_entity_key`, `external_campaign_id`, `client_login`, `vk_client_id`, `account_id`, `metrika_counter_id`, `lidfly_subdomain`, `host_id`, `campaign_name`.
-3. If resolved, write with returned `workspace_project_id`.
-4. If ambiguous, show candidates and ask for exact `workspace_project_id`.
-5. If no project matches, offer `workspace_create_project`; never silently create "Основной проект".
-6. Project resolution selects a destination, not write permission. Write only on the user’s request or under a memory workflow authorized for this exact operation. Never capture another client’s data, style or decisions.
+1. Use known `workspace_project_id`, or call `workspace_prepare_project_scope` with all known selectors (`project_name`, `provider`, `external_entity_key`, `external_campaign_id`, `client_login`, `vk_client_id`, `account_id`, `metrika_counter_id`, `lidfly_subdomain`, `host_id`, `campaign_name`).
+2. If resolved, write with returned `workspace_project_id`. If ambiguous, ask for exact `workspace_project_id`.
+3. If none matches, offer `workspace_create_project`; never silently create "Основной проект".
+4. Scope resolution is not write permission. You may propose saving a durable rule or decision; write only on user request, after consent to your proposal, or under an authorized workflow. Never mix clients.
 
-For a business brief or campaign history, read [this guide](references/business-brief.md).
+Brief & campaign history: [business-brief.md](references/business-brief.md).
+
+## Project Memory
+
+- Read project context/rules at session start (`get_provider_context` returns `project_memory` for a single active project; use `workspace_get_context` for full rules/decisions).
+- Durable rules: ongoing preferences, constraints, wording bans, tone, KPI/budget/targeting guardrails — never one-off tasks, temporary numbers, or secrets/tokens.
+- Offer once per rule; do not repeat after refusal. Never write silently without consent.
+- Save via `call_write_tool` → `workspace_update_settings` with `workspace_project_id`, `scope_type: "project"`, `scope_id: "<workspace_project_id>"`, `settings: [{ namespace: "rules", key: "<unique_key>", value: "<rule>", value_type: "string", source: "mcp_suggestion" }]`. Use a unique `key` per new rule; reuse `key` only when replacing that rule.
 
 ## Provider Links
 
-- Call top-level `get_provider_context` with the exact `workspace_project_id` before treating a missing provider scope as an error.
-- If it returns `provider_link_candidates`, those scopes are verified but not executable inside the project yet.
-- When the user asked to link the cabinet, choose the exact candidate and execute only its prepared `next_action` through `call_write_tool`. Keep its arguments unchanged; MCP confirmation is still required.
-- If several candidates are returned, ask the user which cabinet to link. Never invent `client_login` from the project/account name or `external_entity_key`.
-- A missing provider link is a normal confirmation-gated write workflow, not a support incident. Do not call `support_prepare_report` for it.
-- Read-only project members must not receive unlinked owner OAuth candidates; do not try to recover them through personal scope enumeration.
+- Call top-level `get_provider_context` with exact `workspace_project_id` before treating a missing scope as an error.
+- `provider_link_candidates` are verified unlinked scopes: on user request, run only the chosen candidate's `next_action` unchanged via `call_write_tool` (MCP confirmation required); if multiple, ask. Never invent `client_login` or escalate to `support_prepare_report`.
+- Read-only members do not receive owner OAuth candidates; do not enumerate personal scopes.
 
 ## Tools To Prefer
 
-Find Workspace tools with `search_tools({ provider: "workspace", ... })`; read each schema with `get_tool_schema` before its first call.
+Discover via `search_tools({ provider: "workspace", ... })` and `get_tool_schema`. Never pass top-level meta-tools to `call_tool`.
 
-Read through `call_tool`:
-
-- `workspace_list_projects`
-- `workspace_get_project`
-- `workspace_prepare_project_scope`
-- `workspace_prepare_project_deletion`
-- `workspace_get_settings`
-- `workspace_get_tasks`
-- `workspace_get_scheduled_ai_tasks`
-
-Write through `call_write_tool`:
-
-- `workspace_create_project`
-- `workspace_delete_project`
-- `workspace_upsert_provider_entity`
-- `workspace_link_campaign`
-- `workspace_update_settings`
-- `workspace_add_tasks`
-- `workspace_schedule_ai_task`
-
-Never pass top-level meta-tools such as `search_tools` or `get_tool_schema` as `tool_name`.
+- Read (`call_tool`): `workspace_list_projects`, `workspace_get_project`, `workspace_prepare_project_scope`, `workspace_prepare_project_deletion`, `workspace_get_settings`, `workspace_get_tasks`, `workspace_get_scheduled_ai_tasks`.
+- Write (`call_write_tool`): `workspace_create_project`, `workspace_delete_project`, `workspace_upsert_provider_entity`, `workspace_link_campaign`, `workspace_update_settings`, `workspace_add_tasks`, `workspace_schedule_ai_task`.
 
 ## Permanent Project Deletion
 
-Permanent deletion is owner-only, irreversible, and never allowed in an AI autostart.
+Owner-only, irreversible, forbidden in AI autostarts.
 
-1. Resolve and use the exact `workspace_project_id`; never select a deletion target from a similar name.
-2. Call read-only `workspace_prepare_project_deletion`.
-3. If `can_delete=false`, explain the returned blocker. Archive an active project only if the user asked; protected accounting history means the project must remain archived.
-4. If ready, show `confirmation_message`, the deletion counts, and retained activity-history count. Wait for an explicit textual confirmation.
-5. Call `workspace_delete_project` through `call_write_tool` with the unchanged `workspace_project_id`, `expected_project_name`, and `expected_updated_at` from that preflight.
-6. If the target changed, run the preflight again and request a new confirmation. After a transport-uncertain delete, reread the exact project before considering any retry.
+1. Use exact `workspace_project_id`, call `workspace_prepare_project_deletion`.
+2. If `can_delete=false`, explain blocker (archive only if asked; protected accounting history stays archived).
+3. Show `confirmation_message`, deletion counts, and retained activity count; wait for explicit confirmation, then call `workspace_delete_project` via `call_write_tool` with unchanged `workspace_project_id`, `expected_project_name`, `expected_updated_at`.
+4. Re-preflight if changed; reread project after uncertain transport before retrying.
 
 ## Reminders vs AI Autostarts
 
-- `workspace_add_tasks` is a manual reminder: it stores a prompt and due date, but the due date only triggers email and never runs AI or provider tools.
-- If a future check must be shown to the owner, asks a question, or needs a new decision or confirmation, use `workspace_add_tasks`.
-- `workspace_schedule_ai_task` is an AI autostart: LidFly executes the saved plan automatically at the specified time without a new confirmation.
-- Objects, actions, values, and all conditional branches must be fully approved before using `workspace_schedule_ai_task`.
-
-For `workspace_schedule_ai_task`:
-
-- `allowed_tools` must list real domain tools for the future run, not v3 meta-tools.
-- Include `workspace_project_id` for provider/campaign tasks.
-- For write future runs, include concrete target items and a confirmed plan.
+- `workspace_add_tasks`: manual reminder (email only, no AI/provider execution). If a future check needs a new decision or confirmation, use `workspace_add_tasks`.
+- `workspace_schedule_ai_task`: AI autostart executing without new confirmation; objects, actions, values, and conditional branches must be fully approved before using `workspace_schedule_ai_task`.
+- Set `allowed_tools` to real domain tools (not v3 meta-tools), pass `workspace_project_id`, and for writes include concrete targets and confirmed plan.
 
 ## Output
 
-Summarize the selected project, created object type, whether it runs automatically, next user action and unconfirmed details.
+Summarize selected project, created object type, whether it runs automatically, next user action and unconfirmed details.

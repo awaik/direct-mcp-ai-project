@@ -80,6 +80,11 @@ non_v5_campaign_suspected — гипотеза оболочки «Простой
 [DirectClickOrder](https://yandex.ru/dev/metrika/ru/stat/attributes/visitssource_/direct).
 Видимость конкретной оболочки публичной документацией не подтверждена.
 
+Если в интерфейсе Директа видна кампания «Рекламная подписка» (Яндекс Бизнес), её
+запуск, редактирование, оплата и удаление выполняются в кабинете Яндекс Бизнеса
+(`business.yandex.ru`); публичная документация Direct API не описывает управление и
+условия видимости таких кампаний в `campaigns.get` (см. [Яндекс Бизнес в справке по показам](references/serving-budget-competitors.md)).
+
 ## Credential Boundary
 
 - В пользовательских задачах работай с Директом только через LidFly MCP v3. Не вызывай `api.direct.yandex.com` напрямую через shell, curl, PowerShell или другой HTTP-клиент — ни для проверки, ни как fallback после успеха, ошибки или timeout MCP.

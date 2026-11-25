@@ -41,7 +41,7 @@
       "references/russian-patterns.md": "62db0207de0987f0bd6a60127247590fe81451afbd5a6768c8ae0a2c65e34401"
     },
     "lidfly-agents": {
-      "SKILL.md": "0155af644d377f25d1c1a0bc5c9bd55045de8db230e6086e2cfba18514b007ee",
+      "SKILL.md": "dadab9d6e57a22d233bb6f9ca6481ab240d3bef35ce84d7006ff1f6f712d610a",
       "agents/openai.yaml": "87bc466a91160c0a66e564d37f3e64e12d4e8dfa40f3fc9c77fdc1fed9893d10"
     },
     "lidfly-connection-doctor": {
@@ -133,19 +133,19 @@
       "agents/openai.yaml": "13b57a4668fb35086b24f4b4c19a131dee1edf7e2063198ebabb9d72ce1a1f4c"
     },
     "workspace-project-manager": {
-      "SKILL.md": "1b90c27694829fbd6cead04c8692509c8ae809639499541b35fec1be8ae83a52",
+      "SKILL.md": "4bcc1307d4e41e017473916b5d1a7a613fb8768779f20799d38f1a1c8dbc52ef",
       "agents/openai.yaml": "9778d6c5f249e406d862ecb095de9b7e86df795274f59f7159fbaa43c5abbdbf",
       "references/business-brief.md": "1f21c9ed06d3e50aba7990c1f40ab1dbcf806bd310bbfc1e709e695685463c30",
       "references/methodology.md": "8d4bf6e612658d4820080b9a8ededb7ec459d8d627307a41955330cec7f1974b"
     },
     "yandex-direct-campaign-builder": {
-      "SKILL.md": "616289fff4c99b11dae68673029f0fbbe6533d58258920ab14e0c791fcd1571c",
+      "SKILL.md": "7abb62eeefd7879452472d29a699ad869d8f67db9a8943f807095a803e06bb30",
       "agents/openai.yaml": "839127223c9ba2f88a465a94f99060a717cb7f9dd25697904883548023d29bde",
       "references/audiences.md": "72b21ee1409b9409a43a8f35addd3c59e845ad3b13a4f25ffc144bc622bf8484",
       "references/bidding-strategy.md": "0247d6e24c754292b554672b8a881e79835492802a667e65df02ebb790a60f3d",
       "references/campaign-creation-workflow.md": "f0fce39838c6eebcc09e17dde34e6ef918bd527446cdf4b949bddcc43d244d32",
       "references/methodology.md": "dbab2265f8253867d58b060fc175666dd8e08156404e69e9db19e1628e75bf2b",
-      "references/serving-budget-competitors.md": "cf954ccf08153e0f9173e20542b76fadef4afcdaf2315e3658a0f4be6f5d5ab6"
+      "references/serving-budget-competitors.md": "e7a458b6b11e21ac0c67019a375839c25bd1e3bc8c68b6657a77c178942d6bde"
     },
     "yandex-eda": {
       "SKILL.md": "8ef47b2f83767620332fd247f5b86de29eb44f67e5c58d1d54e72dc573f7a1b5",
