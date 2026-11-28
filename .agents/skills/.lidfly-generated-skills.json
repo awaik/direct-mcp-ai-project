@@ -41,7 +41,7 @@
       "references/russian-patterns.md": "62db0207de0987f0bd6a60127247590fe81451afbd5a6768c8ae0a2c65e34401"
     },
     "lidfly-agents": {
-      "SKILL.md": "dadab9d6e57a22d233bb6f9ca6481ab240d3bef35ce84d7006ff1f6f712d610a",
+      "SKILL.md": "3d1b4416cfd10e995a2159464df2601a2b4a333e8f6e551b23bc6c60de7586c7",
       "agents/openai.yaml": "87bc466a91160c0a66e564d37f3e64e12d4e8dfa40f3fc9c77fdc1fed9893d10"
     },
     "lidfly-connection-doctor": {
@@ -129,7 +129,7 @@
       "references/methodology.md": "ceef2bf25641f19691cab7b4b68f80e360a906175af8fcf9b4d8102dca0a5edb"
     },
     "vk-social-community": {
-      "SKILL.md": "85439857565409f33fc7692d3f75a7401a749cc6db7691a86175fe4bcf546632",
+      "SKILL.md": "b4cea2b32d23bf24de9a60bd8dc260fe0e99466a9b4ab26d3299215801696970",
       "agents/openai.yaml": "13b57a4668fb35086b24f4b4c19a131dee1edf7e2063198ebabb9d72ce1a1f4c"
     },
     "workspace-project-manager": {
@@ -139,12 +139,12 @@
       "references/methodology.md": "8d4bf6e612658d4820080b9a8ededb7ec459d8d627307a41955330cec7f1974b"
     },
     "yandex-direct-campaign-builder": {
-      "SKILL.md": "7abb62eeefd7879452472d29a699ad869d8f67db9a8943f807095a803e06bb30",
+      "SKILL.md": "7bd84b797adaf58b52674678f0460e88325c19759df9a4932cd911622bed429b",
       "agents/openai.yaml": "839127223c9ba2f88a465a94f99060a717cb7f9dd25697904883548023d29bde",
       "references/audiences.md": "72b21ee1409b9409a43a8f35addd3c59e845ad3b13a4f25ffc144bc622bf8484",
       "references/bidding-strategy.md": "0247d6e24c754292b554672b8a881e79835492802a667e65df02ebb790a60f3d",
       "references/campaign-creation-workflow.md": "f0fce39838c6eebcc09e17dde34e6ef918bd527446cdf4b949bddcc43d244d32",
-      "references/methodology.md": "dbab2265f8253867d58b060fc175666dd8e08156404e69e9db19e1628e75bf2b",
+      "references/methodology.md": "1034ff7a21a8859f25027f98f55b6bbfd7ed4cff6932e9acd6589e5b2d97f132",
       "references/serving-budget-competitors.md": "e7a458b6b11e21ac0c67019a375839c25bd1e3bc8c68b6657a77c178942d6bde"
     },
     "yandex-eda": {
